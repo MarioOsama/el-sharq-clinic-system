@@ -9,11 +9,13 @@ class AppDropDownButton extends StatelessWidget {
     required this.items,
     this.width,
     this.textStyle,
+    required this.onChanged,
   });
 
   final List<String> items;
   final double? width;
   final TextStyle? textStyle;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class AppDropDownButton extends StatelessWidget {
             setState(() {
               selectedValue = newValue!;
             });
+            onChanged(newValue);
           },
         ),
       ),

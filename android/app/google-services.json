@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308772479666",
+    "project_id": "el-sharq-clinic-system",
+    "storage_bucket": "el-sharq-clinic-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308772479666:android:71559f225546d209a31fab",
+        "android_client_info": {
+          "package_name": "com.elsharqclinic.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyByX3as8r03wkpzxx4YIXOk8G9HW0QbM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

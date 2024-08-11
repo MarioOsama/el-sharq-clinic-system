@@ -44,4 +44,10 @@ abstract class AppTextStyles {
     fontWeight: FontWeight.w500,
     fontFamily: 'Outfit',
   );
+  static const TextStyle font16DarkGreyMedium = TextStyle(
+    fontSize: 16,
+    color: AppColors.darkGrey,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'Outfit',
+  );
 }
