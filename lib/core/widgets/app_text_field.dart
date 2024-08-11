@@ -26,6 +26,7 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
