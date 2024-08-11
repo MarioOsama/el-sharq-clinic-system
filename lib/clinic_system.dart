@@ -1,10 +1,12 @@
+import 'package:el_sharq_clinic/core/routing/app_router.dart';
+import 'package:el_sharq_clinic/core/routing/app_routes.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
-import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ClinicSystem extends StatelessWidget {
-  const ClinicSystem({super.key});
+  final AppRouter appRouter;
+  const ClinicSystem({super.key, required this.appRouter});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +20,8 @@ class ClinicSystem extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blue),
           useMaterial3: true,
         ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Clinic System',
-                style: AppTextStyles.font32DarkGreyMedium),
-          ),
-          body: Center(
-            child: Text('Welcome to Clinic System',
-                style: AppTextStyles.font28DarkGreyMedium),
-          ),
-        ),
+        onGenerateRoute: appRouter.onGenerateRoute,
+        initialRoute: AppRoutes.auth,
       ),
     );
   }
