@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
-import 'package:el_sharq_clinic/features/data/local/models/user_model.dart';
-import 'package:el_sharq_clinic/features/data/local/repos/auth_repo.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
 
 part 'auth_state.dart';

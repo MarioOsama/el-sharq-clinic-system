@@ -1,3 +1,6 @@
+import 'package:el_sharq_clinic/features/home/data/models/drawer_item_model.dart';
+import 'package:flutter/material.dart';
+
 abstract class AppConstant {
   static const String appName = 'El Sharq Clinic';
   static const String appVersion = '1.0.0';
@@ -13,5 +16,16 @@ abstract class AppConstant {
     'Select Clinic',
     'Clinic 1',
     'Clinic 2'
+  ];
+
+  // Drawer Items
+  static const List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(title: 'Dashboard', icon: Icons.dashboard_outlined),
+    DrawerItemModel(title: 'Appointments', icon: Icons.calendar_today_outlined),
+    DrawerItemModel(title: 'Pet Owners', icon: Icons.people_outline),
+    DrawerItemModel(title: 'Services', icon: Icons.medical_services_outlined),
+    DrawerItemModel(title: 'Products', icon: Icons.shopping_bag_outlined),
+    DrawerItemModel(title: 'Sales', icon: Icons.attach_money_outlined),
+    DrawerItemModel(title: 'Settings', icon: Icons.settings_outlined),
   ];
 }
