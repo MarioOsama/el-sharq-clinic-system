@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:el_sharq_clinic/features/data/local/models/user_model.dart';
-import 'package:el_sharq_clinic/features/data/remote/auth_firebase_services.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
+import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
 
 class AuthRepo {
   final AuthFirebaseServices _authFirebaseServices;

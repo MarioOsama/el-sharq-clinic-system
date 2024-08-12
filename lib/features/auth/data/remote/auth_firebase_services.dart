@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:el_sharq_clinic/features/data/local/models/user_model.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 
 class AuthFirebaseServices {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
