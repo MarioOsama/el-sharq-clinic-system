@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
-import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
+import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,8 @@ class AuthCubit extends Cubit<AuthState> {
           .then(
         (value) {
           if (value != null) {
-            emit(AuthSuccess(value.data()));
+            emit(AuthSuccess(AuthDataModel(
+                userModel: value.data(), clinicName: selectedClinic)));
             return value.data();
           }
           emit(AuthFailure('Invalid username or password'));

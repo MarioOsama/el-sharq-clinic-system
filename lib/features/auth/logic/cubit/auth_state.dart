@@ -7,9 +7,9 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class AuthSuccess extends AuthState {
-  final UserModel userModel;
+  final AuthDataModel authData;
 
-  AuthSuccess(this.userModel);
+  AuthSuccess(this.authData);
 }
 
 final class AuthFailure extends AuthState {
