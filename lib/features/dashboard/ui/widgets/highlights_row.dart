@@ -12,8 +12,7 @@ class HighlightsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Expanded(
-            child: const OverviewItem(title: 'Appointments', value: '12')),
+        const Expanded(child: OverviewItem(title: 'Appointments', value: '5')),
         Flexible(child: horizontalSpace(100)),
         const Expanded(child: OverviewItem(title: 'Sales', value: '34')),
         Flexible(child: horizontalSpace(100)),

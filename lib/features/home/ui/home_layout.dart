@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/features/appointments/ui/appoinments_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
@@ -19,7 +20,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   final List<Widget> drawerItems = const [
     DashboardSection(),
-    Text('Appointments'),
+    AppoinmentsSection(),
     Text('Pet Owners'),
     Text('Services'),
     Text('Products'),
