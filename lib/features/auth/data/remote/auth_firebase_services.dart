@@ -2,24 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 
 class AuthFirebaseServices {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  AuthFirebaseServices(this._firestore);
+
+  final FirebaseFirestore _firestore;
+
   Future<QueryDocumentSnapshot<UserModel>?> openWithUserNameAndPassword(
       int clinicIndex, String userName, String password) async {
-    // Get Clinic Info Document
-    final DocumentSnapshot clinicInfoDoc =
-        await _getClinicDoc(clinicIndex, 'clinic-info');
+    final clinicDoc =
+        await _firestore.collection('clinics').doc('clinic$clinicIndex').get();
 
-    // Get Users Collection inside the Clinic Info Document
-    final clinicUsers = await _getDocCollection(
-      clinicInfoDoc,
+    // Get users collection with converter
+    final usersCollection = await _getNestedCollection(
+      clinicDoc,
       'users',
-      UserModel.fromFirestore,
+      (snapshot) => UserModel.fromFirestore(snapshot),
       (user) => user.toFirestore(),
     );
 
-    // Check if the user exists in the users collection
     try {
-      return clinicUsers.docs.firstWhere(
+      return usersCollection.docs.firstWhere(
         (user) =>
             user.data().userName == userName &&
             user.data().password == password,
@@ -29,17 +30,12 @@ class AuthFirebaseServices {
     }
   }
 
-  Future<DocumentSnapshot> _getClinicDoc(
-      int clinicIndex, String docName) async {
-    return await firestore.collection('clinic$clinicIndex').doc(docName).get();
-  }
-
-  Future<QuerySnapshot<T>> _getDocCollection<T>(
-      DocumentSnapshot<Object?> clinicDoc,
+  Future<QuerySnapshot<T>> _getNestedCollection<T>(
+      DocumentSnapshot<Object?> doc,
       String collectionName,
       T Function(DocumentSnapshot<Map<String, dynamic>> snapshot) fromFirestore,
       Map<String, dynamic> Function(T object) toFirestore) async {
-    return await clinicDoc.reference
+    return await doc.reference
         .collection(collectionName)
         .withConverter<T>(
           fromFirestore: (snapshot, options) => fromFirestore(snapshot),

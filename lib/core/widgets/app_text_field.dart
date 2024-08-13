@@ -60,7 +60,7 @@ class AppTextField extends StatelessWidget {
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
-      maxLines: isMultiline ?? false ? 5 : 1,
+      maxLines: isMultiline ?? false ? 10 : 1,
       minLines: 1,
       enabled: enabled,
       readOnly: readOnly ?? false,

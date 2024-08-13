@@ -13,64 +13,62 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> showAppointmentSideSheet(BuildContext context, String title,
     {required bool? isNew}) async {
   final AppointmentsCubit appointmentsCubit = context.read<AppointmentsCubit>();
-  appointmentsCubit.clearAllControllers();
+  appointmentsCubit.setupControllers();
   await showCustomSideSheet(
     context: context,
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          SectionTitle(title: title),
-          verticalSpace(50),
-          if (!isNew!) _buildAppointmentId(),
-          verticalSpace(50),
-          FieldsRow(
-            fields: const [
-              'Owner Name',
-              'Pet Type',
-            ],
-            firstController: appointmentsCubit.ownerNameController,
-            secondController: appointmentsCubit.petTypeController,
-            enabled: isNew,
-          ),
-          verticalSpace(50),
-          FieldsRow(
-            fields: const [
-              'Phone',
-              'Pet Name',
-            ],
-            firstController: appointmentsCubit.phoneController,
-            secondController: appointmentsCubit.petNameController,
-            enabled: isNew,
-          ),
-          verticalSpace(50),
-          FieldsRow(
-            fields: const [
-              'Time',
-              'Date',
-            ],
-            firstController: appointmentsCubit.timeController,
-            secondController: appointmentsCubit.dateController,
-            firstSuffixIcon:
-                _buildTimeButton(context, appointmentsCubit.timeController),
-            secondSuffixIcon:
-                _buildDateButton(context, appointmentsCubit.dateController),
-            enabled: isNew,
-            readOnly: true,
-          ),
-          verticalSpace(50),
-          AppTextField(
-            controller: appointmentsCubit.petConditionController,
-            hint: 'Pet Condition',
-            enabled: isNew,
-            width: double.infinity,
-            height: 200,
-            isMultiline: true,
-            insideHint: false,
-          ),
-          verticalSpace(100),
-          isNew ? _buildNewAction(context) : _buildExistActions(),
-        ],
-      ),
+    child: Column(
+      children: [
+        SectionTitle(title: title),
+        verticalSpace(50),
+        if (!isNew!) _buildAppointmentId(),
+        verticalSpace(50),
+        FieldsRow(
+          fields: const [
+            'Owner Name',
+            'Pet Type',
+          ],
+          firstController: appointmentsCubit.ownerNameController,
+          secondController: appointmentsCubit.petTypeController,
+          enabled: isNew,
+        ),
+        verticalSpace(50),
+        FieldsRow(
+          fields: const [
+            'Phone',
+            'Pet Name',
+          ],
+          firstController: appointmentsCubit.phoneController,
+          secondController: appointmentsCubit.petNameController,
+          enabled: isNew,
+        ),
+        verticalSpace(50),
+        FieldsRow(
+          fields: const [
+            'Time',
+            'Date',
+          ],
+          firstController: appointmentsCubit.timeController,
+          secondController: appointmentsCubit.dateController,
+          firstSuffixIcon:
+              _buildTimeButton(context, appointmentsCubit.timeController),
+          secondSuffixIcon:
+              _buildDateButton(context, appointmentsCubit.dateController),
+          enabled: isNew,
+          readOnly: true,
+        ),
+        verticalSpace(50),
+        AppTextField(
+          controller: appointmentsCubit.petReportController,
+          hint: 'Pet Report',
+          enabled: isNew,
+          width: double.infinity,
+          height: 250,
+          isMultiline: true,
+          insideHint: false,
+        ),
+        verticalSpace(100),
+        isNew ? _buildNewAction(context) : _buildExistActions(),
+      ],
     ),
   );
 }
@@ -137,6 +135,6 @@ AppTextButton _buildNewAction(BuildContext context) {
       text: 'Save Appointment',
       width: context.size!.width,
       onPressed: () {
-        context.read<AppointmentsCubit>().validateAndSave();
+        context.read<AppointmentsCubit>().validateAndSaveAppointment();
       });
 }

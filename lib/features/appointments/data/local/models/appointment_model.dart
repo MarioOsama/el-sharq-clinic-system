@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AppointmentModel {
   final String id;
   final String ownerName;
@@ -41,16 +43,17 @@ class AppointmentModel {
     );
   }
 
-  factory AppointmentModel.fromFirestore(Map<String, dynamic> json) {
+  factory AppointmentModel.fromFirestore(
+      DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return AppointmentModel(
-      id: json['id'],
-      ownerName: json['ownerName'],
-      phone: json['phone'],
-      petName: json['petName'],
-      petType: json['petType'],
-      date: DateTime.parse(json['date']),
-      time: json['time'],
-      petCondition: json['petCondition'],
+      id: snapshot['id'],
+      ownerName: snapshot['ownerName'],
+      phone: snapshot['phone'],
+      petName: snapshot['petName'],
+      petType: snapshot['petType'],
+      date: DateTime.parse(snapshot['date']),
+      time: snapshot['time'],
+      petCondition: snapshot['petCondition'],
     );
   }
 
