@@ -11,8 +11,9 @@ class AppoinmentsBody extends StatelessWidget {
     return SectionDetailsContainer(
       padding: EdgeInsets.zero,
       child: CustomTable(
-        onTappableIndexSelected: () =>
-            showAppointmentSideSheet(context, editable: false),
+        onTappableIndexSelected: () => showAppointmentSideSheet(
+            context, 'Appointment Details',
+            isNew: false),
         tappableCellIndex: 0,
         fields: [
           'Appoinment ID',

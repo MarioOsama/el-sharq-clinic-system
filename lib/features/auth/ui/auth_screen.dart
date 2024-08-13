@@ -33,11 +33,13 @@ class AuthScreen extends StatelessWidget {
             AppTextField(
               controller: context.read<AuthCubit>().usernameController,
               hint: 'Username',
+              insideHint: true,
             ),
             verticalSpace(25),
             AppTextField(
               controller: context.read<AuthCubit>().passwordController,
               hint: 'Password',
+              insideHint: true,
               isObscured: true,
             ),
             verticalSpace(30),

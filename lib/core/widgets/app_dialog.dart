@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_dialog_icon.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class AppDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
       ),
       child: SizedBox(
-        height: 350.h,
+        height: 400.h,
         width: 500.w,
         child: Column(
           children: [
@@ -41,14 +42,27 @@ class AppDialog extends StatelessWidget {
                 ),
               ),
             ),
-            action != null ? verticalSpace(20) : verticalSpace(60),
-            Text(
-              title,
-              style: AppTextStyles.font20DarkGreyMedium,
+            action != null ? verticalSpace(20) : verticalSpace(30),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              color: AppColors.darkGrey.withOpacity(0.75),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font20DarkGreyMedium.copyWith(
+                  color: Colors.white,
+                ),
+              ),
             ),
-            Text(
-              content,
-              style: AppTextStyles.font16DarkGreyMedium,
+            verticalSpace(30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                content,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.font16DarkGreyMedium,
+              ),
             ),
             if (action != null) const Spacer(),
             if (action != null) action!,
@@ -61,15 +75,15 @@ class AppDialog extends StatelessWidget {
 
   BoxDecoration _buildContainerDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(25),
         topRight: Radius.circular(25),
       ),
       color: dialogType == DialogType.alert
-          ? Colors.yellow
+          ? AppColors.yellow
           : dialogType == DialogType.success
-              ? Colors.green
-              : Colors.red,
+              ? AppColors.green
+              : AppColors.red,
     );
   }
 }

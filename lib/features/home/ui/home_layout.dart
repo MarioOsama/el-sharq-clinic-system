@@ -1,10 +1,13 @@
+import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/features/appointments/logic/cubit/appointments_cubit.dart';
 import 'package:el_sharq_clinic/features/appointments/ui/appoinments_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({super.key, required this.authData});
@@ -18,14 +21,17 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
   int selectedDrawerItemIndex = 0;
 
-  final List<Widget> drawerItems = const [
-    DashboardSection(),
-    AppoinmentsSection(),
-    Text('Pet Owners'),
-    Text('Services'),
-    Text('Products'),
-    Text('Sales'),
-    Text('Settings'),
+  final List<Widget> drawerItems = [
+    const DashboardSection(),
+    BlocProvider<AppointmentsCubit>(
+      create: (context) => getIt<AppointmentsCubit>(),
+      child: const AppoinmentsSection(),
+    ),
+    const Text('Pet Owners'),
+    const Text('Services'),
+    const Text('Products'),
+    const Text('Sales'),
+    const Text('Settings'),
   ];
 
   @override
