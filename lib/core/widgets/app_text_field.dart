@@ -14,7 +14,7 @@ class AppTextField extends StatelessWidget {
     this.fillColor,
     this.isObscured,
     this.isMultiline,
-    this.insideHint = true,
+    this.insideHint = false,
     this.suffixIcon,
     this.enabled,
     this.readOnly,

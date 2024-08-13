@@ -3,6 +3,7 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/features/appointments/ui/widgets/appoinments_body.dart';
 import 'package:el_sharq_clinic/features/appointments/ui/widgets/appointment_side_sheet.dart';
+import 'package:el_sharq_clinic/features/appointments/ui/widgets/appointments_bloc_listener.dart';
 import 'package:flutter/material.dart';
 
 class AppoinmentsSection extends StatelessWidget {
@@ -16,7 +17,8 @@ class AppoinmentsSection extends StatelessWidget {
         AppTextButton(
           text: 'New Appointment',
           icon: Icons.book_outlined,
-          onPressed: () => showAppointmentSideSheet(context),
+          onPressed: () =>
+              showAppointmentSideSheet(context, 'New Appointment', isNew: true),
           width: 275,
         )
       ],
@@ -26,6 +28,7 @@ class AppoinmentsSection extends StatelessWidget {
           children: [
             verticalSpace(50),
             const Expanded(child: AppoinmentsBody()),
+            const AppointmentsBlocListener(),
           ],
         ),
       ),
