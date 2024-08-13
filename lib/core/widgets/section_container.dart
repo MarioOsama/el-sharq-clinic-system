@@ -3,10 +3,12 @@ import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class SectionContainer extends StatelessWidget {
-  const SectionContainer({super.key, required this.child, required this.title});
+  const SectionContainer(
+      {super.key, required this.child, required this.title, this.actions});
 
   final Widget child;
   final String title;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +19,24 @@ class SectionContainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           verticalSpace(30),
-          SectionTitle(title: title),
+          actions != null ? _buildHeaderWithActions() : _buildHeader(),
           child,
         ],
       ),
     );
+  }
+
+  Row _buildHeaderWithActions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SectionTitle(title: title),
+        ...actions!,
+      ],
+    );
+  }
+
+  SectionTitle _buildHeader() {
+    return SectionTitle(title: title);
   }
 }

@@ -7,32 +7,71 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     required this.controller,
-    required this.hint,
+    this.hint,
     this.width,
     this.height,
     this.textStyle,
     this.fillColor,
     this.isObscured,
+    this.isMultiline,
+    this.insideHint = true,
+    this.suffixIcon,
+    this.enabled,
+    this.readOnly,
   });
 
   final TextEditingController controller;
-  final String hint;
+  final String? hint;
   final double? width;
   final double? height;
   final TextStyle? textStyle;
   final Color? fillColor;
   final bool? isObscured;
+  final bool? isMultiline;
+  final bool? insideHint;
+  final Widget? suffixIcon;
+  final bool? enabled;
+  final bool? readOnly;
 
   @override
   Widget build(BuildContext context) {
+    return insideHint!
+        ? _buildTextFieldWithInsideHint(hint)
+        : _buildTextFieldWithOutsideHint();
+  }
+
+  Column _buildTextFieldWithOutsideHint() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          hint!,
+          style: AppTextStyles.font16DarkGreyMedium
+              .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
+        ),
+        _buildTextFieldWithInsideHint(null),
+      ],
+    );
+  }
+
+  TextField _buildTextFieldWithInsideHint(String? hint) {
     return TextField(
       controller: controller,
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
+      maxLines: isMultiline ?? false ? 5 : 1,
+      minLines: 1,
+      enabled: enabled,
+      readOnly: readOnly ?? false,
       decoration: InputDecoration(
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: AppColors.grey),
+        ),
+        suffixIcon: suffixIcon,
         hintText: hint,
-        fillColor: AppColors.white,
+        fillColor: enabled ?? true ? AppColors.white : AppColors.grey,
         filled: true,
         hintStyle: textStyle ??
             AppTextStyles.font20DarkGreyMedium

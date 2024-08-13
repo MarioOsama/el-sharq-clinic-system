@@ -22,7 +22,7 @@ class DashboardBody extends StatelessWidget {
           const HighlightsRow(),
           verticalSpace(100),
           const Text(
-            'Today Timeline',
+            'Timeline',
             style: AppTextStyles.font20DarkGreyMedium,
           ),
           const SizedBox(

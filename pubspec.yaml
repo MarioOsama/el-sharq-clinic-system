@@ -39,6 +39,8 @@ dependencies:
   get_it: ^7.7.0
   screen_retriever: ^0.1.9
   window_manager: ^0.4.0
+  data_table_2: ^2.5.15
+  side_sheet: ^1.0.4
 
 dev_dependencies:
   flutter_lints: ^4.0.0
