@@ -21,21 +21,9 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> {
   int selectedDrawerItemIndex = 0;
 
-  final List<Widget> drawerItems = [
-    const DashboardSection(),
-    BlocProvider<AppointmentsCubit>(
-      create: (context) => getIt<AppointmentsCubit>(),
-      child: const AppoinmentsSection(),
-    ),
-    const Text('Pet Owners'),
-    const Text('Services'),
-    const Text('Products'),
-    const Text('Sales'),
-    const Text('Settings'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List drawerItems = _getDrawerWidgets;
     return Scaffold(
       backgroundColor: AppColors.lightBlue,
       appBar: CustomAppBar(userName: widget.authData.userModel.userName),
@@ -53,11 +41,31 @@ class _HomeLayoutState extends State<HomeLayout> {
           Expanded(
             flex: 5,
             child: Center(
-              child: drawerItems[selectedDrawerItemIndex],
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return drawerItems[selectedDrawerItemIndex](context);
+                },
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// List of widget builders that will be displayed in the drawer
+  List<WidgetBuilder> get _getDrawerWidgets {
+    return [
+      (context) => DashboardSection(authData: widget.authData),
+      (context) => BlocProvider<AppointmentsCubit>(
+            create: (context) => getIt<AppointmentsCubit>(),
+            child: AppoinmentsSection(authData: widget.authData),
+          ),
+      // const Text('Pet Owners'),
+      // const Text('Services'),
+      // const Text('Products'),
+      // const Text('Sales'),
+      // const Text('Settings'),
+    ];
   }
 }

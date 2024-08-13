@@ -1,13 +1,19 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/repos/appointments_repo.dart';
 import 'package:flutter/material.dart';
 
 part 'appointments_state.dart';
 
 class AppointmentsCubit extends Cubit<AppointmentsState> {
-  AppointmentsCubit() : super(AppointmentsInitial());
+  final AppointmentsRepo _appointmentsRepo;
+  AppointmentsCubit(this._appointmentsRepo) : super(AppointmentsInitial());
 
+  AuthDataModel? authData;
   String appointmentId = '';
   TextEditingController ownerNameController = TextEditingController();
   TextEditingController petNameController = TextEditingController();
@@ -15,26 +21,36 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController petConditionController = TextEditingController();
+  TextEditingController petReportController = TextEditingController();
 
-  void clearAllControllers() {
+  void setAuthData(AuthDataModel authenticationData) {
+    authData = authenticationData;
+  }
+
+  void setupControllers() {
     ownerNameController.clear();
     petNameController.clear();
     petTypeController.clear();
     phoneController.clear();
     timeController.clear();
     dateController.clear();
-    petConditionController.clear();
+    petReportController.text = _getPetReportScheme;
   }
 
-  void validateAndSave() {
-    final List<String> emptyFields = _getEmptyFields();
-
+  void validateAndSaveAppointment() async {
+    final List<String> emptyFields = _getEmptyOfRequiredFields();
     if (emptyFields.isEmpty) {
-      log('Saving appointment');
+      emit(NewAppointmentLoading());
+      final AppointmentModel appointment = _constructAppointment();
+      final bool successAddition = await _appointmentsRepo.addNewAppointment(
+          appointment, authData!.clinicIndex);
+      if (successAddition) {
+        emit(NewAppointmentSuccess());
+      } else {
+        emit(NewAppointmentFailure('Failed to add the appointment'));
+      }
     } else {
-      log('Error: ${_getErrorMessage(emptyFields)}');
-      emit(AppointmentsError(
+      emit(NewAppointmentInvalid(
         title: 'Empty Fields',
         _getErrorMessage(emptyFields),
       ));
@@ -52,23 +68,41 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     return errorMessage;
   }
 
-  List<String> _getEmptyFields() {
+  List<String> _getEmptyOfRequiredFields() {
     List<String> emptyFields = [];
     if (ownerNameController.text.trim().isEmpty) {
       emptyFields.add('Owner name');
     }
-    if (petNameController.text.trim().isEmpty) {
-      emptyFields.add('Pet name');
-    }
-    if (phoneController.text.trim().isEmpty) {
-      emptyFields.add('Phone number');
-    }
-    if (timeController.text.trim().isEmpty) {
-      emptyFields.add('Time');
-    }
     if (dateController.text.trim().isEmpty) {
       emptyFields.add('Date');
     }
+    if (petReportController.text.trim().isEmpty) {
+      emptyFields.add('Pet condition');
+    }
     return emptyFields;
+  }
+
+  AppointmentModel _constructAppointment() {
+    return AppointmentModel(
+      id: appointmentId,
+      ownerName: ownerNameController.text.trim(),
+      petName: petNameController.text.trim(),
+      petType: petTypeController.text.trim(),
+      phone: phoneController.text.trim(),
+      time: timeController.text.trim(),
+      date: DateTime.parse(dateController.text.trim()),
+      petCondition: petReportController.text.trim(),
+    );
+  }
+
+  String get _getPetReportScheme {
+    return """Diagnosis:
+Temp:
+Unique signs : 
+R.R :
+H.R :
+B.W : ..... kg 
+Vaccinations : 
+Treatment :""";
   }
 }

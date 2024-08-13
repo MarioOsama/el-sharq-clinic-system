@@ -14,3 +14,13 @@ extension Navigation on BuildContext {
     Navigator.of(this).pop();
   }
 }
+
+extension StringExtensions on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+
+  String toId(int idLength, {String prefix = ''}) {
+    return prefix + this.padLeft(idLength, '0');
+  }
+}

@@ -32,10 +32,14 @@ class AuthCubit extends Cubit<AuthState> {
         (value) {
           if (value != null) {
             emit(AuthSuccess(AuthDataModel(
-                userModel: value.data(), clinicName: selectedClinic)));
+                clinicIndex: AppConstant.clinicsList.indexOf(selectedClinic),
+                userModel: value.data(),
+                clinicName: selectedClinic)));
             return value.data();
           }
-          emit(AuthFailure('Invalid username or password'));
+          emit(AuthFailure(
+              'Invalid username or password for the selected clinic'));
+
           return null;
         },
       );
@@ -51,7 +55,8 @@ class AuthCubit extends Cubit<AuthState> {
       return false;
     } else if (passwordController.text.trim().isEmpty ||
         passwordController.text.length < 6) {
-      emit(AuthFailure('Please enter a password'));
+      emit(AuthFailure('Please enter a password with at least 6 characters'));
+
       return false;
     }
     return true;
