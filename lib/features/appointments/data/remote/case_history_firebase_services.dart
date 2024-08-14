@@ -43,25 +43,23 @@ class CaseHistoryFirebaseServices {
         .get();
   }
 
-  Future<bool> addAppointment(
-      CaseHistoryModel appointment, int clinicIndex) async {
+  Future<bool> addCase(CaseHistoryModel caseHistory, int clinicIndex) async {
     // Get clinic appointment document
     final clinicDoc = await _getClinicDoc(clinicIndex);
-    final clinicAppointmentCollection =
-        clinicDoc.reference.collection('CaseHistory');
-    // Get last appointment to generate new id
-    final lastAppointment = await clinicAppointmentCollection
+    final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
+    // Get last CaseHistory to generate new id
+    final lastCaseHistory = await clinicCaseHistoryCollection
         .get()
         .then((value) => value.docs.last);
-    final newId = (int.parse(lastAppointment.id.replaceAll('APT', '')) + 1)
+    final newId = (int.parse(lastCaseHistory.id.replaceAll('CSE', '')) + 1)
         .toString()
-        .toId(3, prefix: 'APT');
+        .toId(3, prefix: 'CSE');
 
-    // Add new appointment to clinic appointment collection
+    // Add new CaseHistory to clinic CaseHistory collection
     try {
-      await clinicAppointmentCollection
+      await clinicCaseHistoryCollection
           .doc(newId)
-          .set(appointment.toFirestore());
+          .set(caseHistory.toFirestore());
       return true;
     } catch (e) {
       return false;

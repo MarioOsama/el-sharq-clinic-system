@@ -100,7 +100,7 @@ IconButton _buildTimeButton(
 AppTextField _buildAppointmentId() {
   return AppTextField(
     controller: TextEditingController(),
-    hint: 'Appointment ID',
+    hint: 'Case ID',
     enabled: false,
     width: double.infinity,
     insideHint: false,
@@ -135,6 +135,6 @@ AppTextButton _buildNewAction(BuildContext context) {
       text: 'Save Appointment',
       width: context.size!.width,
       onPressed: () {
-        context.read<CaseHistoryCubit>().validateAndSaveAppointment();
+        context.read<CaseHistoryCubit>().validateAndSaveCase();
       });
 }

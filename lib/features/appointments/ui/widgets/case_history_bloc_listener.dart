@@ -12,12 +12,12 @@ class CaseHistoryBlocListener extends StatelessWidget {
           current is CaseHistoryLoading ||
           current is CaseHistoryError ||
           current is CaseHistorySuccess ||
-          current is NewAppointmentLoading ||
-          current is NewAppointmentFailure ||
-          current is NewCaseHistoryuccess ||
-          current is NewAppointmentInvalid,
+          current is NewCaseHistoryLoading ||
+          current is NewCaseHistoryFailure ||
+          current is NewCaseHistorySuccess ||
+          current is NewCaseHistoryInvalid,
       listener: (context, state) {
-        state.showMessage(context);
+        state.takeAction(context);
       },
       child: const SizedBox.shrink(),
     );
