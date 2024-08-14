@@ -1,8 +1,8 @@
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
-import 'package:el_sharq_clinic/features/appointments/logic/cubit/appointments_cubit.dart';
-import 'package:el_sharq_clinic/features/appointments/ui/appoinments_section.dart';
+import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/appointments/ui/case_history_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
@@ -57,9 +57,9 @@ class _HomeLayoutState extends State<HomeLayout> {
   List<WidgetBuilder> get _getDrawerWidgets {
     return [
       (context) => DashboardSection(authData: widget.authData),
-      (context) => BlocProvider<AppointmentsCubit>(
-            create: (context) => getIt<AppointmentsCubit>(),
-            child: AppoinmentsSection(authData: widget.authData),
+      (context) => BlocProvider<CaseHistoryCubit>(
+            create: (context) => getIt<CaseHistoryCubit>(),
+            child: CaseHistorySection(authData: widget.authData),
           ),
       // const Text('Pet Owners'),
       // const Text('Services'),

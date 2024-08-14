@@ -21,7 +21,7 @@ abstract class AppConstant {
   // Drawer Items
   static const List<DrawerItemModel> drawerItems = [
     DrawerItemModel(title: 'Dashboard', icon: Icons.dashboard_outlined),
-    DrawerItemModel(title: 'Appointments', icon: Icons.calendar_today_outlined),
+    DrawerItemModel(title: 'Case History', icon: Icons.history),
     DrawerItemModel(title: 'Pet Owners', icon: Icons.people_outline),
     DrawerItemModel(title: 'Services', icon: Icons.medical_services_outlined),
     DrawerItemModel(title: 'Products', icon: Icons.shopping_bag_outlined),
