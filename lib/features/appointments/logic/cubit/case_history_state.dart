@@ -126,3 +126,24 @@ final class NewCaseHistoryFailure extends CaseHistoryState {
             ));
   }
 }
+
+// Update CaseHistory
+final class UpdateCaseHistorySuccess extends CaseHistoryState {
+  @override
+  void takeAction(BuildContext context) {
+    context.pop();
+
+    context.pop();
+
+    showDialog(
+      context: context,
+      builder: (ctx) => const AppDialog(
+        title: 'Success',
+        content: 'Case updated successfully',
+        dialogType: DialogType.success,
+      ),
+    );
+
+    Future.delayed(const Duration(seconds: 2), () => context.pop());
+  }
+}

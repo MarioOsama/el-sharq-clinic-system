@@ -1,6 +1,7 @@
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/appointments/ui/widgets/case_history_action_button.dart';
 import 'package:el_sharq_clinic/features/appointments/ui/widgets/case_history_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,10 +14,20 @@ class CaseHistoryBody extends StatelessWidget {
     return SectionDetailsContainer(
       padding: EdgeInsets.zero,
       child: BlocBuilder<CaseHistoryCubit, CaseHistoryState>(
+        buildWhen: (previous, current) =>
+            current is CaseHistorySuccess ||
+            current is CaseHistoryError ||
+            current is CaseHistoryLoading,
         builder: (context, state) {
           if (state is CaseHistorySuccess) {
             return _buildSuccess(context, state);
           }
+          if (state is CaseHistoryError) {
+            return Center(
+              child: Text(state.errorMessage),
+            );
+          }
+
           return const Center(child: CircularProgressIndicator());
         },
       ),
@@ -25,8 +36,18 @@ class CaseHistoryBody extends StatelessWidget {
 
   CustomTable _buildSuccess(BuildContext context, CaseHistoryState state) {
     return CustomTable(
-      onTappableIndexSelected: () =>
-          showCaseHistoryideSheet(context, 'Case Details', isNew: false),
+      actionButton: (id) => CaseHistoryTableActionButton(
+        id: id,
+      ),
+      onMultiSelection: (selectedItems) {
+        context.read<CaseHistoryCubit>().onMultiSelection(selectedItems);
+      },
+      onTappableIndexSelected: (id) => showCaseHistoryideSheet(
+          editable: false,
+          context,
+          'Case Details',
+          caseHistoryModel:
+              context.read<CaseHistoryCubit>().getCaseHistoryById(id)),
       tappableCellIndex: 0,
       fields: const [
         'Case ID',
@@ -38,9 +59,9 @@ class CaseHistoryBody extends StatelessWidget {
       ],
       rows: [
         ..._getRows(state),
-        ..._getRows(state),
-        ..._getRows(state),
-        ..._getRows(state)
+        // ..._getRows(state),
+        // ..._getRows(state),
+        // ..._getRows(state)
       ],
     );
   }

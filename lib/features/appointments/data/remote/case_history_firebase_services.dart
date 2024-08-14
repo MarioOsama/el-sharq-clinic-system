@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
@@ -38,7 +40,7 @@ class CaseHistoryFirebaseServices {
   }
 
   Future<bool> addCase(CaseHistoryModel caseHistory, int clinicIndex) async {
-    // Get clinic appointment document
+    // Get clinic cases document
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
     // Get last CaseHistory to generate new id
@@ -61,14 +63,29 @@ class CaseHistoryFirebaseServices {
   }
 
   Future<bool> updateCase(CaseHistoryModel caseHistory, int clinicIndex) async {
-    // Get clinic appointment document
+    // Get clinic cases document
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
     // Update CaseHistory in clinic CaseHistory collection
+    log('case history id: ${caseHistory}');
+    log('case history id: ${caseHistory.id}');
+
     try {
       await clinicCaseHistoryCollection
           .doc(caseHistory.id)
           .update(caseHistory.toFirestore());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteCase(String caseId, int clinicIndex) async {
+    // Get clinic cases document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
+    try {
+      await clinicCaseHistoryCollection.doc(caseId).delete();
       return true;
     } catch (e) {
       return false;
