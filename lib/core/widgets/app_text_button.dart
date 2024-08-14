@@ -59,7 +59,7 @@ class AppTextButton extends StatelessWidget {
     return TextButton.styleFrom(
       fixedSize: Size(
         width ?? 300.w,
-        height ?? 60.h,
+        height ?? 50.h,
       ),
       backgroundColor: filled! ? color ?? AppColors.blue : AppColors.white,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

@@ -15,6 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: _buildContainerDecoration(),
       child: AppBar(
+        surfaceTintColor: AppColors.white,
         backgroundColor: AppColors.white,
         leading: Image.asset(Assets.assetsImagesPngIconLogo),
         titleSpacing: 5,

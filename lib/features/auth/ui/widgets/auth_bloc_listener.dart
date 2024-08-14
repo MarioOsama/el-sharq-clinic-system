@@ -14,8 +14,6 @@ class AuthBlocListener extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
-          // check if the dialog is already shown
-          context.pop();
           showDialog<String>(
               context: context,
               barrierDismissible: false,
@@ -39,7 +37,8 @@ class AuthBlocListener extends StatelessWidget {
                   context.pushNamed(AppRoutes.home, arguments: state.authData));
         }
         if (state is AuthFailure) {
-          context.pop();
+          if (ModalRoute.of(context)?.isCurrent != true) context.pop();
+
           showDialog<String>(
             context: context,
             builder: (context) => AppDialog(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
 
 class CaseHistoryFirebaseServices {
   CaseHistoryFirebaseServices(this._firestore);
@@ -29,18 +29,12 @@ class CaseHistoryFirebaseServices {
   //           .toList());
   // }
 
-  Future<QuerySnapshot<T>> _getNestedCollection<T>(
-      DocumentSnapshot<Object?> doc,
-      String collectionName,
-      T Function(DocumentSnapshot<Map<String, dynamic>> snapshot) fromFirestore,
-      Map<String, dynamic> Function(T object) toFirestore) async {
-    return await doc.reference
-        .collection(collectionName)
-        .withConverter<T>(
-          fromFirestore: (snapshot, options) => fromFirestore(snapshot),
-          toFirestore: (value, options) => toFirestore(value),
-        )
-        .get();
+  Future<List<CaseHistoryModel>> getAllCaseHistories(int clinicIndex) async {
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
+    return await clinicCaseHistoryCollection.get().then((value) => value.docs
+        .map((doc) => CaseHistoryModel.fromFirestore(doc.id, doc))
+        .toList());
   }
 
   Future<bool> addCase(CaseHistoryModel caseHistory, int clinicIndex) async {
@@ -60,6 +54,21 @@ class CaseHistoryFirebaseServices {
       await clinicCaseHistoryCollection
           .doc(newId)
           .set(caseHistory.toFirestore());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateCase(CaseHistoryModel caseHistory, int clinicIndex) async {
+    // Get clinic appointment document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
+    // Update CaseHistory in clinic CaseHistory collection
+    try {
+      await clinicCaseHistoryCollection
+          .doc(caseHistory.id)
+          .update(caseHistory.toFirestore());
       return true;
     } catch (e) {
       return false;

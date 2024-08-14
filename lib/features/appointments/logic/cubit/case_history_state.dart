@@ -15,6 +15,10 @@ final class CaseHistoryLoading extends CaseHistoryState {
 }
 
 final class CaseHistorySuccess extends CaseHistoryState {
+  final List<CaseHistoryModel> cases;
+
+  CaseHistorySuccess({required this.cases});
+
   @override
   void takeAction(BuildContext context) {}
 }

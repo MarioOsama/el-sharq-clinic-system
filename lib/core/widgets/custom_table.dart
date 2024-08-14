@@ -61,7 +61,7 @@ class _CustomTableState extends State<CustomTable> {
           },
           selected: _selectedRows[index],
           cells: List.generate(widget.fields.length, (cellIndex) {
-            if (widget.rows[index][cellIndex] == 'Edit') {
+            if (widget.fields[cellIndex] == 'Actions') {
               return _buildEditMenuButton();
             }
             if (cellIndex == tappableCellIndex) {
