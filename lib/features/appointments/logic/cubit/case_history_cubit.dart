@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -6,6 +5,7 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/repos/case_history_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'case_history_state.dart';
 
@@ -37,20 +37,20 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     petReportController.text = _getPetReportScheme;
   }
 
-  void validateAndSaveAppointment() async {
+  void validateAndSaveCase() async {
     final List<String> emptyFields = _getEmptyOfRequiredFields();
     if (emptyFields.isEmpty) {
-      emit(NewAppointmentLoading());
+      emit(NewCaseHistoryLoading());
       final CaseHistoryModel appointment = _constructAppointment();
-      final bool successAddition = await _caseHistoryRepo.addNewAppointment(
-          appointment, authData!.clinicIndex);
+      final bool successAddition =
+          await _caseHistoryRepo.addNewCase(appointment, authData!.clinicIndex);
       if (successAddition) {
-        emit(NewCaseHistoryuccess());
+        emit(NewCaseHistorySuccess());
       } else {
-        emit(NewAppointmentFailure('Failed to add the appointment'));
+        emit(NewCaseHistoryFailure('Failed to add the appointment'));
       }
     } else {
-      emit(NewAppointmentInvalid(
+      emit(NewCaseHistoryInvalid(
         title: 'Empty Fields',
         _getErrorMessage(emptyFields),
       ));

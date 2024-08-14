@@ -11,9 +11,8 @@ class CaseHistoryBody extends StatelessWidget {
     return SectionDetailsContainer(
       padding: EdgeInsets.zero,
       child: CustomTable(
-        onTappableIndexSelected: () => showCaseHistoryideSheet(
-            context, 'Appointment Details',
-            isNew: false),
+        onTappableIndexSelected: () =>
+            showCaseHistoryideSheet(context, 'Case Details', isNew: false),
         tappableCellIndex: 0,
         fields: [
           'Case ID',

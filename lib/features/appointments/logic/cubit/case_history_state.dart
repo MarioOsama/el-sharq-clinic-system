@@ -1,22 +1,22 @@
 part of 'case_history_cubit.dart';
 
 abstract class CaseHistoryState {
-  void showMessage(BuildContext context);
+  void takeAction(BuildContext context);
 }
 
 final class CaseHistoryInitial implements CaseHistoryState {
   @override
-  void showMessage(BuildContext context) {}
+  void takeAction(BuildContext context) {}
 }
 
 final class CaseHistoryLoading extends CaseHistoryState {
   @override
-  void showMessage(BuildContext context) {}
+  void takeAction(BuildContext context) {}
 }
 
 final class CaseHistorySuccess extends CaseHistoryState {
   @override
-  void showMessage(BuildContext context) {}
+  void takeAction(BuildContext context) {}
 }
 
 final class CaseHistoryError extends CaseHistoryState {
@@ -25,7 +25,9 @@ final class CaseHistoryError extends CaseHistoryState {
   CaseHistoryError(this.errorMessage);
 
   @override
-  void showMessage(BuildContext context) {
+  void takeAction(BuildContext context) {
+    context.pop();
+
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
@@ -41,15 +43,15 @@ final class CaseHistoryError extends CaseHistoryState {
   }
 }
 
-// New appointment
-final class NewAppointmentInvalid extends CaseHistoryState {
+// New CaseHistory
+final class NewCaseHistoryInvalid extends CaseHistoryState {
   final String? title;
   final String errorMessage;
 
-  NewAppointmentInvalid(this.errorMessage, {this.title});
+  NewCaseHistoryInvalid(this.errorMessage, {this.title});
 
   @override
-  void showMessage(BuildContext context) {
+  void takeAction(BuildContext context) {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
@@ -65,33 +67,47 @@ final class NewAppointmentInvalid extends CaseHistoryState {
   }
 }
 
-final class NewAppointmentLoading extends CaseHistoryState {
+final class NewCaseHistoryLoading extends CaseHistoryState {
   @override
-  void showMessage(BuildContext context) {}
+  void takeAction(BuildContext context) {
+    showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return const Center(child: CircularProgressIndicator());
+        });
+  }
 }
 
-final class NewCaseHistoryuccess extends CaseHistoryState {
+final class NewCaseHistorySuccess extends CaseHistoryState {
   @override
-  void showMessage(BuildContext context) {
+  void takeAction(BuildContext context) {
+    context.pop();
+
+    context.pop();
+
     showDialog(
       context: context,
       builder: (ctx) => const AppDialog(
         title: 'Success',
-        content: 'Appointment created successfully',
+        content: 'New case created successfully',
         dialogType: DialogType.success,
       ),
     );
+
     Future.delayed(const Duration(seconds: 2), () => context.pop());
   }
 }
 
-final class NewAppointmentFailure extends CaseHistoryState {
+final class NewCaseHistoryFailure extends CaseHistoryState {
   final String errorMessage;
 
-  NewAppointmentFailure(this.errorMessage);
+  NewCaseHistoryFailure(this.errorMessage);
 
   @override
-  void showMessage(BuildContext context) {
+  void takeAction(BuildContext context) {
+    context.pop();
+
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(

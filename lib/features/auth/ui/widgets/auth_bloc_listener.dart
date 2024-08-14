@@ -15,9 +15,7 @@ class AuthBlocListener extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthLoading) {
           // check if the dialog is already shown
-          if (ModalRoute.of(context)!.isCurrent != true) {
-            context.pop();
-          }
+          context.pop();
           showDialog<String>(
               context: context,
               barrierDismissible: false,
@@ -27,9 +25,7 @@ class AuthBlocListener extends StatelessWidget {
         }
 
         if (state is AuthSuccess) {
-          if (ModalRoute.of(context)!.isCurrent != true) {
-            context.pop();
-          }
+          context.pop();
           showDialog<String>(
             context: context,
             builder: (context) => const AppDialog(
@@ -43,9 +39,7 @@ class AuthBlocListener extends StatelessWidget {
                   context.pushNamed(AppRoutes.home, arguments: state.authData));
         }
         if (state is AuthFailure) {
-          if (ModalRoute.of(context)!.isCurrent != true) {
-            context.pop();
-          }
+          context.pop();
           showDialog<String>(
             context: context,
             builder: (context) => AppDialog(

@@ -6,10 +6,8 @@ class CaseHistoryRepo {
 
   CaseHistoryRepo(this._caseHistoryFirebaseServices);
 
-  Future<bool> addNewAppointment(
-      CaseHistoryModel appointment, int clinicIndex) async {
-    return await _caseHistoryFirebaseServices.addAppointment(
-        appointment, clinicIndex);
+  Future<bool> addNewCase(CaseHistoryModel appointment, int clinicIndex) async {
+    return await _caseHistoryFirebaseServices.addCase(appointment, clinicIndex);
   }
 
   // Future<List<AppointmentModel>> getCaseHistory() async {

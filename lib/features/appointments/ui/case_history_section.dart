@@ -25,7 +25,7 @@ class CaseHistorySection extends StatelessWidget {
           icon: Icons.book_outlined,
           onPressed: () =>
               showCaseHistoryideSheet(context, 'New Case', isNew: true),
-          width: 275,
+          width: 200,
         )
       ],
       child: Expanded(
