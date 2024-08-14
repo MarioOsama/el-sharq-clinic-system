@@ -4,14 +4,14 @@ import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/repos/appointments_repo.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/repos/case_history_repo.dart';
 import 'package:flutter/material.dart';
 
-part 'appointments_state.dart';
+part 'case_history_state.dart';
 
-class AppointmentsCubit extends Cubit<AppointmentsState> {
-  final AppointmentsRepo _appointmentsRepo;
-  AppointmentsCubit(this._appointmentsRepo) : super(AppointmentsInitial());
+class CaseHistoryCubit extends Cubit<CaseHistoryState> {
+  final CaseHistoryRepo _caseHistoryRepo;
+  CaseHistoryCubit(this._caseHistoryRepo) : super(CaseHistoryInitial());
 
   AuthDataModel? authData;
   String appointmentId = '';
@@ -41,11 +41,11 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     final List<String> emptyFields = _getEmptyOfRequiredFields();
     if (emptyFields.isEmpty) {
       emit(NewAppointmentLoading());
-      final AppointmentModel appointment = _constructAppointment();
-      final bool successAddition = await _appointmentsRepo.addNewAppointment(
+      final CaseHistoryModel appointment = _constructAppointment();
+      final bool successAddition = await _caseHistoryRepo.addNewAppointment(
           appointment, authData!.clinicIndex);
       if (successAddition) {
-        emit(NewAppointmentSuccess());
+        emit(NewCaseHistoryuccess());
       } else {
         emit(NewAppointmentFailure('Failed to add the appointment'));
       }
@@ -82,8 +82,8 @@ class AppointmentsCubit extends Cubit<AppointmentsState> {
     return emptyFields;
   }
 
-  AppointmentModel _constructAppointment() {
-    return AppointmentModel(
+  CaseHistoryModel _constructAppointment() {
+    return CaseHistoryModel(
       id: appointmentId,
       ownerName: ownerNameController.text.trim(),
       petName: petNameController.text.trim(),

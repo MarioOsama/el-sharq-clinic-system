@@ -1,28 +1,28 @@
-part of 'appointments_cubit.dart';
+part of 'case_history_cubit.dart';
 
-abstract class AppointmentsState {
+abstract class CaseHistoryState {
   void showMessage(BuildContext context);
 }
 
-final class AppointmentsInitial implements AppointmentsState {
+final class CaseHistoryInitial implements CaseHistoryState {
   @override
   void showMessage(BuildContext context) {}
 }
 
-final class AppointmentsLoading extends AppointmentsState {
+final class CaseHistoryLoading extends CaseHistoryState {
   @override
   void showMessage(BuildContext context) {}
 }
 
-final class AppointmentsSuccess extends AppointmentsState {
+final class CaseHistorySuccess extends CaseHistoryState {
   @override
   void showMessage(BuildContext context) {}
 }
 
-final class AppointmentsError extends AppointmentsState {
+final class CaseHistoryError extends CaseHistoryState {
   final String errorMessage;
 
-  AppointmentsError(this.errorMessage);
+  CaseHistoryError(this.errorMessage);
 
   @override
   void showMessage(BuildContext context) {
@@ -42,7 +42,7 @@ final class AppointmentsError extends AppointmentsState {
 }
 
 // New appointment
-final class NewAppointmentInvalid extends AppointmentsState {
+final class NewAppointmentInvalid extends CaseHistoryState {
   final String? title;
   final String errorMessage;
 
@@ -65,12 +65,12 @@ final class NewAppointmentInvalid extends AppointmentsState {
   }
 }
 
-final class NewAppointmentLoading extends AppointmentsState {
+final class NewAppointmentLoading extends CaseHistoryState {
   @override
   void showMessage(BuildContext context) {}
 }
 
-final class NewAppointmentSuccess extends AppointmentsState {
+final class NewCaseHistoryuccess extends CaseHistoryState {
   @override
   void showMessage(BuildContext context) {
     showDialog(
@@ -85,7 +85,7 @@ final class NewAppointmentSuccess extends AppointmentsState {
   }
 }
 
-final class NewAppointmentFailure extends AppointmentsState {
+final class NewAppointmentFailure extends CaseHistoryState {
   final String errorMessage;
 
   NewAppointmentFailure(this.errorMessage);

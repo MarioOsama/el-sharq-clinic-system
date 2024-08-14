@@ -1,22 +1,22 @@
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
-import 'package:el_sharq_clinic/features/appointments/ui/widgets/appointment_side_sheet.dart';
+import 'package:el_sharq_clinic/features/appointments/ui/widgets/case_history_side_sheet.dart';
 import 'package:flutter/material.dart';
 
-class AppoinmentsBody extends StatelessWidget {
-  const AppoinmentsBody({super.key});
+class CaseHistoryBody extends StatelessWidget {
+  const CaseHistoryBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SectionDetailsContainer(
       padding: EdgeInsets.zero,
       child: CustomTable(
-        onTappableIndexSelected: () => showAppointmentSideSheet(
+        onTappableIndexSelected: () => showCaseHistoryideSheet(
             context, 'Appointment Details',
             isNew: false),
         tappableCellIndex: 0,
         fields: [
-          'Appoinment ID',
+          'Case ID',
           'Pet Name',
           'Owner Name',
           'Date',

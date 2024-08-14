@@ -6,14 +6,14 @@ import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/date_time_picker.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
-import 'package:el_sharq_clinic/features/appointments/logic/cubit/appointments_cubit.dart';
+import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> showAppointmentSideSheet(BuildContext context, String title,
+Future<void> showCaseHistoryideSheet(BuildContext context, String title,
     {required bool? isNew}) async {
-  final AppointmentsCubit appointmentsCubit = context.read<AppointmentsCubit>();
-  appointmentsCubit.setupControllers();
+  final CaseHistoryCubit caseHistoryCubit = context.read<CaseHistoryCubit>();
+  caseHistoryCubit.setupControllers();
   await showCustomSideSheet(
     context: context,
     child: Column(
@@ -27,8 +27,8 @@ Future<void> showAppointmentSideSheet(BuildContext context, String title,
             'Owner Name',
             'Pet Type',
           ],
-          firstController: appointmentsCubit.ownerNameController,
-          secondController: appointmentsCubit.petTypeController,
+          firstController: caseHistoryCubit.ownerNameController,
+          secondController: caseHistoryCubit.petTypeController,
           enabled: isNew,
         ),
         verticalSpace(50),
@@ -37,8 +37,8 @@ Future<void> showAppointmentSideSheet(BuildContext context, String title,
             'Phone',
             'Pet Name',
           ],
-          firstController: appointmentsCubit.phoneController,
-          secondController: appointmentsCubit.petNameController,
+          firstController: caseHistoryCubit.phoneController,
+          secondController: caseHistoryCubit.petNameController,
           enabled: isNew,
         ),
         verticalSpace(50),
@@ -47,18 +47,18 @@ Future<void> showAppointmentSideSheet(BuildContext context, String title,
             'Time',
             'Date',
           ],
-          firstController: appointmentsCubit.timeController,
-          secondController: appointmentsCubit.dateController,
+          firstController: caseHistoryCubit.timeController,
+          secondController: caseHistoryCubit.dateController,
           firstSuffixIcon:
-              _buildTimeButton(context, appointmentsCubit.timeController),
+              _buildTimeButton(context, caseHistoryCubit.timeController),
           secondSuffixIcon:
-              _buildDateButton(context, appointmentsCubit.dateController),
+              _buildDateButton(context, caseHistoryCubit.dateController),
           enabled: isNew,
           readOnly: true,
         ),
         verticalSpace(50),
         AppTextField(
-          controller: appointmentsCubit.petReportController,
+          controller: caseHistoryCubit.petReportController,
           hint: 'Pet Report',
           enabled: isNew,
           width: double.infinity,
@@ -135,6 +135,6 @@ AppTextButton _buildNewAction(BuildContext context) {
       text: 'Save Appointment',
       width: context.size!.width,
       onPressed: () {
-        context.read<AppointmentsCubit>().validateAndSaveAppointment();
+        context.read<CaseHistoryCubit>().validateAndSaveAppointment();
       });
 }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AppointmentModel {
+class CaseHistoryModel {
   final String id;
   final String ownerName;
   final String phone;
@@ -10,7 +10,7 @@ class AppointmentModel {
   final String time;
   final String petCondition;
 
-  AppointmentModel({
+  CaseHistoryModel({
     required this.id,
     required this.ownerName,
     required this.phone,
@@ -21,7 +21,7 @@ class AppointmentModel {
     required this.petCondition,
   });
 
-  AppointmentModel copyWith({
+  CaseHistoryModel copyWith({
     String? id,
     String? ownerName,
     String? phone,
@@ -31,7 +31,7 @@ class AppointmentModel {
     String? time,
     String? petCondition,
   }) {
-    return AppointmentModel(
+    return CaseHistoryModel(
       id: id ?? this.id,
       ownerName: ownerName ?? this.ownerName,
       phone: phone ?? this.phone,
@@ -43,9 +43,9 @@ class AppointmentModel {
     );
   }
 
-  factory AppointmentModel.fromFirestore(
+  factory CaseHistoryModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    return AppointmentModel(
+    return CaseHistoryModel(
       id: snapshot['id'],
       ownerName: snapshot['ownerName'],
       phone: snapshot['phone'],

@@ -2,28 +2,28 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
 
-class AppointmentsFirebaseServices {
-  AppointmentsFirebaseServices(this._firestore);
+class CaseHistoryFirebaseServices {
+  CaseHistoryFirebaseServices(this._firestore);
 
   final FirebaseFirestore _firestore;
 
   // Future<void> createAppointment(Appointment appointment) async {
-  //   await _firestore.collection('appointments').add(appointment.toMap());
+  //   await _firestore.collection('CaseHistory').add(appointment.toMap());
   // }
 
   // Future<void> updateAppointment(Appointment appointment) async {
   //   await _firestore
-  //       .collection('appointments')
+  //       .collection('CaseHistory')
   //       .doc(appointment.id)
   //       .update(appointment.toMap());
   // }
 
   // Future<void> deleteAppointment(String appointmentId) async {
-  //   await _firestore.collection('appointments').doc(appointmentId).delete();
+  //   await _firestore.collection('CaseHistory').doc(appointmentId).delete();
   // }
 
-  // Stream<List<Appointment>> getAppointments() {
-  //   return _firestore.collection('appointments').snapshots().map((snapshot) =>
+  // Stream<List<Appointment>> getCaseHistory() {
+  //   return _firestore.collection('CaseHistory').snapshots().map((snapshot) =>
   //       snapshot.docs
   //           .map((doc) => Appointment.fromMap(doc.id, doc.data()))
   //           .toList());
@@ -44,11 +44,11 @@ class AppointmentsFirebaseServices {
   }
 
   Future<bool> addAppointment(
-      AppointmentModel appointment, int clinicIndex) async {
+      CaseHistoryModel appointment, int clinicIndex) async {
     // Get clinic appointment document
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final clinicAppointmentCollection =
-        clinicDoc.reference.collection('appointments');
+        clinicDoc.reference.collection('CaseHistory');
     // Get last appointment to generate new id
     final lastAppointment = await clinicAppointmentCollection
         .get()
