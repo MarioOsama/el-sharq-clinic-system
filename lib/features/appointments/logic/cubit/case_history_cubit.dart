@@ -2,7 +2,7 @@ import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/models/appointment_model.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/features/appointments/data/local/repos/case_history_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +25,13 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void setAuthData(AuthDataModel authenticationData) {
     authData = authenticationData;
+  }
+
+  void getAllCases() async {
+    emit(CaseHistoryLoading());
+    final List<CaseHistoryModel> cases =
+        await _caseHistoryRepo.getAllCases(authData!.clinicIndex);
+    emit(CaseHistorySuccess(cases: cases));
   }
 
   void setupControllers() {
@@ -77,7 +84,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       emptyFields.add('Date');
     }
     if (petReportController.text.trim().isEmpty) {
-      emptyFields.add('Pet condition');
+      emptyFields.add('Pet report');
     }
     return emptyFields;
   }
@@ -90,8 +97,8 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       petType: petTypeController.text.trim(),
       phone: phoneController.text.trim(),
       time: timeController.text.trim(),
-      date: DateTime.parse(dateController.text.trim()),
-      petCondition: petReportController.text.trim(),
+      date: dateController.text.trim(),
+      petReport: petReportController.text.trim(),
     );
   }
 

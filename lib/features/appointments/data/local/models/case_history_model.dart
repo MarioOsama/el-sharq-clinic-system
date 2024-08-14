@@ -6,9 +6,9 @@ class CaseHistoryModel {
   final String phone;
   final String petName;
   final String petType;
-  final DateTime date;
+  final String date;
   final String time;
-  final String petCondition;
+  final String petReport;
 
   CaseHistoryModel({
     required this.id,
@@ -18,7 +18,7 @@ class CaseHistoryModel {
     required this.petType,
     required this.date,
     required this.time,
-    required this.petCondition,
+    required this.petReport,
   });
 
   CaseHistoryModel copyWith({
@@ -27,9 +27,9 @@ class CaseHistoryModel {
     String? phone,
     String? petName,
     String? petType,
-    DateTime? date,
+    String? date,
     String? time,
-    String? petCondition,
+    String? petReport,
   }) {
     return CaseHistoryModel(
       id: id ?? this.id,
@@ -39,21 +39,21 @@ class CaseHistoryModel {
       petType: petType ?? this.petType,
       date: date ?? this.date,
       time: time ?? this.time,
-      petCondition: petCondition ?? this.petCondition,
+      petReport: petReport ?? this.petReport,
     );
   }
 
   factory CaseHistoryModel.fromFirestore(
-      DocumentSnapshot<Map<String, dynamic>> snapshot) {
+      String id, DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return CaseHistoryModel(
-      id: snapshot['id'],
+      id: id,
       ownerName: snapshot['ownerName'],
       phone: snapshot['phone'],
       petName: snapshot['petName'],
       petType: snapshot['petType'],
-      date: DateTime.parse(snapshot['date']),
+      date: snapshot['date'],
       time: snapshot['time'],
-      petCondition: snapshot['petCondition'],
+      petReport: snapshot['petReport'],
     );
   }
 
@@ -64,9 +64,22 @@ class CaseHistoryModel {
       'phone': phone,
       'petName': petName,
       'petType': petType,
-      'date': date.toIso8601String(),
+      'date': date,
       'time': time,
-      'petCondition': petCondition,
+      'petReport': petReport,
     };
+  }
+
+  List<String> toList() {
+    return [
+      id,
+      ownerName,
+      phone,
+      petName,
+      date,
+      petType,
+      time,
+      petReport,
+    ];
   }
 }
