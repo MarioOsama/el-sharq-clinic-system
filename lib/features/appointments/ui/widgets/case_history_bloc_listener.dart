@@ -15,7 +15,8 @@ class CaseHistoryBlocListener extends StatelessWidget {
           current is NewCaseHistoryLoading ||
           current is NewCaseHistoryFailure ||
           current is NewCaseHistorySuccess ||
-          current is NewCaseHistoryInvalid,
+          current is NewCaseHistoryInvalid ||
+          current is UpdateCaseHistorySuccess,
       listener: (context, state) {
         state.takeAction(context);
       },

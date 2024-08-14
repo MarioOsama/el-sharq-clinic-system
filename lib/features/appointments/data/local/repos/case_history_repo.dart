@@ -14,15 +14,13 @@ class CaseHistoryRepo {
     return await _caseHistoryFirebaseServices.addCase(appointment, clinicIndex);
   }
 
-  // Future<List<AppointmentModel>> getCaseHistory() async {
-  //   return _CaseHistoryFirebaseServices.getCaseHistory();
-  // }
+  Future<bool> updateCase(CaseHistoryModel appointment, int clinicIndex) async {
+    return await _caseHistoryFirebaseServices.updateCase(
+        appointment, clinicIndex);
+  }
 
-  // Future<void> updateAppointment(Appointment appointment) async {
-  //   return localDataSource.updateAppointment(appointment);
-  // }
-
-  // Future<void> deleteAppointment(Appointment appointment) async {
-  //   return localDataSource.deleteAppointment(appointment);
-  // }
+  Future<bool> deleteCase(String appointmentId, int clinicIndex) async {
+    return await _caseHistoryFirebaseServices.deleteCase(
+        appointmentId, clinicIndex);
+  }
 }

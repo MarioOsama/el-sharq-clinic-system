@@ -6,21 +6,27 @@ import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/date_time_picker.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
+import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> showCaseHistoryideSheet(BuildContext context, String title,
-    {required bool? isNew}) async {
+    {CaseHistoryModel? caseHistoryModel, bool editable = true}) async {
+  final bool newCase = caseHistoryModel == null;
   final CaseHistoryCubit caseHistoryCubit = context.read<CaseHistoryCubit>();
-  caseHistoryCubit.setupControllers();
+  newCase
+      ? caseHistoryCubit.setupNewModeControllers()
+      : caseHistoryCubit.setupShowModeControllers(caseHistoryModel);
+
   await showCustomSideSheet(
     context: context,
     child: Column(
       children: [
         SectionTitle(title: title),
         verticalSpace(50),
-        if (!isNew!) _buildAppointmentId(),
+        if (!newCase) _buildCaseId(context),
         verticalSpace(50),
         FieldsRow(
           fields: const [
@@ -29,7 +35,7 @@ Future<void> showCaseHistoryideSheet(BuildContext context, String title,
           ],
           firstController: caseHistoryCubit.ownerNameController,
           secondController: caseHistoryCubit.petTypeController,
-          enabled: isNew,
+          enabled: editable,
         ),
         verticalSpace(50),
         FieldsRow(
@@ -39,7 +45,7 @@ Future<void> showCaseHistoryideSheet(BuildContext context, String title,
           ],
           firstController: caseHistoryCubit.phoneController,
           secondController: caseHistoryCubit.petNameController,
-          enabled: isNew,
+          enabled: editable,
         ),
         verticalSpace(50),
         FieldsRow(
@@ -53,24 +59,33 @@ Future<void> showCaseHistoryideSheet(BuildContext context, String title,
               _buildTimeButton(context, caseHistoryCubit.timeController),
           secondSuffixIcon:
               _buildDateButton(context, caseHistoryCubit.dateController),
-          enabled: isNew,
+          enabled: editable,
           readOnly: true,
         ),
         verticalSpace(50),
         AppTextField(
           controller: caseHistoryCubit.petReportController,
           hint: 'Pet Report',
-          enabled: isNew,
+          enabled: editable,
           width: double.infinity,
-          height: 250,
+          height: 300,
           isMultiline: true,
           insideHint: false,
         ),
         verticalSpace(100),
-        isNew ? _buildNewAction(context) : _buildExistActions(),
+        _buildActionIfNeeded(context, newCase, editable),
       ],
     ),
   );
+}
+
+_buildActionIfNeeded(BuildContext context, bool newCase, bool editMode) {
+  if (newCase) {
+    return _buildNewAction(context);
+  } else if (editMode) {
+    return _buildUpdateAction(context);
+  }
+  return const SizedBox.shrink();
 }
 
 IconButton _buildDateButton(
@@ -97,9 +112,9 @@ IconButton _buildTimeButton(
       ));
 }
 
-AppTextField _buildAppointmentId() {
+AppTextField _buildCaseId(BuildContext context) {
   return AppTextField(
-    controller: TextEditingController(),
+    controller: context.read<CaseHistoryCubit>().caseIdController,
     hint: 'Case ID',
     enabled: false,
     width: double.infinity,
@@ -107,34 +122,24 @@ AppTextField _buildAppointmentId() {
   );
 }
 
-Row _buildExistActions() {
-  return Row(
-    children: [
-      Expanded(
-        child: AppTextButton(
-          text: 'Edit',
-          width: double.infinity,
-          onPressed: () {},
-        ),
-      ),
-      horizontalSpace(50),
-      Expanded(
-        child: AppTextButton(
-          text: 'Delete',
-          width: double.infinity,
-          onPressed: () {},
-          color: AppColors.red,
-        ),
-      ),
-    ],
+AppTextButton _buildNewAction(BuildContext context) {
+  return AppTextButton(
+    text: 'Save Case',
+    width: MediaQuery.sizeOf(context).width,
+    height: 70.h,
+    onPressed: () {
+      context.read<CaseHistoryCubit>().validateAndSaveCase();
+    },
   );
 }
 
-AppTextButton _buildNewAction(BuildContext context) {
+AppTextButton _buildUpdateAction(BuildContext context) {
   return AppTextButton(
-      text: 'Save Appointment',
-      width: context.size!.width,
-      onPressed: () {
-        context.read<CaseHistoryCubit>().validateAndSaveCase();
-      });
+    text: 'Update Case',
+    width: MediaQuery.sizeOf(context).width,
+    height: 70.h,
+    onPressed: () {
+      context.read<CaseHistoryCubit>().validateAndUpdateCase();
+    },
+  );
 }

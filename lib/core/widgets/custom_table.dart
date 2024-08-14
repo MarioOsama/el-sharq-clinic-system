@@ -4,17 +4,22 @@ import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomTable extends StatefulWidget {
-  const CustomTable(
-      {super.key,
-      required this.fields,
-      required this.rows,
-      this.onTappableIndexSelected,
-      this.tappableCellIndex = -1});
+  const CustomTable({
+    super.key,
+    required this.fields,
+    required this.rows,
+    this.onTappableIndexSelected,
+    this.tappableCellIndex = -1,
+    required this.actionButton,
+    required this.onMultiSelection,
+  });
 
   final List<String> fields;
   final List rows;
-  final VoidCallback? onTappableIndexSelected;
+  final void Function(String id)? onTappableIndexSelected;
   final int? tappableCellIndex;
+  final Widget Function(String id) actionButton;
+  final void Function(List<bool> selectedItems) onMultiSelection;
 
   @override
   State<CustomTable> createState() => _CustomTableState();
@@ -51,18 +56,23 @@ class _CustomTableState extends State<CustomTable> {
       });
 
   List<DataRow> _buildTableRows(BuildContext context,
-          VoidCallback? onCellSelected, int tappableCellIndex) =>
+          Function(String)? onCellSelected, int tappableCellIndex) =>
       List.generate(widget.rows.length, (index) {
         return DataRow(
           onSelectChanged: (bool? selected) {
             setState(() {
               _selectedRows[index] = selected ?? false;
             });
+            if (_selectedRows.any((element) => element)) {
+              widget.onMultiSelection(_selectedRows);
+            } else {
+              widget.onMultiSelection(_selectedRows);
+            }
           },
           selected: _selectedRows[index],
           cells: List.generate(widget.fields.length, (cellIndex) {
             if (widget.fields[cellIndex] == 'Actions') {
-              return _buildEditMenuButton();
+              return _buildEditMenuButton(widget.rows[index][0]);
             }
             if (cellIndex == tappableCellIndex) {
               return _buildTappableCell(
@@ -79,9 +89,13 @@ class _CustomTableState extends State<CustomTable> {
       });
 
   DataCell _buildTappableCell(BuildContext context, int index, int cellIndex,
-      VoidCallback? onCellSelected) {
+      Function(String)? onCellSelected) {
     return DataCell(
-      onTap: onCellSelected,
+      onTap: () {
+        if (onCellSelected != null) {
+          onCellSelected(widget.rows[index][0]);
+        }
+      },
       Text(
         widget.rows[index][cellIndex],
         style: AppTextStyles.font16DarkGreyMedium,
@@ -89,22 +103,9 @@ class _CustomTableState extends State<CustomTable> {
     );
   }
 
-  DataCell _buildEditMenuButton() {
+  DataCell _buildEditMenuButton(String id) {
     return DataCell(
-      PopupMenuButton(
-        itemBuilder: (context) {
-          return [
-            const PopupMenuItem(
-              value: 'Edit',
-              child: Text('Edit'),
-            ),
-            const PopupMenuItem(
-              value: 'Delete',
-              child: Text('Delete'),
-            ),
-          ];
-        },
-      ),
+      widget.actionButton(id),
     );
   }
 }

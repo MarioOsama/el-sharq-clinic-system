@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseHistoryModel {
-  final String id;
+  final String? id;
   final String ownerName;
   final String phone;
   final String petName;
@@ -11,7 +11,7 @@ class CaseHistoryModel {
   final String petReport;
 
   CaseHistoryModel({
-    required this.id,
+    this.id,
     required this.ownerName,
     required this.phone,
     required this.petName,
@@ -59,7 +59,6 @@ class CaseHistoryModel {
 
   Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
       'ownerName': ownerName,
       'phone': phone,
       'petName': petName,
@@ -72,7 +71,7 @@ class CaseHistoryModel {
 
   List<String> toList() {
     return [
-      id,
+      id ?? '',
       ownerName,
       phone,
       petName,
