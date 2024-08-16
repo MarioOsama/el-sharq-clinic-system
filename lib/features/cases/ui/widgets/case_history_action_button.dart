@@ -1,7 +1,7 @@
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
-import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
-import 'package:el_sharq_clinic/features/appointments/ui/widgets/case_history_side_sheet.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

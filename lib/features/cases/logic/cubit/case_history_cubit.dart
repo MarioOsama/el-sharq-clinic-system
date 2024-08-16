@@ -2,8 +2,8 @@ import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/repos/case_history_repo.dart';
+import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
+import 'package:el_sharq_clinic/features/cases/data/local/repos/case_history_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,11 +26,16 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   ValueNotifier<bool> showDeleteButtonNotifier = ValueNotifier(false);
   List<int> selectedItems = [];
 
-  void setAuthData(AuthDataModel authenticationData) {
+  void setupSectionData(AuthDataModel authenticationData) {
+    _setAuthData(authenticationData);
+    _getAllCases();
+  }
+
+  void _setAuthData(AuthDataModel authenticationData) {
     authData = authenticationData;
   }
 
-  void getAllCases() async {
+  void _getAllCases() async {
     emit(CaseHistoryLoading());
     final List<CaseHistoryModel> cases =
         await _caseHistoryRepo.getAllCases(authData!.clinicIndex);
@@ -67,7 +72,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
           await _caseHistoryRepo.addNewCase(newCase, authData!.clinicIndex);
       if (successAddition) {
         emit(NewCaseHistorySuccess());
-        getAllCases();
+        _getAllCases();
       } else {
         emit(NewCaseHistoryFailure('Failed to add the appointment'));
       }
@@ -174,7 +179,7 @@ Treatment:""";
           await _caseHistoryRepo.updateCase(updatedCase, authData!.clinicIndex);
       if (success) {
         emit(UpdateCaseHistorySuccess());
-        getAllCases();
+        _getAllCases();
       } else {
         emit(NewCaseHistoryFailure('Failed to update the case'));
       }
@@ -191,7 +196,7 @@ Treatment:""";
     final bool success =
         await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
     if (success) {
-      getAllCases();
+      _getAllCases();
     } else {
       emit(CaseHistoryError('Failed to delete the case'));
     }
@@ -225,6 +230,6 @@ Treatment:""";
     } catch (e) {
       emit(CaseHistoryError('Failed to delete these cases'));
     }
-    getAllCases();
+    _getAllCases();
   }
 }

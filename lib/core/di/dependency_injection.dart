@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_factory.dart';
-import 'package:el_sharq_clinic/features/appointments/data/local/repos/case_history_repo.dart';
-import 'package:el_sharq_clinic/features/appointments/data/remote/case_history_firebase_services.dart';
-import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/data/local/repos/case_history_repo.dart';
+import 'package:el_sharq_clinic/features/cases/data/remote/case_history_firebase_services.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';

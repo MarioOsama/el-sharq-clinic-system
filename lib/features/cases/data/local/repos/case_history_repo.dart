@@ -1,5 +1,5 @@
-import 'package:el_sharq_clinic/features/appointments/data/local/models/case_history_model.dart';
-import 'package:el_sharq_clinic/features/appointments/data/remote/case_history_firebase_services.dart';
+import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
+import 'package:el_sharq_clinic/features/cases/data/remote/case_history_firebase_services.dart';
 
 class CaseHistoryRepo {
   final CaseHistoryFirebaseServices _caseHistoryFirebaseServices;

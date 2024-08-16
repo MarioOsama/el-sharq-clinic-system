@@ -1,4 +1,4 @@
-import 'package:el_sharq_clinic/features/appointments/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

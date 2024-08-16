@@ -26,6 +26,7 @@ class AuthBlocListener extends StatelessWidget {
           context.pop();
           showDialog<String>(
             context: context,
+            barrierDismissible: false,
             builder: (context) => const AppDialog(
               title: 'Success',
               content: 'Welcome to the system',
@@ -41,6 +42,7 @@ class AuthBlocListener extends StatelessWidget {
 
           showDialog<String>(
             context: context,
+            barrierDismissible: false,
             builder: (context) => AppDialog(
               title: 'Error',
               content: state.message,
