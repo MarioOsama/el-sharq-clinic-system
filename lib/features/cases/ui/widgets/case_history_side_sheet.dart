@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Future<void> showCaseHistoryideSheet(BuildContext context, String title,
+Future<void> showCaseSheet(BuildContext context, String title,
     {CaseHistoryModel? caseHistoryModel, bool editable = true}) async {
   final bool newCase = caseHistoryModel == null;
   final CaseHistoryCubit caseHistoryCubit = context.read<CaseHistoryCubit>();

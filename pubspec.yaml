@@ -30,6 +30,7 @@ environment:
 dependencies:
   cloud_firestore: ^5.2.1
   cupertino_icons: ^1.0.8
+  data_table_2: ^2.5.15
   firebase_core: ^3.3.0
   firedart: ^0.9.8
   flutter:
@@ -38,9 +39,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   get_it: ^7.7.0
   screen_retriever: ^0.1.9
-  window_manager: ^0.4.0
-  data_table_2: ^2.5.15
   side_sheet: ^1.0.4
+  window_manager: ^0.4.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0

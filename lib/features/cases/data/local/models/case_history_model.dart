@@ -43,22 +43,22 @@ class CaseHistoryModel {
     );
   }
 
-  factory CaseHistoryModel.fromFirestore(
-      String id, DocumentSnapshot<Map<String, dynamic>> snapshot) {
+  factory CaseHistoryModel.fromFirestore(QueryDocumentSnapshot<Object?> doc) {
     return CaseHistoryModel(
-      id: id,
-      ownerName: snapshot['ownerName'],
-      phone: snapshot['phone'],
-      petName: snapshot['petName'],
-      petType: snapshot['petType'],
-      date: snapshot['date'],
-      time: snapshot['time'],
-      petReport: snapshot['petReport'],
+      id: doc.id,
+      ownerName: doc['ownerName'],
+      phone: doc['phone'],
+      petName: doc['petName'],
+      petType: doc['petType'],
+      date: doc['date'],
+      time: doc['time'],
+      petReport: doc['petReport'],
     );
   }
 
   Map<String, dynamic> toFirestore() {
     return {
+      'id': id ?? '',
       'ownerName': ownerName,
       'phone': phone,
       'petName': petName,

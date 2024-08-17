@@ -6,8 +6,15 @@ class CaseHistoryRepo {
 
   CaseHistoryRepo(this._caseHistoryFirebaseServices);
 
-  Future<List<CaseHistoryModel>> getAllCases(int clinicIndex) async {
-    return await _caseHistoryFirebaseServices.getAllCaseHistories(clinicIndex);
+  Future<List<CaseHistoryModel>> getAllCases(
+      int clinicIndex, String? lastCaseId) async {
+    return await _caseHistoryFirebaseServices.getAllCaseHistories(
+        clinicIndex: clinicIndex, lastCaseId: lastCaseId);
+  }
+
+  Future<String?> getFirstCaseId(int clinicIndex, bool descendingOrder) async {
+    return await _caseHistoryFirebaseServices.getFirstCaseId(
+        clinicIndex: clinicIndex, descendingOrder: descendingOrder);
   }
 
   Future<bool> addNewCase(CaseHistoryModel appointment, int clinicIndex) async {

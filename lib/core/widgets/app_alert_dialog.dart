@@ -1,4 +1,3 @@
-import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +12,8 @@ class AppAlertDialog extends StatelessWidget {
   });
 
   final String alertMessage;
-  final VoidCallback onConfirm;
-  final VoidCallback onCancel;
+  final void Function() onConfirm;
+  final void Function() onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +35,14 @@ class AppAlertDialog extends StatelessWidget {
   List<Widget> _getActionsList(BuildContext context) {
     return [
       TextButton(
-        onPressed: () {
-          onCancel;
-          context.pop();
-        },
+        onPressed: onCancel,
         child: const Text(
           'Cancel',
           style: AppTextStyles.font14DarkGreyMedium,
         ),
       ),
       TextButton(
-        onPressed: () {
-          onConfirm;
-          context.pop();
-        },
+        onPressed: onConfirm,
         child: const Text(
           'Delete',
           style: AppTextStyles.font14DarkGreyMedium,

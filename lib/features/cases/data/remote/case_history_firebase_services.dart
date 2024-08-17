@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
@@ -9,13 +7,66 @@ class CaseHistoryFirebaseServices {
 
   final FirebaseFirestore _firestore;
 
-  Future<List<CaseHistoryModel>> getAllCaseHistories(int clinicIndex) async {
+  // final FirestoreCache _firestoreCache = FirestoreCache;
+
+  Future<List<CaseHistoryModel>> getAllCaseHistories({
+    required int clinicIndex,
+    String? lastCaseId,
+    int limit = 21,
+  }) async {
+    // Get the clinic document reference
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
-    return await clinicCaseHistoryCollection.get().then((value) => value
-        .docs.reversed
-        .map((doc) => CaseHistoryModel.fromFirestore(doc.id, doc))
-        .toList());
+
+    // Create the query with pagination
+    Query query = clinicCaseHistoryCollection
+        .orderBy(FieldPath.documentId, descending: true)
+        .limit(limit);
+
+    // If there is a lastCase, start after its document ID
+    if (lastCaseId != null) {
+      final String lastIdInCollection = await clinicCaseHistoryCollection
+          .orderBy(FieldPath.documentId)
+          .limit(1)
+          .get()
+          .then((value) => value.docs.first.id);
+
+      if (lastIdInCollection == lastCaseId) {
+        return [];
+      }
+
+      query = query.startAfter([lastCaseId]);
+    }
+
+    // Execute the query and get the documents
+    final querySnapshot = await query.get();
+
+    // Map the documents to your model
+    final caseHistories = querySnapshot.docs
+        .map((doc) => CaseHistoryModel.fromFirestore(doc))
+        .toList();
+
+    // Return the list of case histories
+    return caseHistories;
+  }
+
+  Future<String?> getFirstCaseId(
+      {required int clinicIndex, required bool descendingOrder}) async {
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
+    final String? lastCaseHistoryId = await clinicCaseHistoryCollection
+        .orderBy(FieldPath.documentId, descending: descendingOrder)
+        .limit(1)
+        .get()
+        .then((value) {
+      try {
+        return value.docs.first.id;
+      } catch (e) {
+        return null;
+      }
+    });
+
+    return lastCaseHistoryId;
   }
 
   Future<bool> addCase(CaseHistoryModel caseHistory, int clinicIndex) async {
@@ -24,19 +75,25 @@ class CaseHistoryFirebaseServices {
     final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
     // Get last CaseHistory to generate new id
 
-    final String? lastCaseHistoryId =
-        await clinicCaseHistoryCollection.get().then((value) {
+    final String? lastCaseHistoryId = await clinicCaseHistoryCollection
+        .orderBy(FieldPath.documentId, descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
       try {
-        return value.docs.last.id;
+        return value.docs.first.id;
       } catch (e) {
         return null;
       }
     });
 
-    final newId =
-        (int.parse(lastCaseHistoryId ?? 'CSE000'.replaceAll('CSE', '')) + 1)
-            .toString()
-            .toId(3, prefix: 'CSE');
+    String newId = 'CSE000';
+
+    if (lastCaseHistoryId != null) {
+      newId = (int.parse(lastCaseHistoryId.replaceAll('CSE', '')) + 1)
+          .toString()
+          .toId(3, prefix: 'CSE');
+    }
 
     // Add new CaseHistory to clinic CaseHistory collection
     try {
@@ -54,9 +111,6 @@ class CaseHistoryFirebaseServices {
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final clinicCaseHistoryCollection = clinicDoc.reference.collection('cases');
     // Update CaseHistory in clinic CaseHistory collection
-    log('case history id: ${caseHistory}');
-    log('case history id: ${caseHistory.id}');
-
     try {
       await clinicCaseHistoryCollection
           .doc(caseHistory.id)
