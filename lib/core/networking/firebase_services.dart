@@ -1,0 +1,145 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+
+class FirebaseServices {
+  FirebaseServices(this._firestore);
+
+  final FirebaseFirestore _firestore;
+
+  Future<List<T>> getItems<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+    String? lastId,
+    int limit = 21,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    // Create the query with pagination
+    Query query = targetedCollection
+        .orderBy(FieldPath.documentId, descending: true)
+        .limit(limit);
+
+    // If there is a lastItem, start after its document ID
+    if (lastId != null) {
+      final String lastIdInCollection = await targetedCollection
+          .orderBy(FieldPath.documentId)
+          .limit(1)
+          .get()
+          .then((value) => value.docs.first.id);
+
+      if (lastIdInCollection == lastId) {
+        return [];
+      }
+
+      query = query.startAfter([lastId]);
+    }
+
+    // Execute the query and get the documents
+    final querySnapshot = await query.get();
+
+    // Map the documents to your model
+    final items = querySnapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    // Return the list of T
+    return items;
+  }
+
+  Future<String?> getFirstItemId(String collectionName,
+      {required int clinicIndex, required bool descendingOrder}) async {
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+    final String? lastItemId = await targetedCollection
+        .orderBy(FieldPath.documentId, descending: descendingOrder)
+        .limit(1)
+        .get()
+        .then((value) {
+      try {
+        return value.docs.first.id;
+      } catch (e) {
+        return null;
+      }
+    });
+
+    return lastItemId;
+  }
+
+  Future<bool> addItem<T>(String collectionName,
+      {required T itemModel,
+      required Map<String, dynamic> Function() toFirestore,
+      required int clinicIndex,
+      required String idScheme}) async {
+    // Get clinic document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    // Get last item id if exists to generate new id
+    final String? lastItemId = await targetedCollection
+        .orderBy(FieldPath.documentId, descending: true)
+        .limit(1)
+        .get()
+        .then((value) {
+      try {
+        return value.docs.first.id;
+      } catch (e) {
+        return null;
+      }
+    });
+
+    String newId = '${idScheme}000';
+
+    if (lastItemId != null) {
+      newId = (int.parse(lastItemId.replaceAll(idScheme, '')) + 1)
+          .toString()
+          .toId(3, prefix: idScheme);
+    }
+
+    // Add new [itemModel] to clinic [collectionName] collection
+    try {
+      await targetedCollection.doc(newId).set(toFirestore());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateItem<T>(String collectionName,
+      {required T itemModel,
+      required String id,
+      required Map<String, dynamic> Function() toFirestore,
+      required int clinicIndex}) async {
+    // Get clinic document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+    // Update item
+    try {
+      await targetedCollection.doc(id).update(toFirestore());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> deleteItem(String collectionName,
+      {required String id, required int clinicIndex}) async {
+    // Get clinic document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+    try {
+      await targetedCollection.doc(id).delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> _getClinicDoc(
+      int clinicIndex) async {
+    return await _firestore
+        .collection('clinics')
+        .doc('clinic$clinicIndex')
+        .get();
+  }
+}

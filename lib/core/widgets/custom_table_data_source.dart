@@ -1,4 +1,3 @@
-import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -24,9 +23,6 @@ class CustomTableDataSource extends DataTableSource {
   @override
   DataRow? getRow(int index) {
     return DataRow(
-      // color: WidgetStateProperty.resolveWith((states) {
-      //   return AppColors.white;
-      // }),
       onSelectChanged: (bool? selected) {
         onSelectionChanged(index, selected ?? false);
       },
