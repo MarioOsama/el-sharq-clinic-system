@@ -22,7 +22,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
     return SectionDetailsContainer(
       padding: EdgeInsets.zero,
       borderRadius: 10,
-      color: AppColors.darkGrey,
+      color: AppColors.darkGrey.withOpacity(0.75),
       child: BlocBuilder<CaseHistoryCubit, CaseHistoryState>(
         buildWhen: (previous, current) =>
             current is CaseHistorySuccess ||
