@@ -28,4 +28,14 @@ abstract class AppConstant {
     DrawerItemModel(title: 'Sales', icon: Icons.attach_money_outlined),
     DrawerItemModel(title: 'Settings', icon: Icons.settings_outlined),
   ];
+
+  // Case History
+  static const List<String> casesTableHeaders = [
+    'Case ID',
+    'Owner Name',
+    'Phone',
+    'Pet Name',
+    'Date',
+    ''
+  ];
 }

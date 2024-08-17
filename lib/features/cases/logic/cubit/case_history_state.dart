@@ -15,7 +15,7 @@ final class CaseHistoryLoading extends CaseHistoryState {
 }
 
 final class CaseHistorySuccess extends CaseHistoryState {
-  final List<CaseHistoryModel> cases;
+  final List<CaseHistoryModel?> cases;
 
   CaseHistorySuccess({required this.cases});
 
@@ -47,7 +47,7 @@ final class CaseHistoryError extends CaseHistoryState {
   }
 }
 
-// New CaseHistory
+// CaseHistory
 final class NewCaseHistoryInvalid extends CaseHistoryState {
   final String? title;
   final String errorMessage;
@@ -86,19 +86,21 @@ final class NewCaseHistoryLoading extends CaseHistoryState {
 final class NewCaseHistorySuccess extends CaseHistoryState {
   @override
   void takeAction(BuildContext context) {
+    // Hide loading dialog
     context.pop();
-
+    // Hide side sheet
     context.pop();
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => const AppDialog(
         title: 'Success',
         content: 'New case created successfully',
         dialogType: DialogType.success,
       ),
     );
-
+    // Hide success dialog after 2 seconds
     Future.delayed(const Duration(seconds: 2), () => context.pop());
   }
 }
@@ -127,7 +129,6 @@ final class NewCaseHistoryFailure extends CaseHistoryState {
   }
 }
 
-// Update CaseHistory
 final class UpdateCaseHistorySuccess extends CaseHistoryState {
   @override
   void takeAction(BuildContext context) {
@@ -137,6 +138,7 @@ final class UpdateCaseHistorySuccess extends CaseHistoryState {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (ctx) => const AppDialog(
         title: 'Success',
         content: 'Case updated successfully',

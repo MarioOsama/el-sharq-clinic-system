@@ -1,3 +1,4 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
@@ -13,7 +14,7 @@ class MainActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: context.read<CaseHistoryCubit>().showDeleteButtonNotifier,
-      builder: (context, child) => AnimatedSwitcher(
+      builder: (ctx, child) => AnimatedSwitcher(
         duration: const Duration(milliseconds: 500),
         child: context.read<CaseHistoryCubit>().showDeleteButtonNotifier.value
             ? _buildDeleteCaseButton(context)
@@ -27,7 +28,7 @@ class MainActionButton extends StatelessWidget {
       key: const ValueKey('new_case_button'),
       text: 'New Case',
       icon: Icons.book_outlined,
-      onPressed: () => showCaseHistoryideSheet(context, 'New Case'),
+      onPressed: () => showCaseSheet(context, 'New Case'),
       width: 200,
     );
   }
@@ -48,11 +49,16 @@ class MainActionButton extends StatelessWidget {
   Future<dynamic> _showDeleteDialog(BuildContext context) {
     return showDialog(
       context: context,
-      builder: (context) => AppAlertDialog(
+      builder: (ctx) => AppAlertDialog(
         alertMessage: 'Are you sure you want to delete these cases?\n'
             'This action cannot be undone.',
-        onConfirm: () => context.read<CaseHistoryCubit>().deleteSelectedCases(),
-        onCancel: () {},
+        onConfirm: () {
+          context.read<CaseHistoryCubit>().deleteSelectedCases();
+          context.pop();
+        },
+        onCancel: () {
+          ctx.pop();
+        },
       ),
     );
   }

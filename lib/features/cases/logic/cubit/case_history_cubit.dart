@@ -23,23 +23,61 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   TextEditingController dateController = TextEditingController();
   TextEditingController petReportController = TextEditingController();
 
+  List<CaseHistoryModel?> casesList = [];
+  List<bool> selectedRows = [];
+
+  int pageLength = 10;
+
   ValueNotifier<bool> showDeleteButtonNotifier = ValueNotifier(false);
-  List<int> selectedItems = [];
 
   void setupSectionData(AuthDataModel authenticationData) {
     _setAuthData(authenticationData);
-    _getAllCases();
+    _getPaginatedCases();
   }
 
   void _setAuthData(AuthDataModel authenticationData) {
     authData = authenticationData;
   }
 
-  void _getAllCases() async {
+  void _getPaginatedCases() async {
     emit(CaseHistoryLoading());
-    final List<CaseHistoryModel> cases =
-        await _caseHistoryRepo.getAllCases(authData!.clinicIndex);
-    emit(CaseHistorySuccess(cases: cases));
+    try {
+      final List<CaseHistoryModel> newCasesList =
+          await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
+      casesList.addAll(newCasesList);
+    } catch (e) {
+      emit(CaseHistoryError('Failed to get the cases'));
+    }
+    selectedRows = List.filled(casesList.length, false);
+    emit(CaseHistorySuccess(cases: casesList));
+  }
+
+  void getNextPage(int firstIndex) async {
+    String? lastCaseId = casesList.lastOrNull?.id;
+    final String? lastCaseIdInFirestore = await getLastCaseId();
+    final bool isLastPage = casesList.length - firstIndex <= pageLength;
+    if (lastCaseIdInFirestore.toString() != lastCaseId.toString() &&
+        isLastPage) {
+      final List<CaseHistoryModel> newCasesList =
+          await _caseHistoryRepo.getAllCases(authData!.clinicIndex, lastCaseId);
+      casesList.addAll(newCasesList);
+    }
+    selectedRows = List.filled(casesList.length, false);
+    emit(CaseHistorySuccess(cases: casesList));
+  }
+
+  Future<String?> getFirstCaseId() async {
+    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, true);
+  }
+
+  Future<String?> getLastCaseId() async {
+    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, false);
+  }
+
+  Future<void> refreshCases() async {
+    emit(CaseHistoryLoading());
+    casesList = await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
+    emit(CaseHistorySuccess(cases: casesList));
   }
 
   void setupNewModeControllers() {
@@ -65,14 +103,16 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void validateAndSaveCase() async {
     final List<String> emptyFields = _getEmptyOfRequiredFields();
+    // Check that there are no empty required fields
     if (emptyFields.isEmpty) {
+      // Save new case
       emit(NewCaseHistoryLoading());
-      final CaseHistoryModel newCase = _constructNewCase(update: false);
+      final CaseHistoryModel newCase = _constructCaseModel(update: false);
       final bool successAddition =
           await _caseHistoryRepo.addNewCase(newCase, authData!.clinicIndex);
       if (successAddition) {
         emit(NewCaseHistorySuccess());
-        _getAllCases();
+        _onSuccessOperation();
       } else {
         emit(NewCaseHistoryFailure('Failed to add the appointment'));
       }
@@ -82,6 +122,83 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         _getEmptyFieldsMessage(emptyFields),
       ));
     }
+  }
+
+  CaseHistoryModel? getCaseHistoryById(String id) {
+    try {
+      return casesList.firstWhere((element) => element!.id == id);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void validateAndUpdateCase() async {
+    final List<String> emptyFields = _getEmptyOfRequiredFields();
+    if (emptyFields.isEmpty) {
+      emit(NewCaseHistoryLoading());
+      final CaseHistoryModel updatedCase = _constructCaseModel(update: true);
+      final bool success =
+          await _caseHistoryRepo.updateCase(updatedCase, authData!.clinicIndex);
+      if (success) {
+        emit(UpdateCaseHistorySuccess());
+        refreshCases();
+      } else {
+        emit(NewCaseHistoryFailure('Failed to update the case'));
+      }
+    } else {
+      emit(NewCaseHistoryInvalid(
+        title: 'Empty Fields',
+        _getEmptyFieldsMessage(emptyFields),
+      ));
+    }
+  }
+
+  void deleteCase(String caseId) async {
+    emit(CaseHistoryLoading());
+    final bool success =
+        await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
+    if (success) {
+      _onSuccessOperation();
+      _resetShowDeleteButtonNotifier();
+    } else {
+      emit(CaseHistoryError('Failed to delete the case'));
+    }
+  }
+
+  void onMultiSelection(int index, bool selected) {
+    if (selectedRows.elementAt(index)) {
+      selectedRows[index] = false;
+    } else {
+      selectedRows[index] = true;
+    }
+
+    if (selectedRows.any((element) => element)) {
+      showDeleteButtonNotifier.value = true;
+    } else {
+      showDeleteButtonNotifier.value = false;
+    }
+  }
+
+  void deleteSelectedCases() async {
+    emit(CaseHistoryLoading());
+    try {
+      for (int i = 0; i < selectedRows.length; i++) {
+        if (selectedRows.elementAt(i)) {
+          final caseId = casesList.elementAt(i)!.id;
+          await _caseHistoryRepo.deleteCase(caseId!, authData!.clinicIndex);
+        }
+      }
+      _resetShowDeleteButtonNotifier();
+    } catch (e) {
+      emit(CaseHistoryError('Failed to delete these cases'));
+    }
+    _onSuccessOperation();
+  }
+
+  void _onSuccessOperation() async {
+    await refreshCases();
+    selectedRows = List.filled(casesList.length, false);
+    emit(CaseHistorySuccess(cases: casesList));
   }
 
   String _getEmptyFieldsMessage(List<String> emptyFields) {
@@ -109,7 +226,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     return emptyFields;
   }
 
-  CaseHistoryModel _constructNewCase({required bool update}) {
+  CaseHistoryModel _constructCaseModel({required bool update}) {
     if (update) {
       return CaseHistoryModel(
         id: caseIdController.text.trim(),
@@ -160,76 +277,7 @@ Treatment:""";
     return petReport.replaceAll('---n', '\n');
   }
 
-  CaseHistoryModel? getCaseHistoryById(String id) {
-    try {
-      return (state as CaseHistorySuccess)
-          .cases
-          .firstWhere((element) => element.id == id);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  void validateAndUpdateCase() async {
-    final List<String> emptyFields = _getEmptyOfRequiredFields();
-    if (emptyFields.isEmpty) {
-      emit(NewCaseHistoryLoading());
-      final CaseHistoryModel updatedCase = _constructNewCase(update: true);
-      final bool success =
-          await _caseHistoryRepo.updateCase(updatedCase, authData!.clinicIndex);
-      if (success) {
-        emit(UpdateCaseHistorySuccess());
-        _getAllCases();
-      } else {
-        emit(NewCaseHistoryFailure('Failed to update the case'));
-      }
-    } else {
-      emit(NewCaseHistoryInvalid(
-        title: 'Empty Fields',
-        _getEmptyFieldsMessage(emptyFields),
-      ));
-    }
-  }
-
-  void deleteCase(String caseId) async {
-    emit(CaseHistoryLoading());
-    final bool success =
-        await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
-    if (success) {
-      _getAllCases();
-    } else {
-      emit(CaseHistoryError('Failed to delete the case'));
-    }
-  }
-
-  void onMultiSelection(List<bool> selectedItemsList) {
-    if (selectedItemsList.contains(true)) {
-      for (int i = 0; i < selectedItemsList.length; i++) {
-        if (selectedItemsList[i]) {
-          if (!selectedItems.contains(i)) {
-            selectedItems.add(i);
-          }
-        } else {
-          selectedItems.remove(i);
-        }
-      }
-      showDeleteButtonNotifier.value = true;
-    } else {
-      showDeleteButtonNotifier.value = false;
-    }
-  }
-
-  void deleteSelectedCases() {
-    final cases = (state as CaseHistorySuccess).cases;
-    emit(CaseHistoryLoading());
-    try {
-      for (int i = 0; i < selectedItems.length; i++) {
-        final caseId = cases[selectedItems[i]].id;
-        _caseHistoryRepo.deleteCase(caseId!, authData!.clinicIndex);
-      }
-    } catch (e) {
-      emit(CaseHistoryError('Failed to delete these cases'));
-    }
-    _getAllCases();
+  void _resetShowDeleteButtonNotifier() {
+    showDeleteButtonNotifier.value = false;
   }
 }
