@@ -47,4 +47,14 @@ abstract class AppConstant {
     'Number of Pets',
     ''
   ];
+
+  // Pets
+  static const String petReportScheme = """Diagnosis:
+Temp:
+Unique signs: 
+R.R:
+H.R:
+B.W: ..... kg 
+Vaccinations:
+Treatment:""";
 }

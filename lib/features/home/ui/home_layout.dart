@@ -6,6 +6,7 @@ import 'package:el_sharq_clinic/features/cases/ui/case_history_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
+import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/owners_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,8 +63,9 @@ class _HomeLayoutState extends State<HomeLayout> {
             create: (context) => getIt<CaseHistoryCubit>(),
             child: CaseHistorySection(authData: widget.authData),
           ),
-      (context) => OwnersSection(
-            authData: widget.authData,
+      (context) => BlocProvider<OwnersCubit>(
+            create: (context) => getIt<OwnersCubit>(),
+            child: OwnersSection(authData: widget.authData),
           ),
       // const Text('Pet Owners'),
       // const Text('Services'),

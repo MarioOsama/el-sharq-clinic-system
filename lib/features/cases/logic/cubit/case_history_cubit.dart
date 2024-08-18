@@ -1,3 +1,4 @@
+import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -251,14 +252,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   String get _getPetReportScheme {
-    return """Diagnosis:
-Temp:
-Unique signs: 
-R.R:
-H.R:
-B.W: ..... kg 
-Vaccinations:
-Treatment:""";
+    return AppConstant.petReportScheme;
   }
 
   String get _getReportFirebaseText {

@@ -6,6 +6,7 @@ import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.da
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
+import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -23,6 +24,7 @@ void setupGetIt() {
   // Cubits
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
   getIt.registerFactory<CaseHistoryCubit>(() => CaseHistoryCubit(getIt()));
+  getIt.registerFactory<OwnersCubit>(() => OwnersCubit());
 
   // Repos
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(getIt()));

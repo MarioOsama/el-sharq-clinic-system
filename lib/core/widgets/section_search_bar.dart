@@ -25,7 +25,7 @@ class SectionSearchBar extends StatelessWidget {
         controller: controller,
         onChanged: onChanged,
         textAlignVertical: TextAlignVertical.center,
-        cursorHeight: 5.h,
+        cursorHeight: 25.h,
         style: AppTextStyles.font20DarkGreyMedium,
         decoration: _buildInputDecoration(),
       ),
