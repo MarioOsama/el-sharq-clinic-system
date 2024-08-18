@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
-    required this.controller,
+    this.controller,
     this.hint,
     this.width,
     this.height,
@@ -20,7 +20,7 @@ class AppTextField extends StatelessWidget {
     this.readOnly,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? hint;
   final double? width;
   final double? height;

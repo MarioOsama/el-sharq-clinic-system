@@ -38,4 +38,13 @@ abstract class AppConstant {
     'Date',
     ''
   ];
+
+  // Pet Owners
+  static const List<String> ownersTableHeaders = [
+    'Owner ID',
+    'Owner Name',
+    'Phone',
+    'Number of Pets',
+    ''
+  ];
 }
