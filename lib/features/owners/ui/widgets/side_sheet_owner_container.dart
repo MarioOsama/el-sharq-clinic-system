@@ -7,9 +7,11 @@ class SideSheetOwnerContainer extends StatelessWidget {
   const SideSheetOwnerContainer({
     super.key,
     required this.editable,
+    required this.ownerFormKey,
   });
 
   final bool editable;
+  final GlobalKey<FormState> ownerFormKey;
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +29,16 @@ class SideSheetOwnerContainer extends StatelessWidget {
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: FieldsRow(
-            fields: const [
-              'Name',
-              'Phone',
-            ],
-            // firstController: caseHistoryCubit.ownerNameController,
-            // secondController: caseHistoryCubit.petTypeController,
-            enabled: editable,
+          child: Form(
+            key: ownerFormKey,
+            child: FieldsRow(
+              fields: const [
+                'Name',
+                'Phone',
+              ],
+              validations: const [true, true],
+              enabled: editable,
+            ),
           ),
         ),
       ],

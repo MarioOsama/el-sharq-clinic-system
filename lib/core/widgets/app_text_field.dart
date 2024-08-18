@@ -18,6 +18,8 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.enabled,
     this.readOnly,
+    this.validator,
+    this.initialValue,
   });
 
   final TextEditingController? controller;
@@ -32,6 +34,8 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool? enabled;
   final bool? readOnly;
+  final String? Function(String?)? validator;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +58,11 @@ class AppTextField extends StatelessWidget {
     );
   }
 
-  TextField _buildTextFieldWithInsideHint(String? hint) {
-    return TextField(
+  TextFormField _buildTextFieldWithInsideHint(String? hint) {
+    return TextFormField(
       controller: controller,
+      validator: validator,
+      initialValue: initialValue,
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
@@ -81,7 +87,7 @@ class AppTextField extends StatelessWidget {
           borderSide: const BorderSide(color: AppColors.darkGrey),
         ),
         constraints: BoxConstraints(
-          maxHeight: height ?? 60.h,
+          maxHeight: height ?? double.infinity,
           maxWidth: width ?? 300.w,
         ),
       ),
