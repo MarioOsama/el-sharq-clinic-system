@@ -64,7 +64,8 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
         },
         onTappableCellTap: (id) => showCaseSheet(
           context,
-          'Edit Case',
+          'Case Details',
+          editable: false,
           caseHistoryModel:
               context.read<CaseHistoryCubit>().getCaseHistoryById(id),
         ),

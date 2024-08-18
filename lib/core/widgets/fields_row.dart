@@ -6,21 +6,23 @@ class FieldsRow extends StatelessWidget {
   const FieldsRow({
     super.key,
     required this.fields,
-    required this.firstController,
-    required this.secondController,
+    this.firstController,
+    this.secondController,
     this.enabled,
     this.firstSuffixIcon,
     this.secondSuffixIcon,
     this.readOnly,
+    this.isMultiline,
   });
 
   final List<String> fields;
-  final TextEditingController firstController;
-  final TextEditingController secondController;
+  final TextEditingController? firstController;
+  final TextEditingController? secondController;
   final Widget? firstSuffixIcon;
   final Widget? secondSuffixIcon;
   final bool? enabled;
   final bool? readOnly;
+  final bool? isMultiline;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,8 @@ class FieldsRow extends StatelessWidget {
             suffixIcon: firstSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,
+            isMultiline: isMultiline,
+            height: isMultiline ?? false ? 150 : null,
           ),
         ),
         horizontalSpace(50),
@@ -43,6 +47,8 @@ class FieldsRow extends StatelessWidget {
             suffixIcon: secondSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,
+            isMultiline: isMultiline,
+            height: isMultiline ?? false ? 150 : null,
           ),
         ),
       ],
