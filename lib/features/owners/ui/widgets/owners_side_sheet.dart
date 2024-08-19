@@ -15,10 +15,9 @@ Future<void> showOwnerSheet(BuildContext context, String title,
     {OwnerModel? ownerModel, bool editable = true}) async {
   final bool newOwner = ownerModel == null;
   final OwnersCubit ownersCubit = context.read<OwnersCubit>();
-  ownersCubit.setupNewSheet();
-  // newOwner
-  //     ? OwnersCubit.setupNewModeControllers()
-  //     : OwnersCubit.setupShowModeControllers(caseHistoryModel);
+  newOwner
+      ? ownersCubit.setupNewSheet()
+      : ownersCubit.setupExistingSheet(ownerModel);
 
   await showCustomSideSheet(
     context: context,
@@ -27,11 +26,14 @@ Future<void> showOwnerSheet(BuildContext context, String title,
         SectionTitle(title: title),
         verticalSpace(50),
         if (newOwner) _buildAddPetButton(context, ownersCubit),
-        if (!newOwner) _buildOwnerId(context),
+        if (!newOwner) _buildOwnerId(ownerModel.id!),
         verticalSpace(50),
         SideSheetOwnerContainer(
           editable: editable,
           ownerFormKey: ownersCubit.ownerFormKey,
+          ownerModel: ownerModel,
+          onSaved: (field, value) =>
+              ownersCubit.onSaveOwnerFormField(field, value),
         ),
         verticalSpace(50),
         SideSheetPetsColumn(
@@ -39,6 +41,8 @@ Future<void> showOwnerSheet(BuildContext context, String title,
           petsNumberNotifier: ownersCubit.numberOfPetsNotifier,
           petFormsKeys: ownersCubit.petFormsKeys,
           onDecrementPets: (index) => ownersCubit.decrementPets(index),
+          onSaved: (field, value, index) =>
+              ownersCubit.onSavePetFormField(field, value, index),
         ),
         verticalSpace(100),
         _buildActionIfNeeded(context, newOwner, editable),
@@ -65,8 +69,9 @@ _buildActionIfNeeded(BuildContext context, bool newCase, bool editMode) {
   return const SizedBox.shrink();
 }
 
-AppTextField _buildOwnerId(BuildContext context) {
-  return const AppTextField(
+AppTextField _buildOwnerId(String id) {
+  return AppTextField(
+    initialValue: id,
     hint: 'Owner ID',
     enabled: false,
     width: double.infinity,

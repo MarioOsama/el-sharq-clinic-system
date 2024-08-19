@@ -49,7 +49,7 @@ abstract class AppConstant {
   ];
 
   // Pets
-  static const String petReportScheme = """Diagnosis:
+  static const String petCaseReportScheme = """Diagnosis:
 Temp:
 Unique signs: 
 R.R:
@@ -57,4 +57,10 @@ H.R:
 B.W: ..... kg 
 Vaccinations:
 Treatment:""";
+
+  static const String petProfileReportScheme = """Diagnosis:
+Temp:
+Unique signs: 
+R.R:
+H.R:""";
 }

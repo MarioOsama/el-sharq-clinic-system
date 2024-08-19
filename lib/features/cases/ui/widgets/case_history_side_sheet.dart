@@ -26,7 +26,7 @@ Future<void> showCaseSheet(BuildContext context, String title,
       children: [
         SectionTitle(title: title),
         verticalSpace(50),
-        if (!newCase) _buildCaseId(context),
+        if (!newCase) _buildCaseId(caseHistoryCubit.caseIdController),
         verticalSpace(50),
         FieldsRow(
           fields: const [
@@ -112,9 +112,9 @@ IconButton _buildTimeButton(
       ));
 }
 
-AppTextField _buildCaseId(BuildContext context) {
+AppTextField _buildCaseId(TextEditingController idController) {
   return AppTextField(
-    controller: context.read<CaseHistoryCubit>().caseIdController,
+    controller: idController,
     hint: 'Case ID',
     enabled: false,
     width: double.infinity,

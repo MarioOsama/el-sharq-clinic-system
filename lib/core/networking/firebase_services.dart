@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 
 class FirebaseServices {
   FirebaseServices(this._firestore);
@@ -41,7 +40,10 @@ class FirebaseServices {
     final querySnapshot = await query.get();
 
     // Map the documents to your model
-    final items = querySnapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    final items = querySnapshot.docs.map((doc) {
+      return fromFirestore(doc);
+    }).toList();
 
     // Return the list of T
     return items;
@@ -67,7 +69,8 @@ class FirebaseServices {
   }
 
   Future<bool> addItem<T>(String collectionName,
-      {required T itemModel,
+      {required String id,
+      required T itemModel,
       required Map<String, dynamic> Function() toFirestore,
       required int clinicIndex,
       required String idScheme}) async {
@@ -75,30 +78,9 @@ class FirebaseServices {
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final targetedCollection = clinicDoc.reference.collection(collectionName);
 
-    // Get last item id if exists to generate new id
-    final String? lastItemId = await targetedCollection
-        .orderBy(FieldPath.documentId, descending: true)
-        .limit(1)
-        .get()
-        .then((value) {
-      try {
-        return value.docs.first.id;
-      } catch (e) {
-        return null;
-      }
-    });
-
-    String newId = '${idScheme}000';
-
-    if (lastItemId != null) {
-      newId = (int.parse(lastItemId.replaceAll(idScheme, '')) + 1)
-          .toString()
-          .toId(3, prefix: idScheme);
-    }
-
     // Add new [itemModel] to clinic [collectionName] collection
     try {
-      await targetedCollection.doc(newId).set(toFirestore());
+      await targetedCollection.doc(id).set(toFirestore());
       return true;
     } catch (e) {
       return false;

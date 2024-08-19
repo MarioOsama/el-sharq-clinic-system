@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseHistoryModel {
-  final String? id;
+  final String id;
   final String ownerName;
-  final String phone;
-  final String petName;
-  final String petType;
+  final String? phone;
+  final String? petName;
+  final String? petType;
   final String date;
-  final String time;
+  final String? time;
   final String petReport;
 
   CaseHistoryModel({
-    this.id,
+    required this.id,
     required this.ownerName,
-    required this.phone,
-    required this.petName,
-    required this.petType,
+    this.phone,
+    this.petName,
+    this.petType,
     required this.date,
-    required this.time,
+    this.time,
     required this.petReport,
   });
 
@@ -44,41 +44,53 @@ class CaseHistoryModel {
   }
 
   factory CaseHistoryModel.fromFirestore(QueryDocumentSnapshot<Object?> doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return CaseHistoryModel(
       id: doc.id,
-      ownerName: doc['ownerName'],
-      phone: doc['phone'],
-      petName: doc['petName'],
-      petType: doc['petType'],
-      date: doc['date'],
-      time: doc['time'],
-      petReport: doc['petReport'],
+      ownerName: data['ownerName'],
+      phone: data['phone'],
+      petName: data['petName'],
+      petType: data['petType'],
+      date: data['date'] ?? '',
+      time: data['time'],
+      petReport: data['petReport'] ?? '',
     );
   }
 
+  /// Create a map with the only non-null values
   Map<String, dynamic> toFirestore() {
-    return {
-      'id': id ?? '',
-      'ownerName': ownerName,
-      'phone': phone,
-      'petName': petName,
-      'petType': petType,
-      'date': date,
-      'time': time,
-      'petReport': petReport,
-    };
+    final Map<String, dynamic> map = toMap();
+    for (var key in map.keys.toList()) {
+      if (map[key].toString().trim().isEmpty || map[key] == null) {
+        map.remove(key);
+      }
+    }
+    return map;
   }
 
   List<String> toList() {
     return [
-      id ?? '',
+      id,
       ownerName,
-      phone,
-      petName,
+      phone ?? '',
+      petName ?? '',
       date,
-      petType,
-      time,
+      petType ?? '',
+      time ?? '',
       petReport,
     ];
+  }
+
+  Map<String, String?> toMap() {
+    return {
+      'id': id,
+      'ownerName': ownerName,
+      'phone': phone,
+      'petName': petName,
+      'date': date,
+      'petType': petType,
+      'time': time,
+      'petReport': petReport,
+    };
   }
 }

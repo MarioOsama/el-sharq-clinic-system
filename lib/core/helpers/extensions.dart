@@ -23,4 +23,9 @@ extension StringExtensions on String {
   String toId(int idLength, {String prefix = ''}) {
     return prefix + this.padLeft(idLength, '0');
   }
+
+  String getNextId(int idLength, String prefix) {
+    final int id = int.parse(this.replaceAll(prefix, ''));
+    return (id + 1).toString().toId(idLength, prefix: prefix);
+  }
 }

@@ -20,6 +20,7 @@ class AppTextField extends StatelessWidget {
     this.readOnly,
     this.validator,
     this.initialValue,
+    this.onSaved,
   });
 
   final TextEditingController? controller;
@@ -36,6 +37,7 @@ class AppTextField extends StatelessWidget {
   final bool? readOnly;
   final String? Function(String?)? validator;
   final String? initialValue;
+  final void Function(String? value)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +64,7 @@ class AppTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
+      onSaved: onSaved,
       initialValue: initialValue,
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,

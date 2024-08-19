@@ -19,12 +19,17 @@ class FieldsRow extends StatelessWidget {
     this.readOnly,
     this.isMultiline,
     this.validations = const [true, true],
+    this.firstText,
+    this.secondText,
+    this.onSaved,
   });
 
   /// Fields[0] for first field, fields[1] for second field
   final List<String> fields;
   final TextEditingController? firstController;
   final TextEditingController? secondController;
+  final String? firstText;
+  final String? secondText;
 
   /// FirstSuffixIcon is an icon for first field
   final Widget? firstSuffixIcon;
@@ -38,12 +43,15 @@ class FieldsRow extends StatelessWidget {
   /// validations[0] for first field, validations[1] for second field
   final List<bool>? validations;
 
+  final void Function(String field, String? value)? onSaved;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: AppTextField(
+            initialValue: firstText,
             validator: validations!.first
                 ? (value) {
                     if (value!.trim().isEmpty) {
@@ -52,6 +60,11 @@ class FieldsRow extends StatelessWidget {
                     return null;
                   }
                 : null,
+            onSaved: (value) {
+              if (onSaved != null) {
+                onSaved!(fields.first, value);
+              }
+            },
             controller: firstController,
             hint: fields.first,
             suffixIcon: firstSuffixIcon,
@@ -64,6 +77,7 @@ class FieldsRow extends StatelessWidget {
         horizontalSpace(50),
         Expanded(
           child: AppTextField(
+            initialValue: secondText,
             validator: validations!.last
                 ? (value) {
                     if (value!.trim().isEmpty) {
@@ -72,6 +86,11 @@ class FieldsRow extends StatelessWidget {
                     return null;
                   }
                 : null,
+            onSaved: (value) {
+              if (onSaved != null) {
+                onSaved!(fields.last, value);
+              }
+            },
             controller: secondController,
             hint: fields.last,
             suffixIcon: secondSuffixIcon,
