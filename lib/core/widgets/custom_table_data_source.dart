@@ -2,7 +2,7 @@ import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
 
 class CustomTableDataSource extends DataTableSource {
-  final List data;
+  final List<List> data;
   final int columnsCount;
   final Widget Function(String id) actionBuilder;
   final int tappableCellIndex;
@@ -29,6 +29,7 @@ class CustomTableDataSource extends DataTableSource {
       selected: selectedRows[index],
       cells: List.generate(columnsCount, (cellIndex) {
         if (cellIndex == columnsCount - 1) {
+          // Return the edit menu button with the id of the data row
           return _buildEditMenuButton(data[index][0]);
         }
         if (cellIndex == tappableCellIndex) {

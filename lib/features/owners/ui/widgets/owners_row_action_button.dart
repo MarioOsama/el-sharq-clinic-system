@@ -28,7 +28,7 @@ class OwnersRowActionButton extends StatelessWidget {
             value: 'Add Pet',
             onTap: () {},
             child: const Text(
-              'Edit',
+              'Add Pet',
               style: AppTextStyles.font14DarkGreyMedium,
             ),
           ),

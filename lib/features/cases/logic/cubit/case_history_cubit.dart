@@ -46,38 +46,48 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       final List<CaseHistoryModel> newCasesList =
           await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
       casesList.addAll(newCasesList);
+      selectedRows = List.filled(casesList.length, false);
+      emit(CaseHistorySuccess(cases: casesList));
     } catch (e) {
       emit(CaseHistoryError('Failed to get the cases'));
     }
-    selectedRows = List.filled(casesList.length, false);
-    emit(CaseHistorySuccess(cases: casesList));
   }
 
   void getNextPage(int firstIndex) async {
     String? lastCaseId = casesList.lastOrNull?.id;
-    final String? lastCaseIdInFirestore = await getLastCaseId();
+    final String? lastCaseIdInFirestore = await getFirstCaseId();
     final bool isLastPage = casesList.length - firstIndex <= pageLength;
     if (lastCaseIdInFirestore.toString() != lastCaseId.toString() &&
         isLastPage) {
-      final List<CaseHistoryModel> newCasesList =
-          await _caseHistoryRepo.getAllCases(authData!.clinicIndex, lastCaseId);
-      casesList.addAll(newCasesList);
+      try {
+        final List<CaseHistoryModel> newCasesList = await _caseHistoryRepo
+            .getAllCases(authData!.clinicIndex, lastCaseId);
+        casesList.addAll(newCasesList);
+
+        selectedRows = List.filled(casesList.length, false);
+        emit(CaseHistorySuccess(cases: casesList));
+      } catch (e) {
+        emit(CaseHistoryError('Failed to get the cases'));
+      }
     }
-    selectedRows = List.filled(casesList.length, false);
-    emit(CaseHistorySuccess(cases: casesList));
   }
 
   Future<String?> getFirstCaseId() async {
-    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, true);
+    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, false);
   }
 
   Future<String?> getLastCaseId() async {
-    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, false);
+    return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, true);
   }
 
   Future<void> refreshCases() async {
     emit(CaseHistoryLoading());
-    casesList = await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
+    try {
+      casesList =
+          await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
+    } catch (e) {
+      emit(CaseHistoryError('Failed to get the cases'));
+    }
     emit(CaseHistorySuccess(cases: casesList));
   }
 
@@ -92,12 +102,12 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void setupShowModeControllers(CaseHistoryModel caseHistory) {
-    caseIdController.text = caseHistory.id!;
+    caseIdController.text = caseHistory.id;
     ownerNameController.text = caseHistory.ownerName;
-    petNameController.text = caseHistory.petName;
-    petTypeController.text = caseHistory.petType;
-    phoneController.text = caseHistory.phone;
-    timeController.text = caseHistory.time;
+    petNameController.text = caseHistory.petName ?? '';
+    petTypeController.text = caseHistory.petType ?? '';
+    phoneController.text = caseHistory.phone ?? '';
+    timeController.text = caseHistory.time ?? '';
     dateController.text = caseHistory.date;
     petReportController.text = _gethandledReportText(caseHistory.petReport);
   }
@@ -108,7 +118,10 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     if (emptyFields.isEmpty) {
       // Save new case
       emit(NewCaseHistoryLoading());
-      final CaseHistoryModel newCase = _constructCaseModel(update: false);
+      final String? lastCaseIdInFirestore = await getLastCaseId();
+
+      final CaseHistoryModel newCase = _constructCaseModel(
+          lastCaseIdInFirestore: lastCaseIdInFirestore, update: false);
       final bool successAddition =
           await _caseHistoryRepo.addNewCase(newCase, authData!.clinicIndex);
       if (successAddition) {
@@ -186,7 +199,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
           final caseId = casesList.elementAt(i)!.id;
-          await _caseHistoryRepo.deleteCase(caseId!, authData!.clinicIndex);
+          await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
         }
       }
       _resetShowDeleteButtonNotifier();
@@ -227,20 +240,17 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     return emptyFields;
   }
 
-  CaseHistoryModel _constructCaseModel({required bool update}) {
-    if (update) {
-      return CaseHistoryModel(
-        id: caseIdController.text.trim(),
-        ownerName: ownerNameController.text.trim(),
-        petName: petNameController.text.trim(),
-        petType: petTypeController.text.trim(),
-        phone: phoneController.text.trim(),
-        time: timeController.text.trim(),
-        date: dateController.text.trim(),
-        petReport: _getReportFirebaseText,
-      );
+  CaseHistoryModel _constructCaseModel(
+      {String? lastCaseIdInFirestore, required bool update}) {
+    if (!update) {
+      if (lastCaseIdInFirestore != null) {
+        lastCaseIdInFirestore = lastCaseIdInFirestore.getNextId(3, 'CSE');
+      } else {
+        lastCaseIdInFirestore = 'CSE000';
+      }
     }
     return CaseHistoryModel(
+      id: update ? caseIdController.text.trim() : lastCaseIdInFirestore!,
       ownerName: ownerNameController.text.trim(),
       petName: petNameController.text.trim(),
       petType: petTypeController.text.trim(),
@@ -252,7 +262,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   String get _getPetReportScheme {
-    return AppConstant.petReportScheme;
+    return AppConstant.petCaseReportScheme;
   }
 
   String get _getReportFirebaseText {

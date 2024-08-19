@@ -12,11 +12,13 @@ class SideSheetPetContainer extends StatelessWidget {
     required this.editable,
     required this.index,
     required this.petFormKey,
+    this.onSaved,
   });
 
   final int index;
   final bool editable;
   final GlobalKey<FormState> petFormKey;
+  final void Function(String field, String? value)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,11 @@ class SideSheetPetContainer extends StatelessWidget {
                   enabled: editable,
                   width: double.infinity,
                   insideHint: false,
+                  onSaved: (value) {
+                    if (onSaved != null) {
+                      onSaved!('Name', value);
+                    }
+                  },
                 ),
                 verticalSpace(15),
                 FieldsRow(
@@ -59,6 +66,7 @@ class SideSheetPetContainer extends StatelessWidget {
                   ],
                   validations: const [false, false],
                   enabled: editable,
+                  onSaved: onSaved,
                 ),
                 verticalSpace(15),
                 FieldsRow(
@@ -68,26 +76,49 @@ class SideSheetPetContainer extends StatelessWidget {
                   ],
                   validations: const [false, false],
                   enabled: editable,
+                  onSaved: onSaved,
                 ),
                 verticalSpace(15),
                 FieldsRow(
                   fields: const [
-                    'Vaccination',
+                    'Color',
+                    'Weight',
+                  ],
+                  validations: const [false, false],
+                  enabled: editable,
+                  onSaved: onSaved,
+                ),
+                verticalSpace(15),
+                FieldsRow(
+                  fields: const [
+                    'Vaccinations',
                     'Treatments',
                   ],
                   validations: const [false, false],
                   enabled: editable,
                   isMultiline: true,
+                  onSaved: onSaved,
                 ),
                 verticalSpace(15),
                 AppTextField(
                   hint: 'Pet Report',
-                  initialValue: AppConstant.petReportScheme,
+                  initialValue: AppConstant.petProfileReportScheme,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Please write a Pet Report';
+                    }
+                    return null;
+                  },
                   enabled: editable,
                   width: double.infinity,
-                  height: 150,
+                  height: 175,
                   isMultiline: true,
                   insideHint: false,
+                  onSaved: (value) {
+                    if (onSaved != null) {
+                      onSaved!('Pet Report', value);
+                    }
+                  },
                 ),
               ],
             ),

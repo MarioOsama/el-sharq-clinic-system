@@ -2,13 +2,13 @@ import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_mo
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
 
 class CaseHistoryRepo {
-  final FirebaseServices _caseHistoryFirebaseServices;
+  final FirebaseServices _firebaseServices;
 
-  CaseHistoryRepo(this._caseHistoryFirebaseServices);
+  CaseHistoryRepo(this._firebaseServices);
 
   Future<List<CaseHistoryModel>> getAllCases(
       int clinicIndex, String? lastCaseId) async {
-    return await _caseHistoryFirebaseServices.getItems<CaseHistoryModel>(
+    return await _firebaseServices.getItems<CaseHistoryModel>(
       'cases',
       clinicIndex: clinicIndex,
       fromFirestore: CaseHistoryModel.fromFirestore,
@@ -17,7 +17,7 @@ class CaseHistoryRepo {
   }
 
   Future<String?> getFirstCaseId(int clinicIndex, bool descendingOrder) async {
-    return await _caseHistoryFirebaseServices.getFirstItemId(
+    return await _firebaseServices.getFirstItemId(
       'cases',
       clinicIndex: clinicIndex,
       descendingOrder: descendingOrder,
@@ -25,9 +25,10 @@ class CaseHistoryRepo {
   }
 
   Future<bool> addNewCase(CaseHistoryModel caseModel, int clinicIndex) async {
-    return await _caseHistoryFirebaseServices.addItem<CaseHistoryModel>(
+    return await _firebaseServices.addItem<CaseHistoryModel>(
       'cases',
       itemModel: caseModel,
+      id: caseModel.id,
       clinicIndex: clinicIndex,
       toFirestore: caseModel.toFirestore,
       idScheme: 'CSE',
@@ -35,17 +36,17 @@ class CaseHistoryRepo {
   }
 
   Future<bool> updateCase(CaseHistoryModel caseModel, int clinicIndex) async {
-    return await _caseHistoryFirebaseServices.updateItem<CaseHistoryModel>(
+    return await _firebaseServices.updateItem<CaseHistoryModel>(
       'cases',
       itemModel: caseModel,
       clinicIndex: clinicIndex,
       toFirestore: caseModel.toFirestore,
-      id: caseModel.id!,
+      id: caseModel.id,
     );
   }
 
   Future<bool> deleteCase(String caseId, int clinicIndex) async {
-    return await _caseHistoryFirebaseServices.deleteItem(
+    return await _firebaseServices.deleteItem(
       'cases',
       id: caseId,
       clinicIndex: clinicIndex,

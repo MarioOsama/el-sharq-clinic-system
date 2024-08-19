@@ -1,42 +1,77 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
-import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_action_button.dart';
+import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
+import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_row_action_button.dart';
+import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_side_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class OwnersBody extends StatelessWidget {
+class OwnersBody extends StatefulWidget {
   const OwnersBody({super.key});
 
   @override
+  State<OwnersBody> createState() => _OwnersBodyState();
+}
+
+class _OwnersBodyState extends State<OwnersBody> {
+  @override
   Widget build(BuildContext context) {
+    return SectionDetailsContainer(
+      padding: EdgeInsets.zero,
+      borderRadius: 10,
+      color: AppColors.darkGrey.withOpacity(0.75),
+      child: BlocBuilder<OwnersCubit, OwnersState>(
+        buildWhen: (previous, current) =>
+            current is OwnersSuccess ||
+            current is OwnersError ||
+            current is OwnersLoading,
+        builder: (context, state) {
+          if (state is OwnersSuccess) {
+            return _buildSuccess(context);
+          }
+          if (state is OwnersError) {
+            return Center(
+              child: Text(state.errorMessage),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    );
+  }
+
+  CustomTable _buildSuccess(BuildContext context) {
+    final ownersCubit = context.read<OwnersCubit>();
     return CustomTable(
       onPageChanged: (firstIndex) {
-        // context.read<OwnersCubitCubit>().getNextPage(firstIndex);
+        ownersCubit.getNextPage(firstIndex);
       },
       fields: AppConstant.ownersTableHeaders,
       dataSource: CustomTableDataSource(
-        columnsCount: AppConstant.casesTableHeaders.length,
+        columnsCount: AppConstant.ownersTableHeaders.length,
         data: _getRows(context),
         actionBuilder: (id) => OwnersRowActionButton(
           id: id,
         ),
         tappableCellIndex: 0,
         onSelectionChanged: (index, selected) {
-          // setState(() {
-          //   context.read<OwnersCubitCubit>().onMultiSelection(index, selected);
-          // });
+          setState(() {
+            ownersCubit.onMultiSelection(index, selected);
+          });
         },
-        onTappableCellTap: (id) => log('Tapped on case id: $id'),
-        selectedRows: [],
-        // selectedRows: context.read<OwnersCubitCubit>().selectedRows,
+        onTappableCellTap: (id) => showOwnerSheet(context, 'Owner Details',
+            editable: false, ownerModel: ownersCubit.getOwnerById(id)),
+        selectedRows: ownersCubit.selectedRows,
       ),
     );
   }
 
-  _getRows(BuildContext context) {
-    return [];
+  List<List<String>> _getRows(BuildContext context) {
+    return context.watch<OwnersCubit>().ownersList.map((owner) {
+      return owner!.toList();
+    }).toList();
   }
 }

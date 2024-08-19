@@ -9,12 +9,14 @@ class SideSheetPetsColumn extends StatelessWidget {
       required this.editable,
       required this.petsNumberNotifier,
       required this.petFormsKeys,
-      required this.onDecrementPets});
+      required this.onDecrementPets,
+      this.onSaved});
 
   final bool editable;
   final ValueNotifier<int> petsNumberNotifier;
   final List<GlobalKey<FormState>> petFormsKeys;
   final void Function(int index) onDecrementPets;
+  final void Function(String field, String? value, int petIndex)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +41,11 @@ class SideSheetPetsColumn extends StatelessWidget {
               petFormKey: petFormsKeys[index],
               index: index + 1,
               editable: editable,
+              onSaved: (field, value) {
+                if (onSaved != null) onSaved!(field, value, index);
+              },
             ),
-            if (index != 0) _buildRemoveButton(index),
+            if (index != 0 && editable) _buildRemoveButton(index),
           ],
         ),
       ),
