@@ -6,10 +6,12 @@ class PetsRepo {
 
   PetsRepo(this._firebaseServices);
 
+  final String collectionName = 'pets';
+
   Future<bool> addPet(
       int clinicIndex, String ownerId, PetModel petModel) async {
     return await _firebaseServices.addItem<PetModel>(
-      'pets',
+      collectionName,
       clinicIndex: clinicIndex,
       itemModel: petModel,
       id: petModel.id,
@@ -20,14 +22,14 @@ class PetsRepo {
 
   Future<String?> getLastPetId(int clinicIndex, bool descendingOrder) async {
     return await _firebaseServices.getFirstItemId(
-      'pets',
+      collectionName,
       clinicIndex: clinicIndex,
       descendingOrder: descendingOrder,
     );
   }
 
   Future<List<PetModel>> getPetsByIds(int clinicIndex, List<String> ids) async {
-    return _firebaseServices.getItemsByIds<PetModel>('pets',
+    return _firebaseServices.getItemsByIds<PetModel>(collectionName,
         clinicIndex: clinicIndex,
         ids: ids,
         fromFirestore: PetModel.fromFirestore);
@@ -35,7 +37,7 @@ class PetsRepo {
 
   Future<bool> updatePet(int clinicIndex, PetModel petModel) async {
     return _firebaseServices.updateItem<PetModel>(
-      'pets',
+      collectionName,
       itemModel: petModel,
       id: petModel.id,
       toFirestore: petModel.toFirestore,
@@ -45,7 +47,7 @@ class PetsRepo {
 
   Future<bool> deletePet(int clinicIndex, String id) async {
     return await _firebaseServices.deleteItem(
-      'pets',
+      collectionName,
       id: id,
       clinicIndex: clinicIndex,
     );

@@ -78,7 +78,7 @@ final class NewCaseHistoryLoading extends CaseHistoryState {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: AnimatedLoadingIndicator());
         });
   }
 }
@@ -146,6 +146,28 @@ final class UpdateCaseHistorySuccess extends CaseHistoryState {
       builder: (ctx) => const AppDialog(
         title: 'Success',
         content: 'Case updated successfully',
+        dialogType: DialogType.success,
+      ),
+    );
+
+    // Hide success dialog after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+}
+
+final class DeleteCaseHistorySuccess extends CaseHistoryState {
+  @override
+  void takeAction(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const AppDialog(
+        title: 'Success',
+        content: 'Cases deleted successfully',
         dialogType: DialogType.success,
       ),
     );

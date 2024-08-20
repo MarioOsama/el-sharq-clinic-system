@@ -31,7 +31,8 @@ class OwnersSection extends StatelessWidget {
         SectionActionButton(
           newText: 'New Owner',
           onNewPressed: () => showOwnerSheet(context, 'New Owner'),
-          onDeletePressed: () {},
+          onDeletePressed: () =>
+              context.read<OwnersCubit>().onDeleteSelectedOwners(),
           valueNotifier: context.read<OwnersCubit>().showDeleteButtonNotifier,
         ),
       ],

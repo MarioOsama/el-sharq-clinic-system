@@ -45,9 +45,11 @@ class OwnersRowActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage: 'Are you sure you want to delete this case?\n'
+                  alertMessage:
+                      'Are you sure you want to delete this owner profile?\n'
                       'This action cannot be undone.',
                   onConfirm: () {
+                    context.read<OwnersCubit>().onDeleteOwner(id);
                     ctx.pop();
                   },
                   onCancel: () {

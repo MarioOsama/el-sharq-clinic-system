@@ -12,7 +12,8 @@ class OwnersBlocListener extends StatelessWidget {
           current is OwnerLoading ||
           current is OwnersError ||
           current is NewOwnerAdded ||
-          current is OwnerUpdated,
+          current is OwnerUpdated ||
+          current is OwnerDeleted,
       listener: (context, state) {
         state.takeAction(context);
       },

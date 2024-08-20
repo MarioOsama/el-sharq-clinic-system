@@ -6,10 +6,12 @@ class CaseHistoryRepo {
 
   CaseHistoryRepo(this._firebaseServices);
 
+  final String collectionName = 'cases';
+
   Future<List<CaseHistoryModel>> getAllCases(
       int clinicIndex, String? lastCaseId) async {
     return await _firebaseServices.getItems<CaseHistoryModel>(
-      'cases',
+      collectionName,
       clinicIndex: clinicIndex,
       fromFirestore: CaseHistoryModel.fromFirestore,
       lastId: lastCaseId,
@@ -18,7 +20,7 @@ class CaseHistoryRepo {
 
   Future<String?> getFirstCaseId(int clinicIndex, bool descendingOrder) async {
     return await _firebaseServices.getFirstItemId(
-      'cases',
+      collectionName,
       clinicIndex: clinicIndex,
       descendingOrder: descendingOrder,
     );
@@ -26,7 +28,7 @@ class CaseHistoryRepo {
 
   Future<bool> addNewCase(CaseHistoryModel caseModel, int clinicIndex) async {
     return await _firebaseServices.addItem<CaseHistoryModel>(
-      'cases',
+      collectionName,
       itemModel: caseModel,
       id: caseModel.id,
       clinicIndex: clinicIndex,
@@ -37,7 +39,7 @@ class CaseHistoryRepo {
 
   Future<bool> updateCase(CaseHistoryModel caseModel, int clinicIndex) async {
     return await _firebaseServices.updateItem<CaseHistoryModel>(
-      'cases',
+      collectionName,
       itemModel: caseModel,
       clinicIndex: clinicIndex,
       toFirestore: caseModel.toFirestore,
@@ -47,7 +49,7 @@ class CaseHistoryRepo {
 
   Future<bool> deleteCase(String caseId, int clinicIndex) async {
     return await _firebaseServices.deleteItem(
-      'cases',
+      collectionName,
       id: caseId,
       clinicIndex: clinicIndex,
     );
