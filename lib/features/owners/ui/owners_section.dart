@@ -4,6 +4,7 @@ import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
+import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_body.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_side_sheet.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class OwnersSection extends StatelessWidget {
           children: [
             verticalSpace(50),
             const Expanded(child: OwnersBody()),
+            const OwnersBlocListener(),
           ],
         ),
       ),

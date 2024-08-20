@@ -101,7 +101,11 @@ final class NewCaseHistorySuccess extends CaseHistoryState {
       ),
     );
     // Hide success dialog after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () => context.pop());
+    Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
   }
 }
 
@@ -146,6 +150,11 @@ final class UpdateCaseHistorySuccess extends CaseHistoryState {
       ),
     );
 
-    Future.delayed(const Duration(seconds: 2), () => context.pop());
+    // Hide success dialog after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
   }
 }
