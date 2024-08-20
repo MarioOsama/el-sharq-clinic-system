@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -57,10 +55,8 @@ class OwnersCubit extends Cubit<OwnersState> {
         authData!.clinicIndex,
         null,
       );
-      log('New owners list length: ${newOwnersList.length}');
 
       ownersList.addAll(newOwnersList);
-      log('Owners list length: ${ownersList.length}');
       selectedRows = List.filled(ownersList.length, false);
       emit(OwnersSuccess(owners: ownersList));
     } catch (e) {
@@ -128,10 +124,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       // Get last pet id in firestore to set the next pet ids
       final String? lastPetIdInFirestore = await getLastPetId();
       // Save pet forms
-      for (int i = 0; i < petFormsKeys.length; i++) {
-        final petFormKey = petFormsKeys[i];
-        petFormKey.currentState!.save();
-      }
+      _savePetForms();
       // Save owner form
       ownerFormKey.currentState!.save();
       // Handle the next owner and pets ids
@@ -248,14 +241,17 @@ class OwnersCubit extends Cubit<OwnersState> {
     numberOfPetsNotifier = ValueNotifier<int>(1);
   }
 
-  void setupExistingSheet(OwnerModel owner) {
-    numberOfPetsNotifier = ValueNotifier<int>(owner.petsIds.length);
-    petFormsKeys = List.generate(
-      owner.petsIds.length,
-      (index) => GlobalKey<FormState>(),
-    );
+  Future<void> setupExistingOwnerSheet(OwnerModel owner) async {
     // Set owner info
     ownerInfo = owner;
+    // Set pets info
+    await getPetsByIds(ownerInfo.petsIds);
+    // Setup pet forms and notifier.
+    numberOfPetsNotifier = ValueNotifier<int>(ownerInfo.petsIds.length);
+    petFormsKeys = List.generate(
+      ownerInfo.petsIds.length,
+      (index) => GlobalKey<FormState>(),
+    );
   }
 
   void incrementPets() {
@@ -292,6 +288,13 @@ class OwnersCubit extends Cubit<OwnersState> {
       }
     }
     return isValid;
+  }
+
+  void _savePetForms() {
+    for (int i = 0; i < petFormsKeys.length; i++) {
+      final petFormKey = petFormsKeys[i];
+      petFormKey.currentState!.save();
+    }
   }
 
   void onMultiSelection(int index, bool selected) {
