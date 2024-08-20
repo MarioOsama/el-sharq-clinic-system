@@ -26,7 +26,7 @@ Future<void> showOwnerSheet(BuildContext context, String title,
         SectionTitle(title: title),
         verticalSpace(50),
         if (newOwner) _buildAddPetButton(context, ownersCubit),
-        if (!newOwner) _buildOwnerId(ownerModel.id!),
+        if (!newOwner) _buildOwnerId(ownerModel.id),
         verticalSpace(50),
         SideSheetOwnerContainer(
           editable: editable,

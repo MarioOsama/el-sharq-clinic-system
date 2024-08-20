@@ -60,11 +60,13 @@ class _HomeLayoutState extends State<HomeLayout> {
     return [
       (context) => DashboardSection(authData: widget.authData),
       (context) => BlocProvider<CaseHistoryCubit>(
-            create: (context) => getIt<CaseHistoryCubit>(),
+            create: (context) =>
+                getIt<CaseHistoryCubit>()..setupSectionData(widget.authData),
             child: CaseHistorySection(authData: widget.authData),
           ),
       (context) => BlocProvider<OwnersCubit>(
-            create: (context) => getIt<OwnersCubit>(),
+            create: (context) =>
+                getIt<OwnersCubit>()..setupSectionData(widget.authData),
             child: OwnersSection(authData: widget.authData),
           ),
       // const Text('Pet Owners'),

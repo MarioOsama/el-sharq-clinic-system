@@ -87,8 +87,9 @@ class OwnersCubit extends Cubit<OwnersState> {
   }
 
   // Owner
-  OwnerModel? getOwnerById(String ownerId) {
-    return ownersList.firstWhere((element) => element!.id == ownerId);
+  OwnerModel getOwnerById(String ownerId) {
+    return ownersList.firstWhere((element) => element!.id == ownerId)
+        as OwnerModel;
   }
 
   Future<String?> getLastOwnerId() async {
@@ -102,6 +103,10 @@ class OwnersCubit extends Cubit<OwnersState> {
   // Pets
   Future<String?> getLastPetId() async {
     return await _petsRepo.getLastPetId(authData!.clinicIndex, true);
+  }
+
+  Future<void> getPetsByIds(List<String> ids) async {
+    petsList = await _petsRepo.getPetsByIds(authData!.clinicIndex, ids);
   }
 
   Future<void> refreshOwners() async {
