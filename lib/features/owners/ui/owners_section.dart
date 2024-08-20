@@ -16,8 +16,6 @@ class OwnersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<OwnersCubit>().setupSectionData(authData);
-
     return SectionContainer(
       title: 'Owners',
       actions: [

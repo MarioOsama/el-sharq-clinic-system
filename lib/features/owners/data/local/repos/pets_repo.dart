@@ -25,4 +25,11 @@ class PetsRepo {
       descendingOrder: descendingOrder,
     );
   }
+
+  Future<List<PetModel>> getPetsByIds(int clinicIndex, List<String> ids) async {
+    return _firebaseServices.getItemsByIds<PetModel>('pets',
+        clinicIndex: clinicIndex,
+        ids: ids,
+        fromFirestore: PetModel.fromFirestore);
+  }
 }

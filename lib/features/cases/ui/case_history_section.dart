@@ -18,7 +18,6 @@ class CaseHistorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CaseHistoryCubit>().setupSectionData(authData);
     return SectionContainer(
       title: 'Case History',
       actions: [

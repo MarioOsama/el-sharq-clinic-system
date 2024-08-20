@@ -37,11 +37,11 @@ class FirebaseServices {
     }
 
     // Execute the query and get the documents
-    final querySnapshot = await query.get();
+    final QuerySnapshot querySnapshot = await query.get();
 
     // Map the documents to your model
 
-    final items = querySnapshot.docs.map((doc) {
+    final List<T> items = querySnapshot.docs.map((doc) {
       return fromFirestore(doc);
     }).toList();
 
@@ -123,5 +123,28 @@ class FirebaseServices {
         .collection('clinics')
         .doc('clinic$clinicIndex')
         .get();
+  }
+
+  Future<List<T>> getItemsByIds<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required List<String> ids,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    // Create the query with pagination
+    Query query = targetedCollection.where(FieldPath.documentId, whereIn: ids);
+
+    // Get query data
+    QuerySnapshot dataSnapshot = await query.get();
+
+    // Converting [dataSnapshot] into T type
+    final List<T> items =
+        dataSnapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    return items;
   }
 }
