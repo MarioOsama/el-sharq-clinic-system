@@ -19,28 +19,34 @@ class OwnersBody extends StatefulWidget {
 class _OwnersBodyState extends State<OwnersBody> {
   @override
   Widget build(BuildContext context) {
-    return SectionDetailsContainer(
-      padding: EdgeInsets.zero,
-      borderRadius: 10,
-      color: AppColors.darkGrey.withOpacity(0.75),
-      child: BlocBuilder<OwnersCubit, OwnersState>(
-        buildWhen: (previous, current) =>
-            current is OwnersSuccess ||
-            current is OwnersError ||
-            current is OwnersLoading,
-        builder: (context, state) {
-          if (state is OwnersSuccess) {
-            return _buildSuccess(context);
-          }
-          if (state is OwnersError) {
-            return Center(
-              child: Text(state.errorMessage),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+    return BlocBuilder<OwnersCubit, OwnersState>(
+      buildWhen: (previous, current) =>
+          current is OwnersSuccess ||
+          current is OwnersError ||
+          current is OwnersLoading,
+      builder: (context, state) {
+        return SectionDetailsContainer(
+          padding: EdgeInsets.zero,
+          borderRadius: 10,
+          color: state is OwnersSuccess
+              ? AppColors.darkGrey.withOpacity(0.75)
+              : AppColors.white,
+          child: _buildChild(context, state),
+        );
+      },
     );
+  }
+
+  Widget _buildChild(BuildContext context, OwnersState state) {
+    if (state is OwnersSuccess) {
+      return _buildSuccess(context);
+    }
+    if (state is OwnersError) {
+      return Center(
+        child: Text(state.errorMessage),
+      );
+    }
+    return const Center(child: CircularProgressIndicator());
   }
 
   CustomTable _buildSuccess(BuildContext context) {

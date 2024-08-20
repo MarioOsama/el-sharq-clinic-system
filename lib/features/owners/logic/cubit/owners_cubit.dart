@@ -1,10 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/models/owner_model.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/models/pet_model.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/owners_repo.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/pets_repo.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 part 'owners_state.dart';
@@ -118,7 +121,7 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   void validateThenSave() async {
     if (_validateForms()) {
-      emit(OwnersLoading());
+      emit(NewOwnerLoading());
       // Get last owner id in firestore to set the next owner id
       final String? lastOwnerIdInFirestore = await getLastOwnerId();
       // Get last pet id in firestore to set the next pet ids
@@ -137,6 +140,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       // Take an action based on the success of the operation
       if (ownerSuccess && petsSuccess) {
         _onSuccessOperation();
+        emit(NewOwnerAdded());
       } else {
         emit(OwnersError('Failed to save the owner and pets'));
       }

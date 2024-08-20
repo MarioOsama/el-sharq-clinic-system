@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
@@ -19,29 +20,38 @@ class CaseHistoryBody extends StatefulWidget {
 class _CaseHistoryBodyState extends State<CaseHistoryBody> {
   @override
   Widget build(BuildContext context) {
-    return SectionDetailsContainer(
-      padding: EdgeInsets.zero,
-      borderRadius: 10,
-      color: AppColors.darkGrey.withOpacity(0.75),
-      child: BlocBuilder<CaseHistoryCubit, CaseHistoryState>(
-        buildWhen: (previous, current) =>
-            current is CaseHistorySuccess ||
-            current is CaseHistoryError ||
-            current is CaseHistoryLoading,
-        builder: (context, state) {
-          if (state is CaseHistorySuccess) {
-            return _buildSuccess(context);
-          }
-          if (state is CaseHistoryError) {
-            return Center(
-              child: Text(state.errorMessage),
-            );
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
+    return BlocBuilder<CaseHistoryCubit, CaseHistoryState>(
+      buildWhen: (previous, current) =>
+          current is CaseHistorySuccess ||
+          current is CaseHistoryError ||
+          current is CaseHistoryLoading,
+      builder: (context, state) {
+        return SectionDetailsContainer(
+          padding: EdgeInsets.zero,
+          borderRadius: 10,
+          color: state is CaseHistorySuccess
+              ? AppColors.darkGrey.withOpacity(0.75)
+              : AppColors.white,
+          child: _buildChild(context, state),
+        );
+      },
     );
+  }
+
+  Widget _buildChild(BuildContext context, CaseHistoryState state) {
+    if (state is CaseHistorySuccess) {
+      return _buildSuccess(context);
+    }
+    if (state is CaseHistoryError) {
+      return Center(
+        child: Text(
+          state.errorMessage,
+          style: AppTextStyles.font20DarkGreyMedium,
+        ),
+      );
+    }
+
+    return const Center(child: CircularProgressIndicator());
   }
 
   CustomTable _buildSuccess(BuildContext context) {

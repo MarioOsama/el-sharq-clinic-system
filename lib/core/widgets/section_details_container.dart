@@ -16,7 +16,8 @@ class SectionDetailsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
       alignment: Alignment.topLeft,
       padding: padding ?? const EdgeInsets.all(35),
       decoration: _buildContainerDecoration(),
