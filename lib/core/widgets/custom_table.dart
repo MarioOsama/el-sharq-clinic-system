@@ -21,8 +21,9 @@ class CustomTable extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: PaginatedDataTable2(
-        columnSpacing: 20,
+        columnSpacing: 10,
         columns: _buildTableColumns,
+        horizontalMargin: 15,
         source: dataSource,
         dataRowHeight: 50,
         headingRowColor: const WidgetStatePropertyAll(AppColors.grey),
@@ -34,7 +35,9 @@ class CustomTable extends StatelessWidget {
   List<DataColumn> get _buildTableColumns =>
       List.generate(fields.length, (index) {
         return DataColumn(
-            label:
-                Text(fields[index], style: AppTextStyles.font20DarkGreyMedium));
+            label: Align(
+                alignment: index == 0 ? Alignment.centerLeft : Alignment.center,
+                child: Text(fields[index],
+                    style: AppTextStyles.font20DarkGreyMedium)));
       });
 }

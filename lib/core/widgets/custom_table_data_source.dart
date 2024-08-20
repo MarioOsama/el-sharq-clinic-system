@@ -36,9 +36,12 @@ class CustomTableDataSource extends DataTableSource {
           return _buildTappableCell(index, cellIndex, onTappableCellTap);
         }
         return DataCell(
-          Text(
-            data[index][cellIndex],
-            style: AppTextStyles.font16DarkGreyMedium,
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              data[index][cellIndex],
+              style: AppTextStyles.font16DarkGreyMedium,
+            ),
           ),
         );
       }),
@@ -62,7 +65,7 @@ class CustomTableDataSource extends DataTableSource {
 
   DataCell _buildEditMenuButton(String id) {
     return DataCell(
-      actionBuilder(id),
+      Align(alignment: Alignment.centerRight, child: actionBuilder(id)),
     );
   }
 

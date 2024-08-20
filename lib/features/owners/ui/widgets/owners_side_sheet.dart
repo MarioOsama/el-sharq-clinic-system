@@ -101,6 +101,8 @@ AppTextButton _buildUpdateAction(BuildContext context) {
     text: 'Update Owner',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () {
+      context.read<OwnersCubit>().validateThenUpdate();
+    },
   );
 }

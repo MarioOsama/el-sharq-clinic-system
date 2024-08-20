@@ -45,6 +45,7 @@ abstract class AppConstant {
     'Owner Name',
     'Phone',
     'Number of Pets',
+    'Registration Date',
     ''
   ];
 

@@ -57,7 +57,7 @@ class OwnerModel {
       name,
       phone,
       petsIds.length.toString(),
-      registrationDate!,
+      registrationDate!.substring(0, 10),
     ];
   }
 
