@@ -47,7 +47,7 @@ final class OwnersPetsChanged extends OwnersState {
 }
 
 // Owner
-final class NewOwnerLoading extends OwnersState {
+final class OwnerLoading extends OwnersState {
   @override
   void takeAction(BuildContext context) {
     showDialog<String>(
@@ -85,6 +85,30 @@ final class NewOwnerAdded extends OwnersState {
   }
 }
 
-final class OwnerUpdated extends OwnersState {}
+final class OwnerUpdated extends OwnersState {
+  @override
+  void takeAction(BuildContext context) {
+    super.takeAction(context);
+    context.pop();
+    context.pop();
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const AppDialog(
+        title: 'Success',
+        content: 'Owner info updated successfully',
+        dialogType: DialogType.success,
+      ),
+    );
+
+    // Hide success dialog after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+}
 
 final class OwnerDeleted extends OwnersState {}

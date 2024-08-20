@@ -34,4 +34,14 @@ class OwnersRepo {
       idScheme: 'ONR',
     );
   }
+
+  Future<bool> updateOwner(int clinicIndex, OwnerModel ownerModel) async {
+    return await _firebaseServices.updateItem<OwnerModel>(
+      'owners',
+      itemModel: ownerModel,
+      id: ownerModel.id,
+      toFirestore: ownerModel.toFirestore,
+      clinicIndex: clinicIndex,
+    );
+  }
 }

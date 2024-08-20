@@ -9,7 +9,7 @@ class OwnersBlocListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<OwnersCubit, OwnersState>(
       listenWhen: (previous, current) =>
-          current is NewOwnerLoading ||
+          current is OwnerLoading ||
           current is OwnersError ||
           current is NewOwnerAdded ||
           current is OwnerUpdated,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -25,6 +27,7 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   List<OwnerModel?> ownersList = [];
   List<bool> selectedRows = [];
+  List<PetModel> deletedPetsList = [];
   List<PetModel> petsList = [
     PetModel(
       id: 'PET000',
@@ -119,16 +122,16 @@ class OwnersCubit extends Cubit<OwnersState> {
     emit(OwnersSuccess(owners: ownersList));
   }
 
+  // Save New Owner
   void validateThenSave() async {
     if (_validateForms()) {
-      emit(NewOwnerLoading());
+      emit(OwnerLoading());
       // Get last owner id in firestore to set the next owner id
       final String? lastOwnerIdInFirestore = await getLastOwnerId();
       // Get last pet id in firestore to set the next pet ids
       final String? lastPetIdInFirestore = await getLastPetId();
-      // Save pet forms
+      // Save owner form and pet forms
       _savePetForms();
-      // Save owner form
       ownerFormKey.currentState!.save();
       // Handle the next owner and pets ids
       _setOwnerAndPetsIds(
@@ -189,6 +192,112 @@ class OwnersCubit extends Cubit<OwnersState> {
     }
   }
 
+  Future<bool> _saveOwner() async {
+    return await _ownersRepo.addNewOwner(authData!.clinicIndex, ownerInfo);
+  }
+
+  Future<bool> _savePet(PetModel petModel) async {
+    return await _petsRepo.addPet(
+        authData!.clinicIndex, ownerInfo.id, petModel);
+  }
+
+  Future<bool> _saveAllPets() async {
+    bool success = true;
+    for (final pet in petsList) {
+      success = await _savePet(pet);
+      if (!success) {
+        success = false;
+        break;
+      }
+    }
+    return success;
+  }
+
+  // Update Owner
+  void validateThenUpdate() async {
+    if (_validateForms()) {
+      emit(OwnerLoading());
+      // Save owner form and pet forms
+      _savePetForms();
+      ownerFormKey.currentState!.save();
+      // Update
+      final bool ownerUpdatingSuccess = await _updateOwner();
+      final bool petsUpdatingSuccess = await _updatePetsList();
+      if (deletedPetsList.isNotEmpty) {
+        final bool petsDeletionSuccess = await _deletePetsList();
+        if (!petsDeletionSuccess) {
+          emit(
+            OwnersError('Failed to update owner pets info'),
+          );
+        }
+      }
+      if (!ownerUpdatingSuccess || !petsUpdatingSuccess) {
+        emit(
+          OwnersError('Failed to update owner info'),
+        );
+      }
+      _onSuccessOperation();
+      emit(OwnerUpdated());
+    }
+  }
+
+  Future<bool> _updateOwner() async {
+    return await _ownersRepo.updateOwner(authData!.clinicIndex, ownerInfo);
+  }
+
+  Future<bool> _updatePetsList() async {
+    bool success = true;
+    for (int i = 0; i < petsList.length; i++) {
+      try {
+        final successUpdating = await _updatePet(petsList[i]);
+        if (!successUpdating) {
+          success = false;
+          break;
+        }
+      } catch (e) {
+        success = false;
+        break;
+      }
+    }
+    return success;
+  }
+
+  Future<bool> _updatePet(PetModel pet) async {
+    return await _petsRepo.updatePet(authData!.clinicIndex, pet);
+  }
+
+  Future<bool> _deletePetsList() async {
+    bool success = true;
+    for (int i = 0; i < deletedPetsList.length; i++) {
+      try {
+        final successDeletion = await _deletePet(deletedPetsList[i].id);
+        if (!successDeletion) {
+          success = false;
+          break;
+        }
+      } catch (e) {
+        success = false;
+        break;
+      }
+    }
+    return success;
+  }
+
+  Future<bool> _deletePet(String id) async {
+    return await _petsRepo.deletePet(authData!.clinicIndex, id);
+  }
+
+  void _onSuccessOperation() async {
+    await refreshOwners();
+    selectedRows = List.filled(ownersList.length, false);
+    emit(OwnersSuccess(owners: ownersList));
+  }
+
+  // UI Logic
+  void setupNewSheet() {
+    numberOfPetsNotifier = ValueNotifier<int>(1);
+  }
+
   void onSaveOwnerFormField(String field, String? value) {
     ownerInfo = ownerInfo.copyWith(
       name: field == 'Name' ? value : ownerInfo.name,
@@ -211,38 +320,6 @@ class OwnersCubit extends Cubit<OwnersState> {
       vaccinations: field == 'Vaccinations' ? value : petModel.vaccinations,
       treatments: field == 'Treatments' ? value : petModel.treatments,
     );
-  }
-
-  Future<bool> _saveOwner() async {
-    return await _ownersRepo.addNewOwner(authData!.clinicIndex, ownerInfo);
-  }
-
-  Future<bool> _savePet(PetModel petModel) async {
-    return await _petsRepo.addPet(
-        authData!.clinicIndex, ownerInfo.id, petModel);
-  }
-
-  Future<bool> _saveAllPets() async {
-    bool success = true;
-    for (final pet in petsList) {
-      success = await _savePet(pet);
-      if (!success) {
-        success = false;
-        break;
-      }
-    }
-    return success;
-  }
-
-  void _onSuccessOperation() async {
-    await refreshOwners();
-    selectedRows = List.filled(ownersList.length, false);
-    emit(OwnersSuccess(owners: ownersList));
-  }
-
-  // UI Logic
-  void setupNewSheet() {
-    numberOfPetsNotifier = ValueNotifier<int>(1);
   }
 
   Future<void> setupExistingOwnerSheet(OwnerModel owner) async {
@@ -275,7 +352,10 @@ class OwnersCubit extends Cubit<OwnersState> {
   void decrementPets(int index) {
     numberOfPetsNotifier.value--;
     petFormsKeys.removeAt(index);
-    petsList.removeAt(index);
+    // Add the removed pet to the list to remove it when the user updating owner
+    final deletedPet = petsList.removeAt(index);
+    ownerInfo.petsIds.remove(deletedPet.id);
+    deletedPetsList.add(deletedPet);
     emit(OwnersPetsChanged(numberOfPetsNotifier.value));
   }
 

@@ -32,4 +32,22 @@ class PetsRepo {
         ids: ids,
         fromFirestore: PetModel.fromFirestore);
   }
+
+  Future<bool> updatePet(int clinicIndex, PetModel petModel) async {
+    return _firebaseServices.updateItem<PetModel>(
+      'pets',
+      itemModel: petModel,
+      id: petModel.id,
+      toFirestore: petModel.toFirestore,
+      clinicIndex: clinicIndex,
+    );
+  }
+
+  Future<bool> deletePet(int clinicIndex, String id) async {
+    return await _firebaseServices.deleteItem(
+      'pets',
+      id: id,
+      clinicIndex: clinicIndex,
+    );
+  }
 }
