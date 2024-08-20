@@ -1,6 +1,7 @@
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
@@ -51,7 +52,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
       );
     }
 
-    return const Center(child: CircularProgressIndicator());
+    return const Center(child: AnimatedLoadingIndicator());
   }
 
   CustomTable _buildSuccess(BuildContext context) {

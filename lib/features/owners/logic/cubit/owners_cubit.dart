@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/models/owner_model.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/models/pet_model.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/owners_repo.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/pets_repo.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 part 'owners_state.dart';
@@ -223,6 +223,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       // Update
       final bool ownerUpdatingSuccess = await _updateOwner();
       final bool petsUpdatingSuccess = await _updatePetsList();
+      // Delete the removed owner pets if exist
       if (deletedPetsList.isNotEmpty) {
         final bool petsDeletionSuccess = await _deletePetsList();
         if (!petsDeletionSuccess) {
@@ -266,11 +267,53 @@ class OwnersCubit extends Cubit<OwnersState> {
     return await _petsRepo.updatePet(authData!.clinicIndex, pet);
   }
 
-  Future<bool> _deletePetsList() async {
+  // Delete Owner
+  void onDeleteSelectedOwners() async {
+    emit(OwnersLoading());
+    try {
+      for (int i = 0; i < selectedRows.length; i++) {
+        if (selectedRows.elementAt(i)) {
+          final ownerId = ownersList.elementAt(i)!.id;
+          await _deleteOwner(ownerId);
+        }
+      }
+      _resetShowDeleteButtonNotifier();
+      emit(OwnerDeleted());
+      _onSuccessOperation();
+    } catch (e) {
+      emit(OwnersError('Failed to delete these selected cases'));
+    }
+  }
+
+  void onDeleteOwner(String id) async {
+    emit(OwnersLoading());
+    final bool deletionSuccess = await _deleteOwner(id);
+    if (deletionSuccess) {
+      emit(OwnerDeleted());
+      _onSuccessOperation();
+    } else {
+      emit(OwnersError('Failed to delete this owner profile'));
+    }
+  }
+
+  Future<bool> _deleteOwner(String id) async {
+    final OwnerModel owner = getOwnerById(id);
+    final bool petsDeletionSuccess =
+        await _deletePetsList(petsIds: owner.petsIds);
+    final bool ownerDeletionSuccess =
+        await _ownersRepo.deleteOwner(authData!.clinicIndex, id);
+    if (!ownerDeletionSuccess || !petsDeletionSuccess) {
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> _deletePetsList({List<String>? petsIds}) async {
+    petsIds ??= deletedPetsList.map((pet) => pet.id).toList();
     bool success = true;
-    for (int i = 0; i < deletedPetsList.length; i++) {
+    for (int i = 0; i < petsIds.length; i++) {
       try {
-        final successDeletion = await _deletePet(deletedPetsList[i].id);
+        final successDeletion = await _deletePet(petsIds[i]);
         if (!successDeletion) {
           success = false;
           break;
@@ -393,5 +436,9 @@ class OwnersCubit extends Cubit<OwnersState> {
     } else {
       showDeleteButtonNotifier.value = false;
     }
+  }
+
+  void _resetShowDeleteButtonNotifier() {
+    showDeleteButtonNotifier.value = false;
   }
 }

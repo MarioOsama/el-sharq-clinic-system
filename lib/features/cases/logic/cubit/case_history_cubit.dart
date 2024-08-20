@@ -1,6 +1,7 @@
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
@@ -203,10 +204,11 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         }
       }
       _resetShowDeleteButtonNotifier();
+      emit(DeleteCaseHistorySuccess());
+      _onSuccessOperation();
     } catch (e) {
       emit(CaseHistoryError('Failed to delete these cases'));
     }
-    _onSuccessOperation();
   }
 
   void _onSuccessOperation() async {

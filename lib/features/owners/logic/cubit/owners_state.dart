@@ -54,7 +54,7 @@ final class OwnerLoading extends OwnersState {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: AnimatedLoadingIndicator());
         });
   }
 }
@@ -111,4 +111,26 @@ final class OwnerUpdated extends OwnersState {
   }
 }
 
-final class OwnerDeleted extends OwnersState {}
+final class OwnerDeleted extends OwnersState {
+  @override
+  void takeAction(BuildContext context) {
+    super.takeAction(context);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => const AppDialog(
+        title: 'Success',
+        content: 'Owner profile deleted successfully',
+        dialogType: DialogType.success,
+      ),
+    );
+
+    // Hide success dialog after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      if (context.mounted) {
+        context.pop();
+      }
+    });
+  }
+}

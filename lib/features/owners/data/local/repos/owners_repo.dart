@@ -6,10 +6,12 @@ class OwnersRepo {
 
   OwnersRepo(this._firebaseServices);
 
+  final String collectionName = 'owners';
+
   Future<List<OwnerModel>> getOwners(
       int clinicIndex, String? lastOwnerId) async {
     return await _firebaseServices.getItems<OwnerModel>(
-      'owners',
+      collectionName,
       clinicIndex: clinicIndex,
       fromFirestore: OwnerModel.fromFirestore,
       lastId: lastOwnerId,
@@ -18,7 +20,7 @@ class OwnersRepo {
 
   Future<String?> getLastOwnerId(int clinicIndex, bool descendingOrder) async {
     return await _firebaseServices.getFirstItemId(
-      'owners',
+      collectionName,
       clinicIndex: clinicIndex,
       descendingOrder: descendingOrder,
     );
@@ -26,7 +28,7 @@ class OwnersRepo {
 
   Future<bool> addNewOwner(int clinicIndex, OwnerModel ownerModel) async {
     return await _firebaseServices.addItem<OwnerModel>(
-      'owners',
+      collectionName,
       id: ownerModel.id,
       clinicIndex: clinicIndex,
       itemModel: ownerModel,
@@ -37,10 +39,18 @@ class OwnersRepo {
 
   Future<bool> updateOwner(int clinicIndex, OwnerModel ownerModel) async {
     return await _firebaseServices.updateItem<OwnerModel>(
-      'owners',
+      collectionName,
       itemModel: ownerModel,
       id: ownerModel.id,
       toFirestore: ownerModel.toFirestore,
+      clinicIndex: clinicIndex,
+    );
+  }
+
+  Future<bool> deleteOwner(int clinicIndex, String id) async {
+    return await _firebaseServices.deleteItem(
+      collectionName,
+      id: id,
       clinicIndex: clinicIndex,
     );
   }
