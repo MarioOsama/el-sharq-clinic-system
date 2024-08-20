@@ -4,6 +4,7 @@ import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
+import 'package:el_sharq_clinic/features/owners/data/local/models/pet_model.dart';
 import 'package:flutter/material.dart';
 
 class SideSheetPetContainer extends StatelessWidget {
@@ -13,11 +14,13 @@ class SideSheetPetContainer extends StatelessWidget {
     required this.index,
     required this.petFormKey,
     this.onSaved,
+    required this.petModel,
   });
 
   final int index;
   final bool editable;
   final GlobalKey<FormState> petFormKey;
+  final PetModel? petModel;
   final void Function(String field, String? value)? onSaved;
 
   @override
@@ -43,6 +46,7 @@ class SideSheetPetContainer extends StatelessWidget {
               children: [
                 AppTextField(
                   hint: 'Name',
+                  initialValue: petModel?.name,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'Please enter a Name';
@@ -67,6 +71,8 @@ class SideSheetPetContainer extends StatelessWidget {
                   validations: const [false, false],
                   enabled: editable,
                   onSaved: onSaved,
+                  firstText: petModel?.gender,
+                  secondText: petModel?.type,
                 ),
                 verticalSpace(15),
                 FieldsRow(
@@ -77,6 +83,8 @@ class SideSheetPetContainer extends StatelessWidget {
                   validations: const [false, false],
                   enabled: editable,
                   onSaved: onSaved,
+                  firstText: petModel?.age.toString(),
+                  secondText: petModel?.breed,
                 ),
                 verticalSpace(15),
                 FieldsRow(
@@ -87,6 +95,8 @@ class SideSheetPetContainer extends StatelessWidget {
                   validations: const [false, false],
                   enabled: editable,
                   onSaved: onSaved,
+                  firstText: petModel?.color,
+                  secondText: petModel?.weight.toString(),
                 ),
                 verticalSpace(15),
                 FieldsRow(
@@ -98,11 +108,15 @@ class SideSheetPetContainer extends StatelessWidget {
                   enabled: editable,
                   isMultiline: true,
                   onSaved: onSaved,
+                  firstText: petModel?.vaccinations,
+                  secondText: petModel?.treatments,
                 ),
                 verticalSpace(15),
                 AppTextField(
                   hint: 'Pet Report',
-                  initialValue: AppConstant.petProfileReportScheme,
+                  initialValue: petModel != null
+                      ? petModel!.petReport
+                      : AppConstant.petProfileReportScheme,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
                       return 'Please write a Pet Report';

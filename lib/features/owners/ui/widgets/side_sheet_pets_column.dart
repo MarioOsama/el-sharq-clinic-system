@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/features/owners/data/local/models/pet_model.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/side_sheet_pet_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,11 +11,13 @@ class SideSheetPetsColumn extends StatelessWidget {
       required this.petsNumberNotifier,
       required this.petFormsKeys,
       required this.onDecrementPets,
-      this.onSaved});
+      this.onSaved,
+      this.pets});
 
   final bool editable;
   final ValueNotifier<int> petsNumberNotifier;
   final List<GlobalKey<FormState>> petFormsKeys;
+  final List<PetModel>? pets;
   final void Function(int index) onDecrementPets;
   final void Function(String field, String? value, int petIndex)? onSaved;
 
@@ -40,6 +43,7 @@ class SideSheetPetsColumn extends StatelessWidget {
             SideSheetPetContainer(
               petFormKey: petFormsKeys[index],
               index: index + 1,
+              petModel: pets != null ? pets![index] : null,
               editable: editable,
               onSaved: (field, value) {
                 if (onSaved != null) onSaved!(field, value, index);

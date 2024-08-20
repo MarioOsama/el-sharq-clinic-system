@@ -4,6 +4,7 @@ import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/models/owner_model.dart';
+import 'package:el_sharq_clinic/features/owners/data/local/models/pet_model.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/side_sheet_owner_container.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/side_sheet_pets_column.dart';
@@ -15,17 +16,21 @@ Future<void> showOwnerSheet(BuildContext context, String title,
     {OwnerModel? ownerModel, bool editable = true}) async {
   final bool newOwner = ownerModel == null;
   final OwnersCubit ownersCubit = context.read<OwnersCubit>();
+  final localContext = context;
+  // Check if owner is passed, if true then get owner pets
   newOwner
       ? ownersCubit.setupNewSheet()
-      : ownersCubit.setupExistingSheet(ownerModel);
+      : await ownersCubit.setupExistingOwnerSheet(ownerModel);
+  final List<PetModel>? ownerPets = !newOwner ? ownersCubit.petsList : null;
 
+  if (!localContext.mounted) return;
   await showCustomSideSheet(
-    context: context,
+    context: localContext,
     child: Column(
       children: [
         SectionTitle(title: title),
         verticalSpace(50),
-        if (newOwner) _buildAddPetButton(context, ownersCubit),
+        if (newOwner) _buildAddPetButton(localContext, ownersCubit),
         if (!newOwner) _buildOwnerId(ownerModel.id),
         verticalSpace(50),
         SideSheetOwnerContainer(
@@ -38,6 +43,7 @@ Future<void> showOwnerSheet(BuildContext context, String title,
         verticalSpace(50),
         SideSheetPetsColumn(
           editable: editable,
+          pets: ownerPets,
           petsNumberNotifier: ownersCubit.numberOfPetsNotifier,
           petFormsKeys: ownersCubit.petFormsKeys,
           onDecrementPets: (index) => ownersCubit.decrementPets(index),
