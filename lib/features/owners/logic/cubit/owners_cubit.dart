@@ -31,7 +31,7 @@ class OwnersCubit extends Cubit<OwnersState> {
   List<PetModel> petsList = [
     PetModel(
       id: 'PET000',
-      ownerId: null,
+      ownerId: 'ONR000',
       name: '',
       petReport: '',
     ),
@@ -112,14 +112,11 @@ class OwnersCubit extends Cubit<OwnersState> {
   }
 
   Future<void> refreshOwners() async {
-    emit(OwnersLoading());
     try {
       ownersList = await _ownersRepo.getOwners(authData!.clinicIndex, null);
     } catch (e) {
       emit(OwnersError('Failed to get the owners'));
     }
-
-    emit(OwnersSuccess(owners: ownersList));
   }
 
   // Save New Owner
@@ -330,7 +327,46 @@ class OwnersCubit extends Cubit<OwnersState> {
     return await _petsRepo.deletePet(authData!.clinicIndex, id);
   }
 
+  // Add owner pet
+  void validateThenAddPet(String ownerId) async {
+    if (petFormsKeys[0].currentState!.validate()) {
+      emit(OwnerLoading());
+      // Save pet form
+      petFormsKeys[0].currentState!.save();
+      log(ownerId);
+      log(petsList[0].toString());
+      // Set pet id and its owner id
+      await _setPetIds(ownerId);
+      // Add pet to firestore
+      final bool petAddingSuccess =
+          await _petsRepo.addPet(authData!.clinicIndex, ownerId, petsList[0]);
+      // Update owner info on success of adding pet
+      if (petAddingSuccess) {
+        try {
+          // Get owner to add pet to its pets list
+          OwnerModel owner = getOwnerById(ownerId);
+          owner.petsIds.add(petsList[0].id);
+          // Update owner
+          await _ownersRepo.updateOwner(authData!.clinicIndex, owner);
+        } catch (e) {
+          emit(OwnersError('Failed to add pet'));
+        }
+      }
+      emit(OwnerUpdated());
+      _onSuccessOperation();
+    }
+  }
+
+  Future<void> _setPetIds(String ownerId) async {
+    // Get last pet id in firestore to set the next pet ids
+    String? lastPetIdInFirestore = await getLastPetId();
+    lastPetIdInFirestore = lastPetIdInFirestore!.getNextId(3, 'PET');
+    petsList[0] =
+        petsList[0].copyWith(id: lastPetIdInFirestore, ownerId: ownerId);
+  }
+
   void _onSuccessOperation() async {
+    emit(OwnersLoading());
     await refreshOwners();
     selectedRows = List.filled(ownersList.length, false);
     emit(OwnersSuccess(owners: ownersList));
@@ -338,6 +374,13 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   // UI Logic
   void setupNewSheet() {
+    // Reset all data
+    deletedPetsList = [];
+    petsList = [
+      PetModel(id: 'PET000', ownerId: 'ONR000', name: '', petReport: '')
+    ];
+    ownerInfo = OwnerModel(id: 'ONR000', name: '', phone: '', petsIds: []);
+    petFormsKeys = [GlobalKey<FormState>()];
     numberOfPetsNotifier = ValueNotifier<int>(1);
   }
 
@@ -384,7 +427,7 @@ class OwnersCubit extends Cubit<OwnersState> {
     petsList.add(
       PetModel(
         id: 'PET000',
-        ownerId: null,
+        ownerId: 'ONR000',
         name: '',
         petReport: '',
       ),

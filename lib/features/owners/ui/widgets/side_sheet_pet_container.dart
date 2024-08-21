@@ -14,7 +14,7 @@ class SideSheetPetContainer extends StatelessWidget {
     required this.index,
     required this.petFormKey,
     this.onSaved,
-    required this.petModel,
+    this.petModel,
   });
 
   final int index;
@@ -29,7 +29,7 @@ class SideSheetPetContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Pet $index',
+          index != 0 ? 'Pet $index Details' : 'Pet Details',
           style: AppTextStyles.font16DarkGreyMedium
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),

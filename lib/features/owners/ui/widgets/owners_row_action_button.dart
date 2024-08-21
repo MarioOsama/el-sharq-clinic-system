@@ -2,6 +2,7 @@ import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
+import 'package:el_sharq_clinic/features/owners/ui/widgets/add_pet_side_sheet.dart';
 import 'package:el_sharq_clinic/features/owners/ui/widgets/owners_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,9 @@ class OwnersRowActionButton extends StatelessWidget {
           ),
           PopupMenuItem(
             value: 'Add Pet',
-            onTap: () {},
+            onTap: () {
+              showAddPetSheet(context, 'Add Pet', id);
+            },
             child: const Text(
               'Add Pet',
               style: AppTextStyles.font14DarkGreyMedium,
