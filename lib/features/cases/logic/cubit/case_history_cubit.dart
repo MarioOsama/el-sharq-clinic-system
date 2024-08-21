@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -296,13 +298,16 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void onSearch(String value) async {
+    // Emit loading state to show loading indicator & refresh cases
+    emit(CaseHistoryLoading());
     value = value.toLowerCase();
 
     // Search cases by owner name
-    searchResult = List.from(await _caseHistoryRepo.searchCases(
-        authData!.clinicIndex, value, 'ownerName'));
+    searchResult = await _caseHistoryRepo.searchCases(
+        authData!.clinicIndex, value, 'ownerName');
 
     if (value.isEmpty || searchResult.isEmpty) {
+      log('empty');
       emit(CaseHistorySuccess(cases: casesList));
       return;
     }
