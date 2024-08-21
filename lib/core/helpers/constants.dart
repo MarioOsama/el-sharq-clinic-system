@@ -70,7 +70,6 @@ H.R:""";
   static const List<String> doctorsTableHeaders = [
     'Doctor ID',
     'Doctor Name',
-    'Speciality',
     'Phone',
     'Registration Date',
     ''

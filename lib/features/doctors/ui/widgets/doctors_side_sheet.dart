@@ -4,11 +4,20 @@ import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
+import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
+import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> showDoctorSheet(BuildContext context, String title,
-    {bool editable = true}) async {
+    {DoctorModel? doctor, bool editable = true}) async {
+  final bool newDoctor = doctor == null;
+
+  newDoctor
+      ? context.read<DoctorsCubit>().setupNewSheet()
+      : context.read<DoctorsCubit>().setupExistingSheet(doctor);
+
   await showCustomSideSheet(
     context: context,
     scrollable: false,
@@ -16,15 +25,15 @@ Future<void> showDoctorSheet(BuildContext context, String title,
       children: [
         SectionTitle(title: title),
         verticalSpace(50),
-        // _buildDoctorId(),
-        // verticalSpace(50),
+        if (!newDoctor) _buildDoctorId(doctor.id),
+        if (!newDoctor) verticalSpace(50),
         FieldsRow(
           fields: const [
             'Doctor Name',
             'Speciality',
           ],
-          firstController: TextEditingController(),
-          secondController: TextEditingController(),
+          firstText: doctor?.name ?? '',
+          secondText: doctor?.speciality ?? '',
           enabled: editable,
         ),
         verticalSpace(50),
@@ -33,8 +42,8 @@ Future<void> showDoctorSheet(BuildContext context, String title,
             'Phone Number',
             'Another Phone Number',
           ],
-          firstController: TextEditingController(),
-          secondController: TextEditingController(),
+          firstText: doctor?.phoneNumber,
+          secondText: doctor?.anotherPhoneNumber,
           enabled: editable,
         ),
         verticalSpace(50),
@@ -43,12 +52,12 @@ Future<void> showDoctorSheet(BuildContext context, String title,
             'Email',
             'Address',
           ],
-          firstController: TextEditingController(),
-          secondController: TextEditingController(),
+          firstText: doctor?.email,
+          secondText: doctor?.address,
           enabled: editable,
         ),
         const Spacer(),
-        _buildActionIfNeeded(context, true, editable),
+        _buildActionIfNeeded(context, newDoctor, editable),
       ],
     ),
   );
@@ -63,9 +72,9 @@ _buildActionIfNeeded(BuildContext context, bool newDoctor, bool editMode) {
   return const SizedBox.shrink();
 }
 
-AppTextField _buildDoctorId(TextEditingController idController) {
+AppTextField _buildDoctorId(String doctorId) {
   return AppTextField(
-    controller: idController,
+    initialValue: doctorId,
     hint: 'Doctor ID',
     enabled: false,
     maxWidth: double.infinity,

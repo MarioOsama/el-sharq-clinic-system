@@ -20,7 +20,6 @@ class SideSheetOwnerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool withOwner = ownerModel != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,8 +42,8 @@ class SideSheetOwnerContainer extends StatelessWidget {
                 'Phone',
               ],
               onSaved: onSaved,
-              firstText: withOwner ? ownerModel!.name : null,
-              secondText: withOwner ? ownerModel!.phone : null,
+              firstText: ownerModel?.name,
+              secondText: ownerModel?.phone,
               validations: const [true, true],
               enabled: editable,
             ),

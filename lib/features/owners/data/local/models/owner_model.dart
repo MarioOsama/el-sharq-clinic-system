@@ -13,7 +13,9 @@ class OwnerModel {
     required this.phone,
     required this.petsIds,
     this.registrationDate,
-  });
+  }) {
+    _setRegistrationDate;
+  }
 
   factory OwnerModel.fromFirestore(QueryDocumentSnapshot<Object?> doc) {
     return OwnerModel(
@@ -47,7 +49,7 @@ class OwnerModel {
       'name': name,
       'phone': phone,
       'petsIds': petsIds,
-      'registrationDate': _setRegistrationDate,
+      'registrationDate': registrationDate,
     };
   }
 
@@ -62,7 +64,7 @@ class OwnerModel {
   }
 
   String get _setRegistrationDate =>
-      registrationDate ?? DateTime.now().toString();
+      registrationDate = DateTime.now().toString();
 
   @override
   String toString() {
