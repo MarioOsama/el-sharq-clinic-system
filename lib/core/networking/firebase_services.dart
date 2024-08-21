@@ -40,7 +40,6 @@ class FirebaseServices {
     final QuerySnapshot querySnapshot = await query.get();
 
     // Map the documents to your model
-
     final List<T> items = querySnapshot.docs.map((doc) {
       return fromFirestore(doc);
     }).toList();

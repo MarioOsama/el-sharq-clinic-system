@@ -47,12 +47,12 @@ class DoctorModel {
     final data = doc.data() as Map<String, dynamic>;
     return DoctorModel(
       id: doc.id,
-      name: data['name'] as String,
-      email: data['email'] as String,
-      address: data['address'] as String,
-      phoneNumber: data['phoneNumber'] as String,
-      anotherPhoneNumber: data['anotherPhoneNumber'] as String,
-      speciality: data['speciality'] as String,
+      name: data['name'],
+      email: data['email'],
+      address: data['address'],
+      phoneNumber: data['phoneNumber'],
+      anotherPhoneNumber: data['anotherPhoneNumber'],
+      speciality: data['speciality'],
     );
   }
 
@@ -71,7 +71,7 @@ class DoctorModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'name': name,
+      'name': name.toLowerCase(),
       'email': email,
       'address': address,
       'phoneNumber': phoneNumber,
