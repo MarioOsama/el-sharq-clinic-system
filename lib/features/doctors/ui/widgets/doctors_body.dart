@@ -21,6 +21,10 @@ class _DoctorsBodyState extends State<DoctorsBody> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DoctorsCubit, DoctorsState>(
+      buildWhen: (previous, current) =>
+          current is DoctorsSuccess ||
+          current is DoctorsError ||
+          current is DoctorsLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
           padding: EdgeInsets.zero,
