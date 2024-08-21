@@ -80,7 +80,7 @@ AppTextField _buildOwnerId(String id) {
     initialValue: id,
     hint: 'Owner ID',
     enabled: false,
-    width: double.infinity,
+    maxWidth: double.infinity,
     insideHint: false,
   );
 }

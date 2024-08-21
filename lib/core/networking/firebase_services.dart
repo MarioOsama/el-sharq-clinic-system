@@ -147,4 +147,28 @@ class FirebaseServices {
 
     return items;
   }
+
+  Future<List<T>> getItemsByField<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required String field,
+    required String value,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    final QuerySnapshot querySnapshot = await _firestore
+        .collection(targetedCollection.path)
+        .where(field, isGreaterThanOrEqualTo: value.toLowerCase())
+        .where(field, isLessThan: '$value\uf7ff')
+        .get();
+
+    // Converting [dataSnapshot] into T type
+    final List<T> items =
+        querySnapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    return items;
+  }
 }

@@ -41,7 +41,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
 
   Widget _buildChild(BuildContext context, CaseHistoryState state) {
     if (state is CaseHistorySuccess) {
-      return _buildSuccess(context);
+      return _buildSuccess(context, state);
     }
     if (state is CaseHistoryError) {
       return Center(
@@ -55,7 +55,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
     return const Center(child: AnimatedLoadingIndicator());
   }
 
-  CustomTable _buildSuccess(BuildContext context) {
+  CustomTable _buildSuccess(BuildContext context, CaseHistoryState state) {
     return CustomTable(
       onPageChanged: (firstIndex) {
         context.read<CaseHistoryCubit>().getNextPage(firstIndex);
@@ -63,7 +63,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
       fields: AppConstant.casesTableHeaders,
       dataSource: CustomTableDataSource(
         columnsCount: AppConstant.casesTableHeaders.length,
-        data: _getRows(context),
+        data: _getRows(state),
         actionBuilder: (id) => CaseHistoryTableActionButton(
           id: id,
         ),
@@ -85,8 +85,8 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
     );
   }
 
-  List<List<String>> _getRows(BuildContext context) {
-    return context.watch<CaseHistoryCubit>().casesList.map((caseHistory) {
+  List<List<String>> _getRows(CaseHistoryState state) {
+    return (state as CaseHistorySuccess).cases.map((caseHistory) {
       return caseHistory!.toList();
     }).toList();
   }

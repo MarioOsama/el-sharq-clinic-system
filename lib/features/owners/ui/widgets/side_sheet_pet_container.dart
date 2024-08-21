@@ -54,7 +54,7 @@ class SideSheetPetContainer extends StatelessWidget {
                     return null;
                   },
                   enabled: editable,
-                  width: double.infinity,
+                  maxWidth: double.infinity,
                   insideHint: false,
                   onSaved: (value) {
                     if (onSaved != null) {
@@ -99,21 +99,36 @@ class SideSheetPetContainer extends StatelessWidget {
                   secondText: petModel?.weight.toString(),
                 ),
                 verticalSpace(15),
-                FieldsRow(
-                  fields: const [
-                    'Vaccinations',
-                    'Treatments',
-                  ],
-                  validations: const [false, false],
+                AppTextField(
+                  hint: 'Vaccinations',
+                  initialValue: petModel?.vaccinations,
                   enabled: editable,
+                  maxWidth: double.infinity,
                   isMultiline: true,
-                  onSaved: onSaved,
-                  firstText: petModel?.vaccinations,
-                  secondText: petModel?.treatments,
+                  insideHint: false,
+                  onSaved: (value) {
+                    if (onSaved != null) {
+                      onSaved!('Vaccinations', value);
+                    }
+                  },
                 ),
                 verticalSpace(15),
                 AppTextField(
-                  hint: 'Pet Report',
+                  hint: 'Treatments',
+                  initialValue: petModel?.treatments,
+                  enabled: editable,
+                  maxWidth: double.infinity,
+                  isMultiline: true,
+                  insideHint: false,
+                  onSaved: (value) {
+                    if (onSaved != null) {
+                      onSaved!('Treatments', value);
+                    }
+                  },
+                ),
+                verticalSpace(15),
+                AppTextField(
+                  hint: 'Report',
                   initialValue: petModel != null
                       ? petModel!.petReport
                       : AppConstant.petProfileReportScheme,
@@ -124,8 +139,7 @@ class SideSheetPetContainer extends StatelessWidget {
                     return null;
                   },
                   enabled: editable,
-                  width: double.infinity,
-                  height: 175,
+                  maxWidth: double.infinity,
                   isMultiline: true,
                   insideHint: false,
                   onSaved: (value) {

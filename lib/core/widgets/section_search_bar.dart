@@ -1,4 +1,6 @@
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,15 +21,16 @@ class SectionSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 500.w,
-      height: 50.h,
+      height: 55.h,
       decoration: _buildBoxDecoration(),
-      child: TextField(
+      child: CupertinoSearchTextField(
         controller: controller,
         onChanged: onChanged,
-        textAlignVertical: TextAlignVertical.center,
-        cursorHeight: 25.h,
+        backgroundColor: AppColors.white,
+        padding: const EdgeInsets.only(left: 10),
+        placeholder: hintText ?? 'Search',
+        placeholderStyle: AppTextStyles.font16DarkGreyMedium,
         style: AppTextStyles.font20DarkGreyMedium,
-        decoration: _buildInputDecoration(),
       ),
     );
   }
@@ -44,16 +47,6 @@ class SectionSearchBar extends StatelessWidget {
           offset: const Offset(0, 3),
         ),
       ],
-    );
-  }
-
-  InputDecoration _buildInputDecoration() {
-    return InputDecoration(
-      hintText: hintText ?? 'Search',
-      prefixIcon: const Icon(Icons.search),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
     );
   }
 }

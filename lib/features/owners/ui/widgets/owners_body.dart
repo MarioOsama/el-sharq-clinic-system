@@ -40,7 +40,7 @@ class _OwnersBodyState extends State<OwnersBody> {
 
   Widget _buildChild(BuildContext context, OwnersState state) {
     if (state is OwnersSuccess) {
-      return _buildSuccess(context);
+      return _buildSuccess(context, state);
     }
     if (state is OwnersError) {
       return Center(
@@ -50,7 +50,7 @@ class _OwnersBodyState extends State<OwnersBody> {
     return const Center(child: AnimatedLoadingIndicator());
   }
 
-  CustomTable _buildSuccess(BuildContext context) {
+  CustomTable _buildSuccess(BuildContext context, OwnersState state) {
     final ownersCubit = context.read<OwnersCubit>();
     return CustomTable(
       onPageChanged: (firstIndex) {
@@ -59,7 +59,7 @@ class _OwnersBodyState extends State<OwnersBody> {
       fields: AppConstant.ownersTableHeaders,
       dataSource: CustomTableDataSource(
         columnsCount: AppConstant.ownersTableHeaders.length,
-        data: _getRows(context),
+        data: _getRows(state),
         actionBuilder: (id) => OwnersRowActionButton(
           id: id,
         ),
@@ -76,8 +76,8 @@ class _OwnersBodyState extends State<OwnersBody> {
     );
   }
 
-  List<List<String>> _getRows(BuildContext context) {
-    return context.watch<OwnersCubit>().ownersList.map((owner) {
+  List<List<String>> _getRows(OwnersState state) {
+    return (state as OwnersSuccess).owners.map((owner) {
       return owner!.toList();
     }).toList();
   }

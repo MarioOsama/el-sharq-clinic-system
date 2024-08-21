@@ -8,8 +8,8 @@ class AppTextField extends StatelessWidget {
     super.key,
     this.controller,
     this.hint,
-    this.width,
-    this.height,
+    this.maxWidth,
+    this.maxHeight,
     this.textStyle,
     this.fillColor,
     this.isObscured,
@@ -25,8 +25,8 @@ class AppTextField extends StatelessWidget {
 
   final TextEditingController? controller;
   final String? hint;
-  final double? width;
-  final double? height;
+  final double? maxWidth;
+  final double? maxHeight;
   final TextStyle? textStyle;
   final Color? fillColor;
   final bool? isObscured;
@@ -69,7 +69,7 @@ class AppTextField extends StatelessWidget {
       style: AppTextStyles.font20DarkGreyMedium,
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
-      maxLines: isMultiline ?? false ? 10 : 1,
+      maxLines: isMultiline ?? false ? 30 : 1,
       minLines: 1,
       enabled: enabled,
       readOnly: readOnly ?? false,
@@ -90,8 +90,8 @@ class AppTextField extends StatelessWidget {
           borderSide: const BorderSide(color: AppColors.darkGrey),
         ),
         constraints: BoxConstraints(
-          maxHeight: height ?? double.infinity,
-          maxWidth: width ?? 300.w,
+          maxHeight: maxHeight ?? double.infinity,
+          maxWidth: maxWidth ?? 300.w,
         ),
       ),
     );
