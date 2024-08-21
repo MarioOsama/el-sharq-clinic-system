@@ -434,6 +434,7 @@ class OwnersCubit extends Cubit<OwnersState> {
   }
 
   Future<void> setupExistingOwnerSheet(OwnerModel owner) async {
+    ownerFormKey = GlobalKey<FormState>();
     // Set owner info
     ownerInfo = owner;
     // Set pets info

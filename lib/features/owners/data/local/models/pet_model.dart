@@ -71,8 +71,8 @@ class PetModel {
       treatments: data['treatments'],
       petReport: data['petReport'],
       color: data['color'],
-      age: data['age'],
-      weight: data['weight'],
+      age: data['age'] ?? 0,
+      weight: data['weight'] ?? 0,
     );
   }
 
