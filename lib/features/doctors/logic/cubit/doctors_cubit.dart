@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 import 'package:el_sharq_clinic/features/doctors/data/repos/doctors_repo.dart';
 import 'package:flutter/material.dart';
@@ -47,24 +50,24 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       selectedRows = List.filled(doctorsList.length, false);
       emit(DoctorsSuccess(doctors: doctorsList));
     } catch (e) {
-      emit(DoctorsError('Failed to get the owners'));
+      emit(DoctorsError('Failed to get the doctors'));
     }
   }
 
   void getNextPage(int firstIndex) async {
-    String? lastOwnerId = doctorsList.lastOrNull?.id;
-    final String? lastOwnerIdInFirestore = await getFirstDoctorId();
+    String? lastDoctorId = doctorsList.lastOrNull?.id;
+    final String? lastDoctorIdInFirestore = await getFirstDoctorId();
     final bool isLastPage = doctorsList.length - firstIndex <= pageLength;
-    if (lastOwnerIdInFirestore.toString() != lastOwnerId.toString() &&
+    if (lastDoctorIdInFirestore.toString() != lastDoctorId.toString() &&
         isLastPage) {
       try {
-        final List<DoctorModel> newOwnersList =
-            await _doctorsRepo.getDoctors(authData!.clinicIndex, lastOwnerId);
-        doctorsList.addAll(newOwnersList);
+        final List<DoctorModel> newDoctorsList =
+            await _doctorsRepo.getDoctors(authData!.clinicIndex, lastDoctorId);
+        doctorsList.addAll(newDoctorsList);
         selectedRows = List.filled(doctorsList.length, false);
         emit(DoctorsSuccess(doctors: doctorsList));
       } catch (e) {
-        emit(DoctorsError('Failed to get the owners'));
+        emit(DoctorsError('Failed to get the doctors'));
       }
     }
   }
@@ -76,7 +79,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   // Save doctor methods
   void onSaveDoctor() async {
     if (doctorFormKey.currentState!.validate()) {
-      emit(DoctorsLoading());
+      emit(DoctorLoading());
       doctorFormKey.currentState!.save();
       await _setDoctorId();
       final bool saveSuccess = await _doctorsRepo.addDoctor(
@@ -85,7 +88,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
         emit(DoctorSaved());
         _onSuccessOperation();
       } else {
-        emit(DoctorsError('Failed to save the owner'));
+        emit(DoctorsError('Failed to save the doctor'));
       }
     }
   }
@@ -104,16 +107,16 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     return await _doctorsRepo.getFirstDoctorId(authData!.clinicIndex, true);
   }
 
-  // Update Owner
+  // Update Doctor
   void onUpdateDoctor() async {
     if (doctorFormKey.currentState!.validate()) {
-      emit(DoctorsLoading());
+      emit(DoctorLoading());
       doctorFormKey.currentState!.save();
       // Update
-      final bool ownerUpdatingSuccess = await _updateOwner();
-      if (!ownerUpdatingSuccess) {
+      final bool doctorUpdatingSuccess = await _updateDoctor();
+      if (!doctorUpdatingSuccess) {
         emit(
-          DoctorsError('Failed to update owner info'),
+          DoctorsError('Failed to update doctor info'),
         );
       }
       _onSuccessOperation();
@@ -121,7 +124,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     }
   }
 
-  Future<bool> _updateOwner() async {
+  Future<bool> _updateDoctor() async {
     return await _doctorsRepo.updateDoctor(doctorInfo, authData!.clinicIndex);
   }
 
@@ -131,8 +134,8 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     try {
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
-          final ownerId = doctorsList.elementAt(i)!.id;
-          await _deleteDoctor(ownerId);
+          final doctorId = doctorsList.elementAt(i)!.id;
+          await _deleteDoctor(doctorId);
         }
       }
       _resetShowDeleteButtonNotifier();
@@ -148,16 +151,17 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     final bool deletionSuccess = await _deleteDoctor(doctorId);
     if (deletionSuccess) {
       emit(DoctorDeleted());
+      _resetShowDeleteButtonNotifier();
       _onSuccessOperation();
     } else {
-      emit(DoctorsError('Failed to delete the owner'));
+      emit(DoctorsError('Failed to delete the doctor'));
     }
   }
 
   Future<bool> _deleteDoctor(String id) async {
-    final bool ownerDeletionSuccess =
+    final bool doctorDeletionSuccess =
         await _doctorsRepo.deleteDoctor(authData!.clinicIndex, id);
-    if (!ownerDeletionSuccess) {
+    if (!doctorDeletionSuccess) {
       return false;
     }
     return true;
@@ -174,7 +178,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     try {
       doctorsList = await _doctorsRepo.getDoctors(authData!.clinicIndex, null);
     } catch (e) {
-      emit(DoctorsError('Failed to get the owners'));
+      emit(DoctorsError('Failed to get the doctors'));
     }
   }
 
@@ -227,17 +231,17 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     showDeleteButtonNotifier.value = false;
   }
 
-  DoctorModel getDoctorById(String ownerId) {
+  DoctorModel getDoctorById(String doctorId) {
     try {
       if (searchResult.isEmpty) {
-        return doctorsList.firstWhere((element) => element!.id == ownerId)
+        return doctorsList.firstWhere((element) => element!.id == doctorId)
             as DoctorModel;
       } else {
-        return searchResult.firstWhere((element) => element!.id == ownerId)
+        return searchResult.firstWhere((element) => element!.id == doctorId)
             as DoctorModel;
       }
     } catch (e) {
-      emit(DoctorsError('Failed to get the owner'));
+      emit(DoctorsError('Failed to get the doctor'));
       rethrow;
     }
   }

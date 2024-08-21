@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
 import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 
@@ -11,16 +9,11 @@ class DoctorsRepo {
   final String collectionName = 'doctors';
 
   Future<List<DoctorModel>> getDoctors(
-      int clinicIndex, String? lastOwnerId) async {
-    try {
-      return _firebaseServices.getItems<DoctorModel>(collectionName,
-          clinicIndex: clinicIndex,
-          fromFirestore: DoctorModel.fromFirestore,
-          lastId: lastOwnerId);
-    } catch (e) {
-      log(e.toString());
-    }
-    return [];
+      int clinicIndex, String? lastDoctorId) async {
+    return _firebaseServices.getItems<DoctorModel>(collectionName,
+        clinicIndex: clinicIndex,
+        fromFirestore: DoctorModel.fromFirestore,
+        lastId: lastDoctorId);
   }
 
   Future<String?> getFirstDoctorId(int clinicIndex, bool decsendingOrder) {

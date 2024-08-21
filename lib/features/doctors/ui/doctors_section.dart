@@ -5,6 +5,7 @@ import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
 import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart';
+import 'package:el_sharq_clinic/features/doctors/ui/widgets/doctors_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/doctors/ui/widgets/doctors_body.dart';
 import 'package:el_sharq_clinic/features/doctors/ui/widgets/doctors_side_sheet.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class DoctorsSection extends StatelessWidget {
           children: [
             verticalSpace(50),
             const Expanded(child: DoctorsBody()),
-            // Add bloc listener here
+            const DoctorsBlocListener(),
           ],
         ),
       ),
@@ -47,7 +48,7 @@ class DoctorsSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete these owner profiles?\n'
+        alertMessage: 'Are you sure you want to delete these doctor profiles?\n'
             'This action cannot be undone.',
         onConfirm: () {
           context.read<DoctorsCubit>().onDeleteSelectedDoctors();
