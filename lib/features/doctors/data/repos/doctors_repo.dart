@@ -44,4 +44,13 @@ class DoctorsRepo {
         id: doctorId, clinicIndex: clinicIndex);
     return true;
   }
+
+  Future<List<DoctorModel>> searchDoctors(
+      int clinicIndex, String name, String field) async {
+    return _firebaseServices.getItemsByField<DoctorModel>(collectionName,
+        clinicIndex: clinicIndex,
+        value: name,
+        field: field,
+        fromFirestore: DoctorModel.fromFirestore);
+  }
 }

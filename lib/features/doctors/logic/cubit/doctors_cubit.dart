@@ -182,6 +182,22 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     }
   }
 
+  // Search doctor
+  void onSearch(String value) async {
+    // Emit loading state to show loading indicator & refresh owners
+    emit(DoctorsLoading());
+    // Search doctor by name
+    searchResult =
+        await _doctorsRepo.searchDoctors(authData!.clinicIndex, value, 'name');
+
+    if (value.isEmpty || searchResult.isEmpty) {
+      emit(DoctorsSuccess(doctors: doctorsList));
+      return;
+    }
+
+    emit(DoctorsSuccess(doctors: searchResult));
+  }
+
   // UI methods
   void setupNewSheet() {
     doctorFormKey = GlobalKey<FormState>();

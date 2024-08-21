@@ -22,7 +22,9 @@ class DoctorsSection extends StatelessWidget {
         // Search bar
         SectionSearchBar(
           hintText: 'Search by doctor name',
-          onChanged: (value) {},
+          onChanged: (value) {
+            context.read<DoctorsCubit>().onSearch(value);
+          },
         ),
         SectionActionButton(
           newText: 'New Doctor',
