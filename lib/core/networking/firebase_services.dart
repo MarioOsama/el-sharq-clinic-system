@@ -71,8 +71,7 @@ class FirebaseServices {
       {required String id,
       required T itemModel,
       required Map<String, dynamic> Function() toFirestore,
-      required int clinicIndex,
-      required String idScheme}) async {
+      required int clinicIndex}) async {
     // Get clinic document
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final targetedCollection = clinicDoc.reference.collection(collectionName);
@@ -94,9 +93,16 @@ class FirebaseServices {
     // Get clinic document
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final targetedCollection = clinicDoc.reference.collection(collectionName);
+    // Check if fields are deleted
+    final Map<String, dynamic> itemMap = toFirestore();
     // Update item
     try {
-      await targetedCollection.doc(id).update(toFirestore());
+      final targetedDoc = await targetedCollection.doc(id).get();
+      if (targetedDoc.data()!.keys == itemMap.keys) {
+        await targetedCollection.doc(id).update(itemMap);
+      } else {
+        await targetedCollection.doc(id).set(toFirestore());
+      }
       return true;
     } catch (e) {
       return false;

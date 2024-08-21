@@ -27,7 +27,7 @@ class DoctorsSection extends StatelessWidget {
           newText: 'New Doctor',
           onNewPressed: () => showDoctorSheet(context, 'New Doctor'),
           onDeletePressed: () => _onDeleteDoctors(context),
-          valueNotifier: ValueNotifier(false),
+          valueNotifier: context.read<DoctorsCubit>().showDeleteButtonNotifier,
         ),
       ],
       child: Expanded(

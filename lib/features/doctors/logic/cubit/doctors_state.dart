@@ -21,4 +21,8 @@ final class DoctorsError extends DoctorsState {
 }
 
 // Doctor states
+final class DoctorSaved extends DoctorsState {}
+
+final class DoctorUpdated extends DoctorsState {}
+
 final class DoctorDeleted extends DoctorsState {}

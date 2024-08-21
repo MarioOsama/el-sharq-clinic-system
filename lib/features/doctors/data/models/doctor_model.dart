@@ -5,8 +5,8 @@ class DoctorModel {
   final String name;
   final String? email;
   final String? address;
-  final String phoneNumber;
-  final String? anotherPhoneNumber;
+  final String phone;
+  final String? anotherPhone;
   final String? speciality;
   String? registrationDate;
 
@@ -15,8 +15,8 @@ class DoctorModel {
     required this.name,
     this.email,
     this.address,
-    required this.phoneNumber,
-    this.anotherPhoneNumber,
+    required this.phone,
+    this.anotherPhone,
     this.speciality,
     this.registrationDate,
   }) {
@@ -28,8 +28,8 @@ class DoctorModel {
     String? name,
     String? email,
     String? address,
-    String? phoneNumber,
-    String? anotherPhoneNumber,
+    String? phone,
+    String? anotherPhone,
     String? speciality,
   }) {
     return DoctorModel(
@@ -37,8 +37,8 @@ class DoctorModel {
       name: name ?? this.name,
       email: email ?? this.email,
       address: address ?? this.address,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      anotherPhoneNumber: anotherPhoneNumber ?? this.anotherPhoneNumber,
+      phone: phone ?? this.phone,
+      anotherPhone: anotherPhone ?? this.anotherPhone,
       speciality: speciality ?? this.speciality,
     );
   }
@@ -50,8 +50,8 @@ class DoctorModel {
       name: data['name'],
       email: data['email'],
       address: data['address'],
-      phoneNumber: data['phoneNumber'],
-      anotherPhoneNumber: data['anotherPhoneNumber'],
+      phone: data['phone'],
+      anotherPhone: data['anotherPhone'],
       speciality: data['speciality'],
     );
   }
@@ -59,8 +59,8 @@ class DoctorModel {
   Map<String, dynamic> toFirestore() {
     final Map<String, dynamic> doctorData = toMap();
     for (var key in doctorData.keys.toList()) {
-      if (doctorData[key].toString().trim().isEmpty ||
-          doctorData[key] == null ||
+      if (doctorData[key] == null ||
+          doctorData[key].toString().trim().isEmpty ||
           doctorData[key] == 0) {
         doctorData.remove(key);
       }
@@ -74,9 +74,10 @@ class DoctorModel {
       'name': name.toLowerCase(),
       'email': email,
       'address': address,
-      'phoneNumber': phoneNumber,
-      'anotherPhoneNumber': anotherPhoneNumber,
+      'phone': phone,
+      'anotherPhone': anotherPhone,
       'speciality': speciality,
+      'registrationDate': _setRegistrationDate,
     };
   }
 
@@ -84,11 +85,12 @@ class DoctorModel {
     return [
       id,
       name,
-      phoneNumber,
+      phone,
+      registrationDate?.substring(0, 10) ?? '',
       speciality ?? '',
       email ?? '',
       address ?? '',
-      anotherPhoneNumber ?? '',
+      anotherPhone ?? '',
     ];
   }
 

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 import 'package:el_sharq_clinic/features/doctors/data/repos/doctors_repo.dart';
@@ -17,13 +18,13 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   int pageLength = 10;
   List<DoctorModel?> doctorsList = [];
   List<DoctorModel?> searchResult = [];
-  List<bool> selectedRows = [false];
-  DoctorModel doctor = DoctorModel(
+  List<bool> selectedRows = [];
+  DoctorModel doctorInfo = DoctorModel(
     id: 'DCR000',
     name: '',
-    phoneNumber: '',
+    phone: '',
     speciality: '',
-    anotherPhoneNumber: '',
+    anotherPhone: '',
     email: '',
     address: '',
   );
@@ -69,7 +70,59 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   }
 
   Future<String?> getFirstDoctorId() async {
-    return await _doctorsRepo.getLastOwnerId(authData!.clinicIndex, false);
+    return await _doctorsRepo.getFirstDoctorId(authData!.clinicIndex, false);
+  }
+
+  // Save doctor methods
+  void onSaveDoctor() async {
+    if (doctorFormKey.currentState!.validate()) {
+      emit(DoctorsLoading());
+      doctorFormKey.currentState!.save();
+      await _setDoctorId();
+      final bool saveSuccess = await _doctorsRepo.addDoctor(
+          doctorInfo, doctorInfo.id, authData!.clinicIndex);
+      if (saveSuccess) {
+        emit(DoctorSaved());
+        _onSuccessOperation();
+      } else {
+        emit(DoctorsError('Failed to save the owner'));
+      }
+    }
+  }
+
+  Future<void> _setDoctorId() async {
+    final String? lastCaseId = await getLastCaseId();
+
+    if (lastCaseId != null) {
+      doctorInfo = doctorInfo.copyWith(id: lastCaseId.getNextId(3, 'DCR'));
+    } else {
+      doctorInfo = doctorInfo.copyWith(id: 'DCR001');
+    }
+  }
+
+  Future<String?> getLastCaseId() async {
+    return await _doctorsRepo.getFirstDoctorId(authData!.clinicIndex, true);
+  }
+
+  // Update Owner
+  void onUpdateDoctor() async {
+    if (doctorFormKey.currentState!.validate()) {
+      emit(DoctorsLoading());
+      doctorFormKey.currentState!.save();
+      // Update
+      final bool ownerUpdatingSuccess = await _updateOwner();
+      if (!ownerUpdatingSuccess) {
+        emit(
+          DoctorsError('Failed to update owner info'),
+        );
+      }
+      _onSuccessOperation();
+      emit(DoctorUpdated());
+    }
+  }
+
+  Future<bool> _updateOwner() async {
+    return await _doctorsRepo.updateDoctor(doctorInfo, authData!.clinicIndex);
   }
 
   // Delete doctor methods
@@ -128,11 +181,32 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   // UI methods
   void setupNewSheet() {
     doctorFormKey = GlobalKey<FormState>();
+    doctorInfo = DoctorModel(
+      id: 'DCR000',
+      name: '',
+      phone: '',
+      speciality: '',
+      anotherPhone: '',
+      email: '',
+      address: '',
+    );
   }
 
   void setupExistingSheet(DoctorModel doctor) {
     doctorFormKey = GlobalKey<FormState>();
-    this.doctor = doctor;
+    doctorInfo = doctor;
+  }
+
+  void onSaveDoctorFormField(String field, String? value) {
+    doctorInfo = doctorInfo.copyWith(
+      name: field == 'Doctor Name' ? value : doctorInfo.name,
+      speciality: field == 'Speciality' ? value : doctorInfo.speciality,
+      email: field == 'Email' ? value : doctorInfo.email,
+      address: field == 'Address' ? value : doctorInfo.address,
+      phone: field == 'Phone Number' ? value : doctorInfo.phone,
+      anotherPhone:
+          field == 'Another Phone Number' ? value : doctorInfo.anotherPhone,
+    );
   }
 
   void onMultiSelection(int index, bool selected) {

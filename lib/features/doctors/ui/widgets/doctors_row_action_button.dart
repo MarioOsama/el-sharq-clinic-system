@@ -19,7 +19,12 @@ class DoctorsRowActionButton extends StatelessWidget {
           PopupMenuItem(
             value: 'Edit',
             onTap: () {
-              showDoctorSheet(context, 'Edit Doctor', editable: true);
+              showDoctorSheet(
+                context,
+                'Edit Doctor',
+                editable: true,
+                doctor: context.read<DoctorsCubit>().getDoctorById(id),
+              );
             },
             child: const Text(
               'Edit',

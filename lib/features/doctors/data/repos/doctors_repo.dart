@@ -23,9 +23,27 @@ class DoctorsRepo {
     return [];
   }
 
-  Future<String?> getLastOwnerId(int clinicIndex, bool decsendingOrder) {
+  Future<String?> getFirstDoctorId(int clinicIndex, bool decsendingOrder) {
     return _firebaseServices.getFirstItemId(collectionName,
         clinicIndex: clinicIndex, descendingOrder: decsendingOrder);
+  }
+
+  Future<bool> addDoctor(DoctorModel doctor, String id, int clinicIndex) async {
+    await _firebaseServices.addItem(collectionName,
+        clinicIndex: clinicIndex,
+        itemModel: doctor,
+        id: id,
+        toFirestore: doctor.toFirestore);
+    return true;
+  }
+
+  Future<bool> updateDoctor(DoctorModel doctor, int clinicIndex) async {
+    await _firebaseServices.updateItem(collectionName,
+        clinicIndex: clinicIndex,
+        itemModel: doctor,
+        id: doctor.id,
+        toFirestore: doctor.toFirestore);
+    return true;
   }
 
   Future<bool> deleteDoctor(int clinicIndex, String doctorId) async {
