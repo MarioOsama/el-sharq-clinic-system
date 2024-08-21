@@ -33,7 +33,6 @@ class OwnersRepo {
       clinicIndex: clinicIndex,
       itemModel: ownerModel,
       toFirestore: ownerModel.toFirestore,
-      idScheme: 'ONR',
     );
   }
 

@@ -33,7 +33,6 @@ class CaseHistoryRepo {
       id: caseModel.id,
       clinicIndex: clinicIndex,
       toFirestore: caseModel.toFirestore,
-      idScheme: 'CSE',
     );
   }
 

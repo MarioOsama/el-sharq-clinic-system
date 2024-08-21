@@ -80,8 +80,8 @@ class PetModel {
   Map<String, dynamic> toFirestore() {
     final Map<String, dynamic> map = toMap();
     for (var key in map.keys.toList()) {
-      if (map[key].toString().trim().isEmpty ||
-          map[key] == null ||
+      if (map[key] == null ||
+          map[key].toString().trim().isEmpty ||
           map[key] == 0) {
         map.remove(key);
       }

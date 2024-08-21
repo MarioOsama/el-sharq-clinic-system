@@ -13,52 +13,62 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 Future<void> showDoctorSheet(BuildContext context, String title,
     {DoctorModel? doctor, bool editable = true}) async {
   final bool newDoctor = doctor == null;
+  final DoctorsCubit doctorsCubit = context.read<DoctorsCubit>();
 
   newDoctor
-      ? context.read<DoctorsCubit>().setupNewSheet()
-      : context.read<DoctorsCubit>().setupExistingSheet(doctor);
+      ? doctorsCubit.setupNewSheet()
+      : doctorsCubit.setupExistingSheet(doctor);
 
   await showCustomSideSheet(
     context: context,
     scrollable: false,
-    child: Column(
-      children: [
-        SectionTitle(title: title),
-        verticalSpace(50),
-        if (!newDoctor) _buildDoctorId(doctor.id),
-        if (!newDoctor) verticalSpace(50),
-        FieldsRow(
-          fields: const [
-            'Doctor Name',
-            'Speciality',
-          ],
-          firstText: doctor?.name ?? '',
-          secondText: doctor?.speciality ?? '',
-          enabled: editable,
-        ),
-        verticalSpace(50),
-        FieldsRow(
-          fields: const [
-            'Phone Number',
-            'Another Phone Number',
-          ],
-          firstText: doctor?.phoneNumber,
-          secondText: doctor?.anotherPhoneNumber,
-          enabled: editable,
-        ),
-        verticalSpace(50),
-        FieldsRow(
-          fields: const [
-            'Email',
-            'Address',
-          ],
-          firstText: doctor?.email,
-          secondText: doctor?.address,
-          enabled: editable,
-        ),
-        const Spacer(),
-        _buildActionIfNeeded(context, newDoctor, editable),
-      ],
+    child: Form(
+      key: doctorsCubit.doctorFormKey,
+      child: Column(
+        children: [
+          SectionTitle(title: title),
+          verticalSpace(50),
+          if (!newDoctor) _buildDoctorId(doctor.id),
+          if (!newDoctor) verticalSpace(50),
+          FieldsRow(
+            fields: const [
+              'Doctor Name',
+              'Speciality',
+            ],
+            firstText: doctor?.name ?? '',
+            secondText: doctor?.speciality ?? '',
+            enabled: editable,
+            validations: const [true, false],
+            onSaved: doctorsCubit.onSaveDoctorFormField,
+          ),
+          verticalSpace(50),
+          FieldsRow(
+            fields: const [
+              'Phone Number',
+              'Another Phone Number',
+            ],
+            firstText: doctor?.phone,
+            secondText: doctor?.anotherPhone,
+            enabled: editable,
+            validations: const [true, false],
+            onSaved: doctorsCubit.onSaveDoctorFormField,
+          ),
+          verticalSpace(50),
+          FieldsRow(
+            fields: const [
+              'Email',
+              'Address',
+            ],
+            firstText: doctor?.email,
+            secondText: doctor?.address,
+            enabled: editable,
+            validations: const [false, false],
+            onSaved: doctorsCubit.onSaveDoctorFormField,
+          ),
+          const Spacer(),
+          _buildActionIfNeeded(context, newDoctor, editable),
+        ],
+      ),
     ),
   );
 }
@@ -87,7 +97,9 @@ AppTextButton _buildNewAction(BuildContext context) {
     text: 'Save Doctor',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () {
+      context.read<DoctorsCubit>().onSaveDoctor();
+    },
   );
 }
 
@@ -96,6 +108,8 @@ AppTextButton _buildUpdateAction(BuildContext context) {
     text: 'Update Doctor',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () {
+      context.read<DoctorsCubit>().onUpdateDoctor();
+    },
   );
 }

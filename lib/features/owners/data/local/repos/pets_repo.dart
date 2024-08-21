@@ -16,7 +16,6 @@ class PetsRepo {
       itemModel: petModel,
       id: petModel.id,
       toFirestore: petModel.toFirestore,
-      idScheme: 'PET',
     );
   }
 
