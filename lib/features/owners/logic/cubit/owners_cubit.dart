@@ -383,9 +383,11 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   // Search
   void onSearch(String value) async {
+    // Emit loading state to show loading indicator & refresh owners
+    emit(OwnersLoading());
     // Search owners by phone number
-    searchResult = List.from(
-        await _ownersRepo.searchOwners(authData!.clinicIndex, value, 'phone'));
+    searchResult =
+        await _ownersRepo.searchOwners(authData!.clinicIndex, value, 'phone');
 
     if (value.isEmpty || searchResult.isEmpty) {
       emit(OwnersSuccess(owners: ownersList));
