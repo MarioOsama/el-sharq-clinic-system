@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -26,6 +24,7 @@ class OwnersCubit extends Cubit<OwnersState> {
   GlobalKey<FormState> ownerFormKey = GlobalKey<FormState>();
 
   List<OwnerModel?> ownersList = [];
+  List<OwnerModel?> searchResult = [];
   List<bool> selectedRows = [];
   List<PetModel> deletedPetsList = [];
   List<PetModel> petsList = [
@@ -34,6 +33,8 @@ class OwnersCubit extends Cubit<OwnersState> {
       ownerId: 'ONR000',
       name: '',
       petReport: '',
+      weight: 0,
+      age: 0,
     ),
   ];
   OwnerModel ownerInfo = OwnerModel(
@@ -90,8 +91,18 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   // Owner
   OwnerModel getOwnerById(String ownerId) {
-    return ownersList.firstWhere((element) => element!.id == ownerId)
-        as OwnerModel;
+    try {
+      if (searchResult.isEmpty) {
+        return ownersList.firstWhere((element) => element!.id == ownerId)
+            as OwnerModel;
+      } else {
+        return searchResult.firstWhere((element) => element!.id == ownerId)
+            as OwnerModel;
+      }
+    } catch (e) {
+      emit(OwnersError('Failed to get the owner'));
+      rethrow;
+    }
   }
 
   Future<String?> getLastOwnerId() async {
@@ -333,8 +344,6 @@ class OwnersCubit extends Cubit<OwnersState> {
       emit(OwnerLoading());
       // Save pet form
       petFormsKeys[0].currentState!.save();
-      log(ownerId);
-      log(petsList[0].toString());
       // Set pet id and its owner id
       await _setPetIds(ownerId);
       // Add pet to firestore
@@ -370,6 +379,20 @@ class OwnersCubit extends Cubit<OwnersState> {
     await refreshOwners();
     selectedRows = List.filled(ownersList.length, false);
     emit(OwnersSuccess(owners: ownersList));
+  }
+
+  // Search
+  void onSearch(String value) async {
+    // Search owners by phone number
+    searchResult = List.from(
+        await _ownersRepo.searchOwners(authData!.clinicIndex, value, 'phone'));
+
+    if (value.isEmpty || searchResult.isEmpty) {
+      emit(OwnersSuccess(owners: ownersList));
+      return;
+    }
+
+    emit(OwnersSuccess(owners: searchResult));
   }
 
   // UI Logic
@@ -430,6 +453,8 @@ class OwnersCubit extends Cubit<OwnersState> {
         ownerId: 'ONR000',
         name: '',
         petReport: '',
+        weight: 0,
+        age: 0,
       ),
     );
     emit(OwnersPetsChanged(numberOfPetsNotifier.value));

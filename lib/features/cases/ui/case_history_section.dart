@@ -3,6 +3,7 @@ import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
+import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_body.dart';
@@ -21,6 +22,14 @@ class CaseHistorySection extends StatelessWidget {
     return SectionContainer(
       title: 'Case History',
       actions: [
+        // Search bar
+        SectionSearchBar(
+          hintText: 'Search by owner name',
+          onChanged: (value) {
+            context.read<CaseHistoryCubit>().onSearch(value);
+          },
+        ),
+
         SectionActionButton(
           newText: 'New Case',
           onNewPressed: () => showCaseSheet(context, 'New Case'),

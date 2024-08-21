@@ -54,4 +54,15 @@ class CaseHistoryRepo {
       clinicIndex: clinicIndex,
     );
   }
+
+  Future<List<CaseHistoryModel>> searchCases(
+      int clinicIndex, String value, String field) async {
+    return _firebaseServices.getItemsByField<CaseHistoryModel>(
+      collectionName,
+      clinicIndex: clinicIndex,
+      field: field,
+      value: value,
+      fromFirestore: CaseHistoryModel.fromFirestore,
+    );
+  }
 }

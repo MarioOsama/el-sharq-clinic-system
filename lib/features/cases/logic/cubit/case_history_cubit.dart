@@ -26,6 +26,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   TextEditingController petReportController = TextEditingController();
 
   List<CaseHistoryModel?> casesList = [];
+  List<CaseHistoryModel?> searchResult = [];
   List<bool> selectedRows = [];
 
   int pageLength = 10;
@@ -139,11 +140,18 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     }
   }
 
-  CaseHistoryModel? getCaseHistoryById(String id) {
+  CaseHistoryModel getCaseHistoryById(String caseId) {
     try {
-      return casesList.firstWhere((element) => element!.id == id);
+      if (searchResult.isEmpty) {
+        return casesList.firstWhere((element) => element!.id == caseId)
+            as CaseHistoryModel;
+      } else {
+        return searchResult.firstWhere((element) => element!.id == caseId)
+            as CaseHistoryModel;
+      }
     } catch (e) {
-      return null;
+      emit(CaseHistoryError('Failed to get the case'));
+      rethrow;
     }
   }
 
@@ -253,7 +261,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     }
     return CaseHistoryModel(
       id: update ? caseIdController.text.trim() : lastCaseIdInFirestore!,
-      ownerName: ownerNameController.text.trim(),
+      ownerName: ownerNameController.text.trim().toLowerCase(),
       petName: petNameController.text.trim(),
       petType: petTypeController.text.trim(),
       phone: phoneController.text.trim(),
@@ -285,5 +293,20 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void _resetShowDeleteButtonNotifier() {
     showDeleteButtonNotifier.value = false;
+  }
+
+  void onSearch(String value) async {
+    value = value.toLowerCase();
+
+    // Search cases by owner name
+    searchResult = List.from(await _caseHistoryRepo.searchCases(
+        authData!.clinicIndex, value, 'ownerName'));
+
+    if (value.isEmpty || searchResult.isEmpty) {
+      emit(CaseHistorySuccess(cases: casesList));
+      return;
+    }
+
+    emit(CaseHistorySuccess(cases: searchResult));
   }
 }

@@ -54,4 +54,13 @@ class OwnersRepo {
       clinicIndex: clinicIndex,
     );
   }
+
+  Future<List<OwnerModel>> searchOwners(
+      int clinicIndex, String name, String field) async {
+    return await _firebaseServices.getItemsByField<OwnerModel>(collectionName,
+        clinicIndex: clinicIndex,
+        field: field,
+        value: name,
+        fromFirestore: OwnerModel.fromFirestore);
+  }
 }

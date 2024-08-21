@@ -67,8 +67,7 @@ Future<void> showCaseSheet(BuildContext context, String title,
           controller: caseHistoryCubit.petReportController,
           hint: 'Pet Report',
           enabled: editable,
-          width: double.infinity,
-          height: 300,
+          maxWidth: double.infinity,
           isMultiline: true,
           insideHint: false,
         ),
@@ -117,7 +116,7 @@ AppTextField _buildCaseId(TextEditingController idController) {
     controller: idController,
     hint: 'Case ID',
     enabled: false,
-    width: double.infinity,
+    maxWidth: double.infinity,
     insideHint: false,
   );
 }
