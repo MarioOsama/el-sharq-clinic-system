@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -307,7 +305,6 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         authData!.clinicIndex, value, 'ownerName');
 
     if (value.isEmpty || searchResult.isEmpty) {
-      log('empty');
       emit(CaseHistorySuccess(cases: casesList));
       return;
     }

@@ -23,6 +23,7 @@ abstract class AppConstant {
     DrawerItemModel(title: 'Dashboard', icon: Icons.dashboard_outlined),
     DrawerItemModel(title: 'Case History', icon: Icons.history),
     DrawerItemModel(title: 'Pet Owners', icon: Icons.people_outline),
+    DrawerItemModel(title: 'Doctors', icon: Icons.person_outline),
     DrawerItemModel(title: 'Services', icon: Icons.medical_services_outlined),
     DrawerItemModel(title: 'Products', icon: Icons.shopping_bag_outlined),
     DrawerItemModel(title: 'Sales', icon: Icons.attach_money_outlined),
@@ -64,4 +65,14 @@ Temp:
 Unique signs: 
 R.R:
 H.R:""";
+
+// Doctors
+  static const List<String> doctorsTableHeaders = [
+    'Doctor ID',
+    'Doctor Name',
+    'Speciality',
+    'Phone',
+    'Registration Date',
+    ''
+  ];
 }

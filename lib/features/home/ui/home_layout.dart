@@ -4,6 +4,7 @@ import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/case_history_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
+import 'package:el_sharq_clinic/features/doctors/ui/doctors_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
@@ -69,6 +70,7 @@ class _HomeLayoutState extends State<HomeLayout> {
                 getIt<OwnersCubit>()..setupSectionData(widget.authData),
             child: OwnersSection(authData: widget.authData),
           ),
+      (context) => DoctorsSection(),
       // const Text('Pet Owners'),
       // const Text('Services'),
       // const Text('Products'),
