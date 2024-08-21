@@ -72,6 +72,59 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     return await _doctorsRepo.getLastOwnerId(authData!.clinicIndex, false);
   }
 
+  // Delete doctor methods
+  void onDeleteSelectedDoctors() async {
+    emit(DoctorsLoading());
+    try {
+      for (int i = 0; i < selectedRows.length; i++) {
+        if (selectedRows.elementAt(i)) {
+          final ownerId = doctorsList.elementAt(i)!.id;
+          await _deleteDoctor(ownerId);
+        }
+      }
+      _resetShowDeleteButtonNotifier();
+      emit(DoctorDeleted());
+      _onSuccessOperation();
+    } catch (e) {
+      emit(DoctorsError('Failed to delete these selected cases'));
+    }
+  }
+
+  void onDeleteDoctor(String doctorId) async {
+    emit(DoctorsLoading());
+    final bool deletionSuccess = await _deleteDoctor(doctorId);
+    if (deletionSuccess) {
+      emit(DoctorDeleted());
+      _onSuccessOperation();
+    } else {
+      emit(DoctorsError('Failed to delete the owner'));
+    }
+  }
+
+  Future<bool> _deleteDoctor(String id) async {
+    final bool ownerDeletionSuccess =
+        await _doctorsRepo.deleteDoctor(authData!.clinicIndex, id);
+    if (!ownerDeletionSuccess) {
+      return false;
+    }
+    return true;
+  }
+
+  void _onSuccessOperation() async {
+    emit(DoctorsLoading());
+    await refreshDoctors();
+    selectedRows = List.filled(doctorsList.length, false);
+    emit(DoctorsSuccess(doctors: doctorsList));
+  }
+
+  Future<void> refreshDoctors() async {
+    try {
+      doctorsList = await _doctorsRepo.getDoctors(authData!.clinicIndex, null);
+    } catch (e) {
+      emit(DoctorsError('Failed to get the owners'));
+    }
+  }
+
   // UI methods
   void setupNewSheet() {
     doctorFormKey = GlobalKey<FormState>();

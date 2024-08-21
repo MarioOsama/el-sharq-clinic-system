@@ -27,4 +27,10 @@ class DoctorsRepo {
     return _firebaseServices.getFirstItemId(collectionName,
         clinicIndex: clinicIndex, descendingOrder: decsendingOrder);
   }
+
+  Future<bool> deleteDoctor(int clinicIndex, String doctorId) async {
+    await _firebaseServices.deleteItem(collectionName,
+        id: doctorId, clinicIndex: clinicIndex);
+    return true;
+  }
 }
