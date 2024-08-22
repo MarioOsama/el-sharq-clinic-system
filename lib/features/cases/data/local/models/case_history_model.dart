@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseHistoryModel {
   final String id;
+  final String? doctorId;
   final String ownerName;
   final String? phone;
   final String? petName;
@@ -12,6 +13,7 @@ class CaseHistoryModel {
 
   CaseHistoryModel({
     required this.id,
+    this.doctorId,
     required this.ownerName,
     this.phone,
     this.petName,
@@ -23,6 +25,7 @@ class CaseHistoryModel {
 
   CaseHistoryModel copyWith({
     String? id,
+    String? doctorId,
     String? ownerName,
     String? phone,
     String? petName,
@@ -33,6 +36,7 @@ class CaseHistoryModel {
   }) {
     return CaseHistoryModel(
       id: id ?? this.id,
+      doctorId: doctorId ?? this.doctorId,
       ownerName: ownerName ?? this.ownerName,
       phone: phone ?? this.phone,
       petName: petName ?? this.petName,
@@ -47,13 +51,14 @@ class CaseHistoryModel {
     final data = doc.data() as Map<String, dynamic>;
     return CaseHistoryModel(
       id: doc.id,
+      doctorId: data['doctorId'] ?? '',
       ownerName: data['ownerName'],
-      phone: data['phone'],
-      petName: data['petName'],
-      petType: data['petType'],
-      date: data['date'] ?? '',
-      time: data['time'],
-      petReport: data['petReport'] ?? '',
+      phone: data['phone'] ?? '',
+      petName: data['petName'] ?? '',
+      petType: data['petType'] ?? '',
+      date: data['date'],
+      time: data['time'] ?? '',
+      petReport: data['petReport'],
     );
   }
 
@@ -72,9 +77,10 @@ class CaseHistoryModel {
     return [
       id,
       ownerName,
+      doctorId ?? '',
       phone ?? '',
-      petName ?? '',
       date,
+      petName ?? '',
       petType ?? '',
       time ?? '',
       petReport,
@@ -84,6 +90,7 @@ class CaseHistoryModel {
   Map<String, String?> toMap() {
     return {
       'id': id,
+      'doctorId': doctorId,
       'ownerName': ownerName,
       'phone': phone,
       'petName': petName,

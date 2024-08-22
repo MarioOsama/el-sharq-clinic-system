@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -6,6 +8,7 @@ import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/repos/case_history_repo.dart';
+import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,11 +27,14 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   TextEditingController timeController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController petReportController = TextEditingController();
+  TextEditingController doctorNameController = TextEditingController();
 
   List<CaseHistoryModel?> casesList = [];
   List<CaseHistoryModel?> searchResult = [];
   List<bool> selectedRows = [];
+  List<DoctorModel> doctorsList = [];
 
+  String doctorId = '';
   int pageLength = 10;
 
   ValueNotifier<bool> showDeleteButtonNotifier = ValueNotifier(false);
@@ -36,6 +42,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   void setupSectionData(AuthDataModel authenticationData) {
     _setAuthData(authenticationData);
     _getPaginatedCases();
+    _getDoctors();
   }
 
   void _setAuthData(AuthDataModel authenticationData) {
@@ -94,6 +101,9 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void setupNewModeControllers() {
+    doctorId = '';
+    doctorNameController.clear();
+    caseIdController.clear();
     ownerNameController.clear();
     petNameController.clear();
     petTypeController.clear();
@@ -104,7 +114,9 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void setupShowModeControllers(CaseHistoryModel caseHistory) {
+    log(doctorNameController.text);
     caseIdController.text = caseHistory.id;
+    doctorNameController.text = caseHistory.doctorId ?? '';
     ownerNameController.text = caseHistory.ownerName;
     petNameController.text = caseHistory.petName ?? '';
     petTypeController.text = caseHistory.petType ?? '';
@@ -116,6 +128,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void validateAndSaveCase() async {
     final List<String> emptyFields = _getEmptyOfRequiredFields();
+    log(emptyFields.toString());
     // Check that there are no empty required fields
     if (emptyFields.isEmpty) {
       // Save new case
@@ -219,6 +232,25 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     }
   }
 
+  // Doctors
+  Future<void> _getDoctors() async {
+    try {
+      doctorsList = await _caseHistoryRepo.getAllDoctors(authData!.clinicIndex);
+    } catch (e) {
+      emit(CaseHistoryError('Failed to get the doctors'));
+    }
+  }
+
+  void onSelectDoctor(String? value) {
+    if (value == null) {
+      doctorId = '';
+      doctorNameController.clear();
+      emit(NewCaseHistoryInvalid('This doctor is not exist'));
+      return;
+    }
+    doctorId = value;
+  }
+
   void _onSuccessOperation() async {
     await refreshCases();
     selectedRows = List.filled(casesList.length, false);
@@ -247,6 +279,12 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     if (petReportController.text.trim().isEmpty) {
       emptyFields.add('Pet report');
     }
+    // if (doctorId.trim().isEmpty ||
+    //     doctorNameController.text.trim().isEmpty ||
+    //     doctorsList.every(
+    //         (doctor) => doctor.name != doctorNameController.text.trim())) {
+    //   emptyFields.add('Doctor');
+    // }
     return emptyFields;
   }
 
@@ -261,6 +299,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     }
     return CaseHistoryModel(
       id: update ? caseIdController.text.trim() : lastCaseIdInFirestore!,
+      doctorId: doctorId,
       ownerName: ownerNameController.text.trim().toLowerCase(),
       petName: petNameController.text.trim(),
       petType: petTypeController.text.trim(),

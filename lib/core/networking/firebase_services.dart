@@ -16,10 +16,17 @@ class FirebaseServices {
     final clinicDoc = await _getClinicDoc(clinicIndex);
     final targetedCollection = clinicDoc.reference.collection(collectionName);
 
+    Query query;
+
     // Create the query with pagination
-    Query query = targetedCollection
-        .orderBy(FieldPath.documentId, descending: true)
-        .limit(limit);
+    if (limit == -1) {
+      query =
+          targetedCollection.orderBy(FieldPath.documentId, descending: true);
+    } else {
+      query = targetedCollection
+          .orderBy(FieldPath.documentId, descending: true)
+          .limit(limit);
+    }
 
     // If there is a lastItem, start after its document ID
     if (lastId != null) {
