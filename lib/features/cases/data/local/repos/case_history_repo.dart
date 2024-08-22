@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
+import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 
 class CaseHistoryRepo {
   final FirebaseServices _firebaseServices;
@@ -62,6 +63,15 @@ class CaseHistoryRepo {
       field: field,
       value: value,
       fromFirestore: CaseHistoryModel.fromFirestore,
+    );
+  }
+
+  Future<List<DoctorModel>> getAllDoctors(int clinicIndex) async {
+    return await _firebaseServices.getItems<DoctorModel>(
+      'doctors',
+      clinicIndex: clinicIndex,
+      fromFirestore: DoctorModel.fromFirestore,
+      limit: -1,
     );
   }
 }

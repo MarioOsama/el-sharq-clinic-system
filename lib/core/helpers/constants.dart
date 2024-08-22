@@ -34,8 +34,8 @@ abstract class AppConstant {
   static const List<String> casesTableHeaders = [
     'Case ID',
     'Owner Name',
+    'Doctor ID',
     'Phone',
-    'Pet Name',
     'Date',
     ''
   ];

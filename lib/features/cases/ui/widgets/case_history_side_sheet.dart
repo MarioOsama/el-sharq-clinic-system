@@ -1,5 +1,7 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/widgets/app_drop_down_menu.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
@@ -8,6 +10,7 @@ import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +22,8 @@ Future<void> showCaseSheet(BuildContext context, String title,
   newCase
       ? caseHistoryCubit.setupNewModeControllers()
       : caseHistoryCubit.setupShowModeControllers(caseHistoryModel);
+  final List<DoctorModel> doctorsList =
+      context.read<CaseHistoryCubit>().doctorsList;
 
   await showCustomSideSheet(
     context: context,
@@ -27,6 +32,21 @@ Future<void> showCaseSheet(BuildContext context, String title,
         SectionTitle(title: title),
         verticalSpace(50),
         if (!newCase) _buildCaseId(caseHistoryCubit.caseIdController),
+        verticalSpace(50),
+        AppDropDownMenu<DoctorModel>(
+          hint: editable ? 'Doctor' : 'Doctor ID',
+          controller: caseHistoryCubit.doctorNameController,
+          itemBuilder: (index) => DropdownMenuEntry(
+            label: doctorsList[index].name,
+            value: doctorsList[index].id,
+            labelWidget: _buildDoctorLabel(doctorsList[index]),
+          ),
+          items: caseHistoryCubit.doctorsList,
+          onChanged: (value) {
+            caseHistoryCubit.onSelectDoctor(value);
+          },
+          enabled: editable,
+        ),
         verticalSpace(50),
         FieldsRow(
           fields: const [
@@ -75,6 +95,22 @@ Future<void> showCaseSheet(BuildContext context, String title,
         _buildActionIfNeeded(context, newCase, editable),
       ],
     ),
+  );
+}
+
+Row _buildDoctorLabel(DoctorModel doctorsList) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        doctorsList.name,
+        style: AppTextStyles.font16DarkGreyMedium,
+      ),
+      Text(
+        doctorsList.id,
+        style: AppTextStyles.font16DarkGreyMedium,
+      ),
+    ],
   );
 }
 
