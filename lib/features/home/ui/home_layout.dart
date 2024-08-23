@@ -81,7 +81,8 @@ class _HomeLayoutState extends State<HomeLayout> {
             child: const DoctorsSection(),
           ),
       (context) => BlocProvider<ServicesCubit>(
-            create: (context) => ServicesCubit(),
+            create: (context) =>
+                getIt<ServicesCubit>()..setupSectionData(widget.authData),
             child: const ServicesSection(),
           ),
       // const Text('Pet Owners'),

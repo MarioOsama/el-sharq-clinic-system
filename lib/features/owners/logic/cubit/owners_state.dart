@@ -15,18 +15,17 @@ final class OwnersSuccess extends OwnersState {
 }
 
 final class OwnersError extends OwnersState {
-  final String errorMessage;
+  final String message;
 
   @override
   void takeAction(BuildContext context) {
     super.takeAction(context);
-    context.pop();
 
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
         title: 'Error',
-        content: errorMessage,
+        content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
           text: 'OK',
@@ -37,7 +36,7 @@ final class OwnersError extends OwnersState {
     );
   }
 
-  OwnersError(this.errorMessage);
+  OwnersError(this.message);
 }
 
 final class OwnersPetsChanged extends OwnersState {
@@ -133,4 +132,30 @@ final class OwnerDeleted extends OwnersState {
       }
     });
   }
+}
+
+final class OwnerError extends OwnersState {
+  final String message;
+
+  @override
+  void takeAction(BuildContext context) {
+    super.takeAction(context);
+
+    context.pop();
+    showDialog(
+      context: context,
+      builder: (ctx) => AppDialog(
+        title: 'Error',
+        content: message,
+        dialogType: DialogType.error,
+        action: AppTextButton(
+          text: 'OK',
+          onPressed: () => context.pop(),
+          filled: false,
+        ),
+      ),
+    );
+  }
+
+  OwnerError(this.message);
 }

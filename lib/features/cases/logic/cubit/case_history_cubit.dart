@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -16,7 +14,7 @@ part 'case_history_state.dart';
 
 class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   final CaseHistoryRepo _caseHistoryRepo;
-  CaseHistoryCubit(this._caseHistoryRepo) : super(CaseHistoryInitial());
+  CaseHistoryCubit(this._caseHistoryRepo) : super(CasesInitial());
 
   AuthDataModel? authData;
   TextEditingController caseIdController = TextEditingController();
@@ -50,15 +48,15 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void _getPaginatedCases() async {
-    emit(CaseHistoryLoading());
+    emit(CasesLoading());
     try {
       final List<CaseHistoryModel> newCasesList =
           await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
       casesList.addAll(newCasesList);
       selectedRows = List.filled(casesList.length, false);
-      emit(CaseHistorySuccess(cases: casesList));
+      emit(CasesSuccess(cases: casesList));
     } catch (e) {
-      emit(CaseHistoryError('Failed to get the cases'));
+      emit(CasesError('Failed to get the cases'));
     }
   }
 
@@ -74,9 +72,9 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         casesList.addAll(newCasesList);
 
         selectedRows = List.filled(casesList.length, false);
-        emit(CaseHistorySuccess(cases: casesList));
+        emit(CasesSuccess(cases: casesList));
       } catch (e) {
-        emit(CaseHistoryError('Failed to get the cases'));
+        emit(CasesError('Failed to get the cases'));
       }
     }
   }
@@ -90,14 +88,14 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   Future<void> refreshCases() async {
-    emit(CaseHistoryLoading());
+    emit(CasesLoading());
     try {
       casesList =
           await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
     } catch (e) {
-      emit(CaseHistoryError('Failed to get the cases'));
+      emit(CasesError('Failed to get the cases'));
     }
-    emit(CaseHistorySuccess(cases: casesList));
+    emit(CasesSuccess(cases: casesList));
   }
 
   void setupNewModeControllers() {
@@ -114,7 +112,6 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void setupShowModeControllers(CaseHistoryModel caseHistory) {
-    log(doctorNameController.text);
     caseIdController.text = caseHistory.id;
     doctorNameController.text = caseHistory.doctorId ?? '';
     ownerNameController.text = caseHistory.ownerName;
@@ -128,7 +125,6 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void validateAndSaveCase() async {
     final List<String> emptyFields = _getEmptyOfRequiredFields();
-    log(emptyFields.toString());
     // Check that there are no empty required fields
     if (emptyFields.isEmpty) {
       // Save new case
@@ -163,7 +159,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
             as CaseHistoryModel;
       }
     } catch (e) {
-      emit(CaseHistoryError('Failed to get the case'));
+      emit(CasesError('Failed to get the case'));
       rethrow;
     }
   }
@@ -190,14 +186,14 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void deleteCase(String caseId) async {
-    emit(CaseHistoryLoading());
+    emit(CasesLoading());
     final bool success =
         await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
     if (success) {
       _onSuccessOperation();
       _resetShowDeleteButtonNotifier();
     } else {
-      emit(CaseHistoryError('Failed to delete the case'));
+      emit(CasesError('Failed to delete the case'));
     }
   }
 
@@ -216,7 +212,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void deleteSelectedCases() async {
-    emit(CaseHistoryLoading());
+    emit(CasesLoading());
     try {
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
@@ -228,7 +224,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       emit(DeleteCaseHistorySuccess());
       _onSuccessOperation();
     } catch (e) {
-      emit(CaseHistoryError('Failed to delete these cases'));
+      emit(CasesError('Failed to delete these cases'));
     }
   }
 
@@ -237,7 +233,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     try {
       doctorsList = await _caseHistoryRepo.getAllDoctors(authData!.clinicIndex);
     } catch (e) {
-      emit(CaseHistoryError('Failed to get the doctors'));
+      emit(CasesError('Failed to get the doctors'));
     }
   }
 
@@ -254,7 +250,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   void _onSuccessOperation() async {
     await refreshCases();
     selectedRows = List.filled(casesList.length, false);
-    emit(CaseHistorySuccess(cases: casesList));
+    emit(CasesSuccess(cases: casesList));
   }
 
   String _getEmptyFieldsMessage(List<String> emptyFields) {
@@ -336,7 +332,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   void onSearch(String value) async {
     // Emit loading state to show loading indicator & refresh cases
-    emit(CaseHistoryLoading());
+    emit(CasesLoading());
     value = value.toLowerCase();
 
     // Search cases by owner name
@@ -344,10 +340,10 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         authData!.clinicIndex, value, 'ownerName');
 
     if (value.isEmpty || searchResult.isEmpty) {
-      emit(CaseHistorySuccess(cases: casesList));
+      emit(CasesSuccess(cases: casesList));
       return;
     }
 
-    emit(CaseHistorySuccess(cases: searchResult));
+    emit(CasesSuccess(cases: searchResult));
   }
 }

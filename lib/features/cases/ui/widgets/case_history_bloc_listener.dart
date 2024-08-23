@@ -9,8 +9,8 @@ class CaseHistoryBlocListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<CaseHistoryCubit, CaseHistoryState>(
       listenWhen: (previous, current) =>
-          current is CaseHistoryError ||
-          current is CaseHistorySuccess ||
+          current is CasesError ||
+          current is CasesSuccess ||
           current is NewCaseHistoryLoading ||
           current is NewCaseHistoryFailure ||
           current is NewCaseHistorySuccess ||

@@ -23,12 +23,12 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
   Widget build(BuildContext context) {
     return BlocBuilder<CaseHistoryCubit, CaseHistoryState>(
       buildWhen: (previous, current) =>
-          current is CaseHistorySuccess ||
-          current is CaseHistoryError ||
-          current is CaseHistoryLoading,
+          current is CasesSuccess ||
+          current is CasesError ||
+          current is CasesLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          color: state is CaseHistorySuccess
+          color: state is CasesSuccess
               ? AppColors.darkGrey.withOpacity(0.75)
               : AppColors.white,
           child: _buildChild(context, state),
@@ -38,10 +38,10 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
   }
 
   Widget _buildChild(BuildContext context, CaseHistoryState state) {
-    if (state is CaseHistorySuccess) {
+    if (state is CasesSuccess) {
       return _buildSuccess(context, state);
     }
-    if (state is CaseHistoryError) {
+    if (state is CasesError) {
       return Center(
         child: Text(
           state.errorMessage,
@@ -84,7 +84,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
   }
 
   List<List<String>> _getRows(CaseHistoryState state) {
-    return (state as CaseHistorySuccess).cases.map((caseHistory) {
+    return (state as CasesSuccess).cases.map((caseHistory) {
       return caseHistory!.toList();
     }).toList();
   }

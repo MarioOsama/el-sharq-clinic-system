@@ -153,7 +153,7 @@ class OwnersCubit extends Cubit<OwnersState> {
         _onSuccessOperation();
         emit(NewOwnerAdded());
       } else {
-        emit(OwnersError('Failed to save the owner and pets'));
+        emit(OwnerError('Failed to save the owner and pets'));
       }
     }
   }
@@ -236,13 +236,13 @@ class OwnersCubit extends Cubit<OwnersState> {
         final bool petsDeletionSuccess = await _deletePetsList();
         if (!petsDeletionSuccess) {
           emit(
-            OwnersError('Failed to update owner pets info'),
+            OwnerError('Failed to update owner pets info'),
           );
         }
       }
       if (!ownerUpdatingSuccess || !petsUpdatingSuccess) {
         emit(
-          OwnersError('Failed to update owner info'),
+          OwnerError('Failed to update owner info'),
         );
       }
       _onSuccessOperation();
@@ -358,7 +358,7 @@ class OwnersCubit extends Cubit<OwnersState> {
           // Update owner
           await _ownersRepo.updateOwner(authData!.clinicIndex, owner);
         } catch (e) {
-          emit(OwnersError('Failed to add pet'));
+          emit(OwnerError('Failed to add pet'));
         }
       }
       emit(OwnerUpdated());

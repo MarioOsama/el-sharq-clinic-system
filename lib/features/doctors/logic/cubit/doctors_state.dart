@@ -21,8 +21,6 @@ final class DoctorsError extends DoctorsState {
 
   @override
   void takeAction(BuildContext context) {
-    context.pop();
-
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
@@ -122,5 +120,29 @@ final class DoctorDeleted extends DoctorsState {
         context.pop();
       }
     });
+  }
+}
+
+final class DoctorError extends DoctorsState {
+  final String message;
+
+  DoctorError(this.message);
+
+  @override
+  void takeAction(BuildContext context) {
+    context.pop();
+
+    showDialog(
+        context: context,
+        builder: (ctx) => AppDialog(
+              title: 'Error',
+              content: message,
+              dialogType: DialogType.error,
+              action: AppTextButton(
+                text: 'OK',
+                onPressed: () => context.pop(),
+                filled: false,
+              ),
+            ));
   }
 }
