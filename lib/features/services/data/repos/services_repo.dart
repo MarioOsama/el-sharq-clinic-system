@@ -20,20 +20,11 @@ class ServicesRepo {
   }
 
   Future<bool> addService(int clinicIndex, ServiceModel service) async {
-    // Check if id already exists
-    final docs = await _firebaseServices.getItemsByIds(collectionName,
-        clinicIndex: clinicIndex,
-        ids: [service.title],
-        fromFirestore: ServiceModel.fromFirestore);
-    if (docs.isNotEmpty) {
-      return false;
-    }
-
     return await _firebaseServices.addItem(
       collectionName,
       clinicIndex: clinicIndex,
       itemModel: service,
-      id: service.title,
+      id: service.id,
       toFirestore: service.toFirestore,
     );
   }
@@ -42,8 +33,16 @@ class ServicesRepo {
     return await _firebaseServices.updateItem(
       collectionName,
       itemModel: service,
-      id: service.title,
+      id: service.id,
       toFirestore: service.toFirestore,
+      clinicIndex: clinicIndex,
+    );
+  }
+
+  Future<bool> deleteService(int clinicIndex, ServiceModel service) async {
+    return await _firebaseServices.deleteItem(
+      collectionName,
+      id: service.id,
       clinicIndex: clinicIndex,
     );
   }

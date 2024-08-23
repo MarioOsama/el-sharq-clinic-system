@@ -13,6 +13,7 @@ class AppDropDownButton extends StatelessWidget {
     this.height,
     this.itemBuilder,
     this.enabled,
+    this.initialValue,
   });
 
   final List<String> items;
@@ -22,10 +23,11 @@ class AppDropDownButton extends StatelessWidget {
   final void Function(String?)? onChanged;
   final DropdownMenuItem<String> Function(String? value)? itemBuilder;
   final bool? enabled;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
-    String selectedValue = items.first;
+    String selectedValue = initialValue ?? items.first;
 
     return Container(
       height: height ?? 65.h,

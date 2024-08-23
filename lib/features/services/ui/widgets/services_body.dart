@@ -19,7 +19,7 @@ class ServicesBody extends StatelessWidget {
       color: AppColors.white,
       child: BlocBuilder<ServicesCubit, ServicesState>(
         buildWhen: (_, current) =>
-            current is! ServicesLoading ||
+            current is ServicesLoading ||
             current is ServicesSuccess ||
             current is ServicesError,
         builder: (context, state) {

@@ -47,6 +47,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
           if (editable)
             Expanded(
               child: ServicesIconDropDownButton(
+                initialValue: servicesCubit.serviceIconPath,
                 onChanged: servicesCubit.onIconChanged,
                 enabled: editable,
               ),
