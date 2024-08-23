@@ -132,8 +132,6 @@ final class ServiceError extends ServicesState {
   @override
   void takeAction(BuildContext context) {
     super.takeAction(context);
-
-    context.pop();
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(

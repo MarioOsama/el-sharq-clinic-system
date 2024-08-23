@@ -42,20 +42,26 @@ class ServicesCubit extends Cubit<ServicesState> {
   // Save new service
   void validateThenSaveService() async {
     if (_validateService()) {
+      // Check if service name already exists
+
+      final ServiceModel service = _constructService();
+      if (servicesList.any((element) => element.title == service.title)) {
+        emit(ServiceError('Service name already exists'));
+        return;
+      }
+      // Save service
       emit(ServiceSaving());
-      final ServiceModel service = _constructService;
       final bool result =
           await _servicesRepo.addService(_authData!.clinicIndex, service);
 
       if (result) {
         emit(ServiceAdded());
-        servicesList.insert(0, service);
+        servicesList.add(service);
       } else {
-        emit(ServiceError(
-            'Failed to add the service, please ensure that the service name is unique'));
+        emit(ServiceError('Failed to add the service'));
       }
+      _onSuccessOperation();
     }
-    emit(ServicesSuccess(services: servicesList));
   }
 
   bool _validateService() {
@@ -66,15 +72,16 @@ class ServicesCubit extends Cubit<ServicesState> {
         double.tryParse(servicePriceController.text) == null ||
         double.parse(servicePriceController.text) <= 0) {
       emit(ServiceError(
-          'Service price is required, and must be a positive number'));
+          'Service price is required, and must be a positive number greater than 0'));
     } else {
       valid = true;
     }
     return valid;
   }
 
-  ServiceModel get _constructService {
+  ServiceModel _constructService({String? id}) {
     return ServiceModel(
+      id: id ?? DateTime.now().millisecondsSinceEpoch.toString(),
       title: serviceNameController.text,
       price: double.parse(servicePriceController.text),
       description: serviceDescriptionController.text,
@@ -83,29 +90,56 @@ class ServicesCubit extends Cubit<ServicesState> {
   }
 
   // Update service
-  void validateThenUpdateService(ServiceModel service) async {
+  void validateThenUpdateService(ServiceModel currentservice) async {
     if (_validateService()) {
+      // Check if service name already exists
+      final servicesWithSameName = servicesList
+          .where((service) =>
+              service.title == serviceNameController.text &&
+              service.id != currentservice.id)
+          .toList();
+      if (servicesWithSameName.isNotEmpty) {
+        emit(ServiceError('Service name already exists'));
+        return;
+      }
+      // Update service
       emit(ServiceSaving());
-      final ServiceModel updatedService = _constructService;
+      final ServiceModel updatedService =
+          _constructService(id: currentservice.id);
       final bool result = await _servicesRepo.updateService(
           _authData!.clinicIndex, updatedService);
 
       if (result) {
         emit(ServiceUpdated());
-        final index = servicesList
-            .indexWhere((element) => element.title == service.title);
+        final int index = servicesList
+            .indexWhere((service) => service.id == currentservice.id);
         servicesList[index] = updatedService;
       } else {
         emit(ServiceError('Failed to update the service'));
       }
+      _onSuccessOperation();
+    }
+  }
+
+  // Delete service
+  void deleteService(ServiceModel service) async {
+    emit(ServicesLoading());
+    final bool result =
+        await _servicesRepo.deleteService(_authData!.clinicIndex, service);
+    if (result) {
+      emit(ServiceDeleted());
+      servicesList.removeWhere((element) => element.id == service.id);
+    } else {
+      emit(ServiceError('Failed to delete the service'));
     }
     emit(ServicesSuccess(services: servicesList));
   }
 
   void _onSuccessOperation() async {
     emit(ServicesLoading());
-    await refreshServices();
-    emit(ServicesSuccess(services: servicesList));
+    Future.delayed(const Duration(seconds: 1), () {
+      emit(ServicesSuccess(services: servicesList));
+    });
   }
 
   Future<void> refreshServices() async {
@@ -122,7 +156,7 @@ class ServicesCubit extends Cubit<ServicesState> {
     serviceNameController.clear();
     servicePriceController.clear();
     serviceDescriptionController.clear();
-    serviceIconPath = Assets.assetsImagesPngHeartRate;
+    serviceIconPath = Assets.assetsImagesPngDoubleMedicine;
   }
 
   void setupExistingSheet(ServiceModel service) {

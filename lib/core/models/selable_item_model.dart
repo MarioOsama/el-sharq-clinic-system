@@ -1,9 +1,11 @@
 abstract class SelableItemModel {
+  final String id;
   final String title;
   final double price;
   final String? description;
 
   const SelableItemModel({
+    required this.id,
     required this.title,
     required this.price,
     this.description,
@@ -22,10 +24,15 @@ abstract class SelableItemModel {
   }
 
   List<String> toList() {
-    return [title, price.toString(), description ?? ''];
+    return [id, title, price.toString(), description ?? ''];
   }
 
   Map<String, dynamic> toMap() {
-    return {'title': title, 'price': price, 'description': description};
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'description': description
+    };
   }
 }

@@ -106,7 +106,7 @@ class FirebaseServices {
     // Update item
     try {
       final targetedDoc = await targetedCollection.doc(id).get();
-      if (targetedDoc.data()!.keys == itemMap.keys) {
+      if (targetedDoc.exists && targetedDoc.data()!.keys == itemMap.keys) {
         await targetedCollection.doc(id).update(itemMap);
       } else {
         await targetedCollection.doc(id).set(toFirestore());

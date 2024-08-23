@@ -5,6 +5,7 @@ class ServiceModel extends SelableItemModel {
   final String icon;
 
   const ServiceModel({
+    required super.id,
     required super.title,
     required super.price,
     super.description,
@@ -14,6 +15,7 @@ class ServiceModel extends SelableItemModel {
   factory ServiceModel.fromFirestore(QueryDocumentSnapshot<Object?> doc) {
     final data = doc.data() as Map<String, dynamic>;
     return ServiceModel(
+      id: doc.id,
       title: data['title'],
       price: data['price'],
       icon: data['icon'],

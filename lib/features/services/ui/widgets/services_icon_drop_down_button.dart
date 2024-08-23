@@ -10,9 +10,11 @@ class ServicesIconDropDownButton extends StatelessWidget {
     super.key,
     required this.enabled,
     required this.onChanged,
+    this.initialValue,
   });
 
   final bool enabled;
+  final String? initialValue;
   final void Function(String? value) onChanged;
 
   @override
@@ -26,6 +28,7 @@ class ServicesIconDropDownButton extends StatelessWidget {
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         AppDropDownButton(
+          initialValue: initialValue,
           enabled: enabled,
           height: 61.h,
           items: const [
