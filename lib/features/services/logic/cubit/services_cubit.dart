@@ -28,13 +28,22 @@ class ServicesCubit extends Cubit<ServicesState> {
   // Setup section data
   void setupSectionData(AuthDataModel authData) {
     _authData = authData;
+    _getServices();
+  }
+
+  // Get services
+  Future<void> _getServices() async {
+    emit(ServicesLoading());
+    servicesList =
+        await _servicesRepo.getServices(_authData!.clinicIndex, null);
+    emit(ServicesSuccess(services: servicesList));
   }
 
   // Save new service
-  void validateAndSaveService() async {
+  void validateThenSaveService() async {
     if (_validateService()) {
       emit(ServiceSaving());
-      final ServiceModel service = _constructNewService;
+      final ServiceModel service = _constructService;
       final bool result =
           await _servicesRepo.addService(_authData!.clinicIndex, service);
 
@@ -46,16 +55,17 @@ class ServicesCubit extends Cubit<ServicesState> {
             'Failed to add the service, please ensure that the service name is unique'));
       }
     }
+    emit(ServicesSuccess(services: servicesList));
   }
 
   bool _validateService() {
     bool valid = false;
     if (serviceNameController.text.isEmpty) {
-      emit(ServicesError('Service name is required'));
+      emit(ServiceError('Service name is required'));
     } else if (servicePriceController.text.isEmpty ||
         double.tryParse(servicePriceController.text) == null ||
         double.parse(servicePriceController.text) <= 0) {
-      emit(ServicesError(
+      emit(ServiceError(
           'Service price is required, and must be a positive number'));
     } else {
       valid = true;
@@ -63,13 +73,33 @@ class ServicesCubit extends Cubit<ServicesState> {
     return valid;
   }
 
-  ServiceModel get _constructNewService {
+  ServiceModel get _constructService {
     return ServiceModel(
       title: serviceNameController.text,
       price: double.parse(servicePriceController.text),
       description: serviceDescriptionController.text,
       icon: serviceIconPath,
     );
+  }
+
+  // Update service
+  void validateThenUpdateService(ServiceModel service) async {
+    if (_validateService()) {
+      emit(ServiceSaving());
+      final ServiceModel updatedService = _constructService;
+      final bool result = await _servicesRepo.updateService(
+          _authData!.clinicIndex, updatedService);
+
+      if (result) {
+        emit(ServiceUpdated());
+        final index = servicesList
+            .indexWhere((element) => element.title == service.title);
+        servicesList[index] = updatedService;
+      } else {
+        emit(ServiceError('Failed to update the service'));
+      }
+    }
+    emit(ServicesSuccess(services: servicesList));
   }
 
   void _onSuccessOperation() async {
@@ -80,9 +110,10 @@ class ServicesCubit extends Cubit<ServicesState> {
 
   Future<void> refreshServices() async {
     try {
-      // servicesList = await _servicesRepo.getServices(authData!.clinicIndex, null);
+      servicesList =
+          await _servicesRepo.getServices(_authData!.clinicIndex, null);
     } catch (e) {
-      // emit(ServicesError('Failed to get the services'));
+      emit(ServicesError('Failed to get the services'));
     }
   }
 
@@ -96,7 +127,7 @@ class ServicesCubit extends Cubit<ServicesState> {
 
   void setupExistingSheet(ServiceModel service) {
     serviceNameController.text = service.title;
-    servicePriceController.text = '${service.price} LE';
+    servicePriceController.text = service.price.toString();
     serviceDescriptionController.text = service.description ?? '';
     serviceIconPath = service.icon;
   }

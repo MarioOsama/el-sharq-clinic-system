@@ -11,6 +11,7 @@ class FirebaseServices {
     required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
     String? lastId,
     int limit = 21,
+    bool descendingOrder = true,
   }) async {
     // Get the clinic document reference
     final clinicDoc = await _getClinicDoc(clinicIndex);
@@ -24,7 +25,7 @@ class FirebaseServices {
           targetedCollection.orderBy(FieldPath.documentId, descending: true);
     } else {
       query = targetedCollection
-          .orderBy(FieldPath.documentId, descending: true)
+          .orderBy(FieldPath.documentId, descending: descendingOrder)
           .limit(limit);
     }
 

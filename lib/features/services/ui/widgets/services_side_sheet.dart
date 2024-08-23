@@ -62,16 +62,17 @@ Future<void> showServiceSheet(BuildContext context, String title,
         maxWidth: double.infinity,
       ),
       const Spacer(),
-      _buildActionIfNeeded(context, newService, editable),
+      _buildActionIfNeeded(context, service, newService, editable),
     ]),
   );
 }
 
-_buildActionIfNeeded(BuildContext context, bool newService, bool editMode) {
+_buildActionIfNeeded(BuildContext context, ServiceModel? service,
+    bool newService, bool editMode) {
   if (newService) {
     return _buildNewAction(context);
   } else if (editMode) {
-    return _buildUpdateAction(context);
+    return _buildUpdateAction(context, service!);
   }
   return const SizedBox.shrink();
 }
@@ -82,16 +83,19 @@ AppTextButton _buildNewAction(BuildContext context) {
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
-      context.read<ServicesCubit>().validateAndSaveService();
+      context.read<ServicesCubit>().validateThenSaveService();
     },
   );
 }
 
-AppTextButton _buildUpdateAction(BuildContext context) {
+AppTextButton _buildUpdateAction(
+    BuildContext context, ServiceModel currentService) {
   return AppTextButton(
     text: 'Update Service',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () {
+      context.read<ServicesCubit>().validateThenUpdateService(currentService);
+    },
   );
 }
