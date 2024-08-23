@@ -27,8 +27,6 @@ class _DoctorsBodyState extends State<DoctorsBody> {
           current is DoctorsLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          padding: EdgeInsets.zero,
-          borderRadius: 10,
           color: state is DoctorsSuccess
               ? AppColors.darkGrey.withOpacity(0.75)
               : AppColors.white,

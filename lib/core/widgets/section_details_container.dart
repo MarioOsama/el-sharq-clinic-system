@@ -19,7 +19,7 @@ class SectionDetailsContainer extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       alignment: Alignment.topLeft,
-      padding: padding ?? const EdgeInsets.all(35),
+      padding: padding ?? EdgeInsets.zero,
       decoration: _buildContainerDecoration(),
       child: child,
     );
@@ -27,7 +27,7 @@ class SectionDetailsContainer extends StatelessWidget {
 
   BoxDecoration _buildContainerDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(borderRadius ?? 0),
+      borderRadius: BorderRadius.circular(borderRadius ?? 10),
       color: color ?? AppColors.white,
     );
   }

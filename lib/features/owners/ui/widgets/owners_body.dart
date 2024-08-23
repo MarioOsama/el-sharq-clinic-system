@@ -27,8 +27,6 @@ class _OwnersBodyState extends State<OwnersBody> {
           current is OwnersLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          padding: EdgeInsets.zero,
-          borderRadius: 10,
           color: state is OwnersSuccess
               ? AppColors.darkGrey.withOpacity(0.75)
               : AppColors.white,
