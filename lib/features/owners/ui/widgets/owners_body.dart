@@ -42,7 +42,7 @@ class _OwnersBodyState extends State<OwnersBody> {
     }
     if (state is OwnersError) {
       return Center(
-        child: Text(state.errorMessage),
+        child: Text(state.message),
       );
     }
     return const Center(child: AnimatedLoadingIndicator());

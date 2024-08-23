@@ -4,34 +4,32 @@ abstract class CaseHistoryState {
   void takeAction(BuildContext context);
 }
 
-final class CaseHistoryInitial implements CaseHistoryState {
+final class CasesInitial implements CaseHistoryState {
   @override
   void takeAction(BuildContext context) {}
 }
 
-final class CaseHistoryLoading extends CaseHistoryState {
+final class CasesLoading extends CaseHistoryState {
   @override
   void takeAction(BuildContext context) {}
 }
 
-final class CaseHistorySuccess extends CaseHistoryState {
+final class CasesSuccess extends CaseHistoryState {
   final List<CaseHistoryModel?> cases;
 
-  CaseHistorySuccess({required this.cases});
+  CasesSuccess({required this.cases});
 
   @override
   void takeAction(BuildContext context) {}
 }
 
-final class CaseHistoryError extends CaseHistoryState {
+final class CasesError extends CaseHistoryState {
   final String errorMessage;
 
-  CaseHistoryError(this.errorMessage);
+  CasesError(this.errorMessage);
 
   @override
   void takeAction(BuildContext context) {
-    context.pop();
-
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(

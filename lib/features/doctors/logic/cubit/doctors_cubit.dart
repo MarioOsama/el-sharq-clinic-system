@@ -88,7 +88,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
         emit(DoctorSaved());
         _onSuccessOperation();
       } else {
-        emit(DoctorsError('Failed to save the doctor'));
+        emit(DoctorError('Failed to save the doctor'));
       }
     }
   }
@@ -116,7 +116,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       final bool doctorUpdatingSuccess = await _updateDoctor();
       if (!doctorUpdatingSuccess) {
         emit(
-          DoctorsError('Failed to update doctor info'),
+          DoctorError('Failed to update doctor info'),
         );
       }
       _onSuccessOperation();
