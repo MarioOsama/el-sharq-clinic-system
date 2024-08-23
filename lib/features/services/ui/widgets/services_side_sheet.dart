@@ -3,13 +3,21 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
+import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
+import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:el_sharq_clinic/features/services/ui/widgets/services_icon_drop_down_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> showServiceSheet(BuildContext context, String title,
-    {bool editable = true}) async {
-  // final bool newService = service == null;
+    {ServiceModel? service, bool editable = true}) async {
+  final bool newService = service == null;
+  final ServicesCubit servicesCubit = context.read<ServicesCubit>();
+  // Setup sheet data depends on service is existing or new
+  newService
+      ? servicesCubit.setupNewSheet()
+      : servicesCubit.setupExistingSheet(service);
 
   await showCustomSideSheet(
     context: context,
@@ -22,6 +30,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
           Expanded(
             flex: 3,
             child: AppTextField(
+              controller: servicesCubit.serviceNameController,
               hint: 'Service Name',
               enabled: editable,
             ),
@@ -29,20 +38,24 @@ Future<void> showServiceSheet(BuildContext context, String title,
           horizontalSpace(20),
           Expanded(
             child: AppTextField(
+              controller: servicesCubit.servicePriceController,
               hint: 'Price',
               enabled: editable,
             ),
           ),
-          horizontalSpace(20),
-          Expanded(
-            child: ServicesIconDropDownButton(
-              enabled: editable,
+          if (editable) horizontalSpace(20),
+          if (editable)
+            Expanded(
+              child: ServicesIconDropDownButton(
+                onChanged: servicesCubit.onIconChanged,
+                enabled: editable,
+              ),
             ),
-          ),
         ],
       ),
       verticalSpace(50),
       AppTextField(
+        controller: servicesCubit.serviceDescriptionController,
         hint: 'Description',
         enabled: editable,
         isMultiline: true,

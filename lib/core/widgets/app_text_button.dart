@@ -31,11 +31,14 @@ class AppTextButton extends StatelessWidget {
     return TextButton(
       style: _buildButtonStyle(),
       onPressed: onPressed,
-      child: Text(text,
-          style: AppTextStyles.font20DarkGreyMedium.copyWith(
-              color: filled!
-                  ? AppColors.white
-                  : AppColors.darkGrey.withOpacity(0.5))),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(text,
+            style: AppTextStyles.font20DarkGreyMedium.copyWith(
+                color: filled!
+                    ? AppColors.white
+                    : AppColors.darkGrey.withOpacity(0.5))),
+      ),
     );
   }
 
@@ -47,11 +50,14 @@ class AppTextButton extends StatelessWidget {
         icon,
         color: AppColors.white,
       ),
-      label: Text(text,
-          style: AppTextStyles.font20DarkGreyMedium.copyWith(
-              color: filled!
-                  ? AppColors.white
-                  : AppColors.darkGrey.withOpacity(0.5))),
+      label: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(text,
+            style: AppTextStyles.font20DarkGreyMedium.copyWith(
+                color: filled!
+                    ? AppColors.white
+                    : AppColors.darkGrey.withOpacity(0.5))),
+      ),
     );
   }
 

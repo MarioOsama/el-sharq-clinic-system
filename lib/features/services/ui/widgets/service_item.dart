@@ -1,6 +1,6 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/core/theming/assets.dart';
+import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:el_sharq_clinic/features/services/ui/widgets/service_item_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,20 +8,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ServiceItem extends StatelessWidget {
   const ServiceItem({
     super.key,
-    required this.title,
-    required this.price,
+    required this.service,
+    required this.onTap,
   });
 
-  final String title;
-  final String price;
+  final ServiceModel service;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: _buildDecoration(),
-      padding: const EdgeInsets.all(10),
-      child: _buildListTile(),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        decoration: _buildDecoration(),
+        padding: const EdgeInsets.all(10),
+        child: _buildListTile(),
+      ),
     );
   }
 
@@ -46,20 +49,22 @@ class ServiceItem extends StatelessWidget {
     return ListTile(
       horizontalTitleGap: 30.w,
       leading: Image.asset(
-        Assets.assetsImagesPngDoubleMedicine,
+        service.icon,
       ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Text(
-          title,
+          service.title,
           style: AppTextStyles.font16DarkGreyMedium,
         ),
       ),
       subtitle: Text(
-        price,
-        style: AppTextStyles.font14DarkGreyMedium,
+        '${service.price} LE',
+        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      trailing: ServiceItemActionButton(id: 'SVC001'),
+      trailing: ServiceItemActionButton(id: service.title),
     );
   }
 }
