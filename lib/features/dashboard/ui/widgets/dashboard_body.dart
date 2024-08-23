@@ -11,6 +11,7 @@ class DashboardBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionDetailsContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

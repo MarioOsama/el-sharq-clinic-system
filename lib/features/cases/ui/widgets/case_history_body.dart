@@ -28,8 +28,6 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
           current is CaseHistoryLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          padding: EdgeInsets.zero,
-          borderRadius: 10,
           color: state is CaseHistorySuccess
               ? AppColors.darkGrey.withOpacity(0.75)
               : AppColors.white,
