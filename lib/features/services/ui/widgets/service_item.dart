@@ -2,6 +2,7 @@ import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:el_sharq_clinic/features/services/ui/widgets/service_item_action_button.dart';
+import 'package:el_sharq_clinic/features/services/ui/widgets/services_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,16 +10,19 @@ class ServiceItem extends StatelessWidget {
   const ServiceItem({
     super.key,
     required this.service,
-    required this.onTap,
   });
 
   final ServiceModel service;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () => showServiceSheet(
+        context,
+        'Service Details',
+        service: service,
+        editable: false,
+      ),
       child: Container(
         alignment: Alignment.center,
         decoration: _buildDecoration(),
@@ -64,7 +68,7 @@ class ServiceItem extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      trailing: ServiceItemActionButton(id: service.title),
+      trailing: ServiceItemActionButton(service: service),
     );
   }
 }

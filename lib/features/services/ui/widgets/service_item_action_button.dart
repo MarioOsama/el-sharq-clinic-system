@@ -1,15 +1,17 @@
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
+import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
+import 'package:el_sharq_clinic/features/services/ui/widgets/services_side_sheet.dart';
 import 'package:flutter/material.dart';
 
 class ServiceItemActionButton extends StatelessWidget {
   const ServiceItemActionButton({
     super.key,
-    required this.id,
+    required this.service,
   });
 
-  final String id;
+  final ServiceModel service;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +20,11 @@ class ServiceItemActionButton extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 'Edit',
-            onTap: () {
-              //TODO: Show edit sheet
-            },
+            onTap: () => showServiceSheet(
+              context,
+              'Edit Service',
+              service: service,
+            ),
             child: const Text(
               'Edit',
               style: AppTextStyles.font14DarkGreyMedium,

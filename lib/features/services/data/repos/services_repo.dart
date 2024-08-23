@@ -10,10 +10,13 @@ class ServicesRepo {
 
   Future<List<ServiceModel>> getServices(
       int clinicIndex, final String? lastId) async {
-    return await _firebaseServices.getItems<ServiceModel>(collectionName,
-        clinicIndex: clinicIndex,
-        fromFirestore: ServiceModel.fromFirestore,
-        lastId: lastId);
+    return await _firebaseServices.getItems<ServiceModel>(
+      collectionName,
+      clinicIndex: clinicIndex,
+      fromFirestore: ServiceModel.fromFirestore,
+      lastId: lastId,
+      descendingOrder: false,
+    );
   }
 
   Future<bool> addService(int clinicIndex, ServiceModel service) async {
@@ -32,6 +35,16 @@ class ServicesRepo {
       itemModel: service,
       id: service.title,
       toFirestore: service.toFirestore,
+    );
+  }
+
+  Future<bool> updateService(int clinicIndex, ServiceModel service) async {
+    return await _firebaseServices.updateItem(
+      collectionName,
+      itemModel: service,
+      id: service.title,
+      toFirestore: service.toFirestore,
+      clinicIndex: clinicIndex,
     );
   }
 }
