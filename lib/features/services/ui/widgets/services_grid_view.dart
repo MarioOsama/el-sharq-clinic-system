@@ -1,4 +1,6 @@
+import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:el_sharq_clinic/features/services/ui/widgets/service_item.dart';
+import 'package:el_sharq_clinic/features/services/ui/widgets/services_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,7 +10,7 @@ class ServicesGridView extends StatelessWidget {
     required this.items,
   });
 
-  final List items;
+  final List<ServiceModel> items;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,13 @@ class ServicesGridView extends StatelessWidget {
         childAspectRatio: 3,
       ),
       itemBuilder: (context, index) => ServiceItem(
-        title: 'title $index',
-        price: 'price $index',
+        service: items[index],
+        onTap: () => showServiceSheet(
+          context,
+          'Service Details',
+          service: items[index],
+          editable: false,
+        ),
       ),
     );
   }

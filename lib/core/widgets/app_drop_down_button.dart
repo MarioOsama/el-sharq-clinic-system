@@ -9,7 +9,7 @@ class AppDropDownButton extends StatelessWidget {
     required this.items,
     this.width,
     this.textStyle,
-    required this.onChanged,
+    this.onChanged,
     this.height,
     this.itemBuilder,
     this.enabled,
@@ -19,7 +19,7 @@ class AppDropDownButton extends StatelessWidget {
   final double? width;
   final double? height;
   final TextStyle? textStyle;
-  final void Function(String?) onChanged;
+  final void Function(String?)? onChanged;
   final DropdownMenuItem<String> Function(String? value)? itemBuilder;
   final bool? enabled;
 
@@ -47,7 +47,8 @@ class AppDropDownButton extends StatelessWidget {
                   setState(() {
                     selectedValue = newValue!;
                   });
-                  onChanged(newValue);
+
+                  onChanged?.call(newValue);
                 },
         ),
       ),
@@ -56,9 +57,7 @@ class AppDropDownButton extends StatelessWidget {
 
   BoxDecoration _buildContainerDecoration() {
     return BoxDecoration(
-      color: enabled ?? true
-          ? AppColors.white
-          : AppColors.darkGrey.withOpacity(0.5),
+      color: enabled ?? true ? AppColors.white : AppColors.grey,
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(

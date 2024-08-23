@@ -9,9 +9,11 @@ class ServicesIconDropDownButton extends StatelessWidget {
   const ServicesIconDropDownButton({
     super.key,
     required this.enabled,
+    required this.onChanged,
   });
 
   final bool enabled;
+  final void Function(String? value) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class ServicesIconDropDownButton extends StatelessWidget {
               child: Image.asset(value!),
             ),
           ),
-          onChanged: (value) {},
+          onChanged: onChanged,
         ),
       ],
     );

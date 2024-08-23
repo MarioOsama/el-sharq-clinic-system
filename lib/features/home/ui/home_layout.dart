@@ -10,6 +10,7 @@ import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/owners_section.dart';
+import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:el_sharq_clinic/features/services/ui/services_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,7 +80,10 @@ class _HomeLayoutState extends State<HomeLayout> {
                 getIt<DoctorsCubit>()..setupSectionData(widget.authData),
             child: const DoctorsSection(),
           ),
-      (context) => const ServicesSection(),
+      (context) => BlocProvider<ServicesCubit>(
+            create: (context) => ServicesCubit(),
+            child: const ServicesSection(),
+          ),
       // const Text('Pet Owners'),
       // const Text('Services'),
       // const Text('Products'),

@@ -11,6 +11,7 @@ import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart'
 import 'package:el_sharq_clinic/features/owners/data/local/repos/owners_repo.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/pets_repo.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
+import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -30,6 +31,7 @@ void setupGetIt() {
   getIt.registerFactory<CaseHistoryCubit>(() => CaseHistoryCubit(getIt()));
   getIt.registerFactory<OwnersCubit>(() => OwnersCubit(getIt(), getIt()));
   getIt.registerFactory<DoctorsCubit>(() => DoctorsCubit(getIt()));
+  getIt.registerFactory<ServicesCubit>(() => ServicesCubit());
 
   // Repos
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(getIt()));
