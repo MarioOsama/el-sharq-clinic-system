@@ -87,17 +87,6 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     return await _caseHistoryRepo.getFirstCaseId(authData!.clinicIndex, true);
   }
 
-  Future<void> refreshCases() async {
-    emit(CasesLoading());
-    try {
-      casesList =
-          await _caseHistoryRepo.getAllCases(authData!.clinicIndex, null);
-    } catch (e) {
-      emit(CasesError('Failed to get the cases'));
-    }
-    emit(CasesSuccess(cases: casesList));
-  }
-
   void setupNewModeControllers() {
     doctorId = '';
     doctorNameController.clear();
@@ -137,6 +126,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
           await _caseHistoryRepo.addNewCase(newCase, authData!.clinicIndex);
       if (successAddition) {
         emit(NewCaseHistorySuccess());
+        casesList.insert(0, newCase);
         _onSuccessOperation();
       } else {
         emit(NewCaseHistoryFailure('Failed to add the appointment'));
@@ -173,7 +163,10 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
           await _caseHistoryRepo.updateCase(updatedCase, authData!.clinicIndex);
       if (success) {
         emit(UpdateCaseHistorySuccess());
-        refreshCases();
+        final int index =
+            casesList.indexWhere((element) => element!.id == updatedCase.id);
+        casesList[index] = updatedCase;
+        _onSuccessOperation();
       } else {
         emit(NewCaseHistoryFailure('Failed to update the case'));
       }
@@ -190,6 +183,8 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     final bool success =
         await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
     if (success) {
+      emit(DeleteCaseHistorySuccess());
+      casesList.removeWhere((element) => element!.id == caseId);
       _onSuccessOperation();
       _resetShowDeleteButtonNotifier();
     } else {
@@ -214,11 +209,17 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   void deleteSelectedCases() async {
     emit(CasesLoading());
     try {
+      final List<String> deletedCasesIds = [];
+      // Get all the selected cases
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
-          final caseId = casesList.elementAt(i)!.id;
-          await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
+          deletedCasesIds.add(casesList.elementAt(i)!.id);
         }
+      }
+      // Delete all the selected cases
+      for (String caseId in deletedCasesIds) {
+        await _caseHistoryRepo.deleteCase(caseId, authData!.clinicIndex);
+        casesList.removeWhere((element) => element!.id == caseId);
       }
       _resetShowDeleteButtonNotifier();
       emit(DeleteCaseHistorySuccess());
@@ -248,7 +249,6 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void _onSuccessOperation() async {
-    await refreshCases();
     selectedRows = List.filled(casesList.length, false);
     emit(CasesSuccess(cases: casesList));
   }

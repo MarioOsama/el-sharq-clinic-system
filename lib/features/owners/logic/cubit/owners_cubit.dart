@@ -122,14 +122,6 @@ class OwnersCubit extends Cubit<OwnersState> {
     petsList = await _petsRepo.getPetsByIds(authData!.clinicIndex, ids);
   }
 
-  Future<void> refreshOwners() async {
-    try {
-      ownersList = await _ownersRepo.getOwners(authData!.clinicIndex, null);
-    } catch (e) {
-      emit(OwnersError('Failed to get the owners'));
-    }
-  }
-
   // Save New Owner
   void validateThenSave() async {
     if (_validateForms()) {
@@ -150,8 +142,9 @@ class OwnersCubit extends Cubit<OwnersState> {
       final bool petsSuccess = await _saveAllPets();
       // Take an action based on the success of the operation
       if (ownerSuccess && petsSuccess) {
-        _onSuccessOperation();
         emit(NewOwnerAdded());
+        ownersList.insert(0, ownerInfo);
+        _onSuccessOperation();
       } else {
         emit(OwnerError('Failed to save the owner and pets'));
       }
@@ -245,8 +238,11 @@ class OwnersCubit extends Cubit<OwnersState> {
           OwnerError('Failed to update owner info'),
         );
       }
-      _onSuccessOperation();
       emit(OwnerUpdated());
+      final int index =
+          ownersList.indexWhere((element) => element!.id == ownerInfo.id);
+      ownersList[index] = ownerInfo;
+      _onSuccessOperation();
     }
   }
 
@@ -279,11 +275,17 @@ class OwnersCubit extends Cubit<OwnersState> {
   void onDeleteSelectedOwners() async {
     emit(OwnersLoading());
     try {
+      final List<String> deletedOwnersIds = [];
+      // Get all the selected doctors
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
-          final ownerId = ownersList.elementAt(i)!.id;
-          await _deleteOwner(ownerId);
+          deletedOwnersIds.add(ownersList.elementAt(i)!.id);
         }
+      }
+      // Delete all the selected doctors
+      for (String doctorId in deletedOwnersIds) {
+        await _ownersRepo.deleteOwner(authData!.clinicIndex, doctorId);
+        ownersList.removeWhere((element) => element!.id == doctorId);
       }
       _resetShowDeleteButtonNotifier();
       emit(OwnerDeleted());
@@ -298,6 +300,7 @@ class OwnersCubit extends Cubit<OwnersState> {
     final bool deletionSuccess = await _deleteOwner(id);
     if (deletionSuccess) {
       emit(OwnerDeleted());
+      ownersList.removeWhere((element) => element!.id == id);
       _onSuccessOperation();
     } else {
       emit(OwnersError('Failed to delete this owner profile'));
@@ -375,8 +378,6 @@ class OwnersCubit extends Cubit<OwnersState> {
   }
 
   void _onSuccessOperation() async {
-    emit(OwnersLoading());
-    await refreshOwners();
     selectedRows = List.filled(ownersList.length, false);
     emit(OwnersSuccess(owners: ownersList));
   }
@@ -411,9 +412,10 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   void onSaveOwnerFormField(String field, String? value) {
     ownerInfo = ownerInfo.copyWith(
-      name: field == 'Name' ? value : ownerInfo.name,
-      phone: field == 'Phone' ? value : ownerInfo.phone,
-    );
+        name: field == 'Name' ? value : ownerInfo.name,
+        phone: field == 'Phone' ? value : ownerInfo.phone,
+        registrationDate:
+            field == 'Registration Date' ? value : ownerInfo.registrationDate);
   }
 
   void onSavePetFormField(String field, String? value, int index) {
