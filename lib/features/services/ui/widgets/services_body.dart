@@ -49,6 +49,8 @@ class ServicesBody extends StatelessWidget {
           child: Text('There are no services yet',
               style: AppTextStyles.font24DarkGreyMedium));
     }
-    return const ServicesGridView();
+    return ServicesGridView(
+      services: services,
+    );
   }
 }
