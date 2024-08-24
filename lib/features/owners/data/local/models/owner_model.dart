@@ -14,7 +14,9 @@ class OwnerModel {
     required this.petsIds,
     this.registrationDate,
   }) {
-    _setRegistrationDate;
+    if (registrationDate == null) {
+      _setRegistrationDate;
+    }
   }
 
   factory OwnerModel.fromFirestore(QueryDocumentSnapshot<Object?> doc) {

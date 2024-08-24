@@ -86,6 +86,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
           doctorInfo, doctorInfo.id, authData!.clinicIndex);
       if (saveSuccess) {
         emit(DoctorSaved());
+        doctorsList.insert(0, doctorInfo);
         _onSuccessOperation();
       } else {
         emit(DoctorError('Failed to save the doctor'));
@@ -119,6 +120,9 @@ class DoctorsCubit extends Cubit<DoctorsState> {
           DoctorError('Failed to update doctor info'),
         );
       }
+      final int index =
+          doctorsList.indexWhere((element) => element!.id == doctorInfo.id);
+      doctorsList[index] = doctorInfo;
       _onSuccessOperation();
       emit(DoctorUpdated());
     }
@@ -132,11 +136,17 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   void onDeleteSelectedDoctors() async {
     emit(DoctorsLoading());
     try {
+      final List<String> deletedDoctorsIds = [];
+      // Get all the selected doctors
       for (int i = 0; i < selectedRows.length; i++) {
         if (selectedRows.elementAt(i)) {
-          final doctorId = doctorsList.elementAt(i)!.id;
-          await _deleteDoctor(doctorId);
+          deletedDoctorsIds.add(doctorsList.elementAt(i)!.id);
         }
+      }
+      // Delete all the selected doctors
+      for (String doctorId in deletedDoctorsIds) {
+        await _doctorsRepo.deleteDoctor(authData!.clinicIndex, doctorId);
+        doctorsList.removeWhere((element) => element!.id == doctorId);
       }
       _resetShowDeleteButtonNotifier();
       emit(DoctorDeleted());
@@ -151,6 +161,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
     final bool deletionSuccess = await _deleteDoctor(doctorId);
     if (deletionSuccess) {
       emit(DoctorDeleted());
+      doctorsList.removeWhere((element) => element!.id == doctorId);
       _resetShowDeleteButtonNotifier();
       _onSuccessOperation();
     } else {
@@ -168,18 +179,8 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   }
 
   void _onSuccessOperation() async {
-    emit(DoctorsLoading());
-    await refreshDoctors();
     selectedRows = List.filled(doctorsList.length, false);
     emit(DoctorsSuccess(doctors: doctorsList));
-  }
-
-  Future<void> refreshDoctors() async {
-    try {
-      doctorsList = await _doctorsRepo.getDoctors(authData!.clinicIndex, null);
-    } catch (e) {
-      emit(DoctorsError('Failed to get the doctors'));
-    }
   }
 
   // Search doctor
@@ -226,6 +227,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       phone: field == 'Phone Number' ? value : doctorInfo.phone,
       anotherPhone:
           field == 'Another Phone Number' ? value : doctorInfo.anotherPhone,
+      registrationDate: doctorInfo.registrationDate,
     );
   }
 

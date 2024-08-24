@@ -20,7 +20,9 @@ class DoctorModel {
     this.speciality,
     this.registrationDate,
   }) {
-    _setRegistrationDate;
+    if (registrationDate == null) {
+      _setRegistrationDate;
+    }
   }
 
   DoctorModel copyWith({
@@ -31,6 +33,7 @@ class DoctorModel {
     String? phone,
     String? anotherPhone,
     String? speciality,
+    String? registrationDate,
   }) {
     return DoctorModel(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class DoctorModel {
       phone: phone ?? this.phone,
       anotherPhone: anotherPhone ?? this.anotherPhone,
       speciality: speciality ?? this.speciality,
+      registrationDate: registrationDate ?? this.registrationDate,
     );
   }
 
@@ -53,6 +57,7 @@ class DoctorModel {
       phone: data['phone'],
       anotherPhone: data['anotherPhone'],
       speciality: data['speciality'],
+      registrationDate: data['registrationDate'],
     );
   }
 
@@ -77,7 +82,7 @@ class DoctorModel {
       'phone': phone,
       'anotherPhone': anotherPhone,
       'speciality': speciality,
-      'registrationDate': _setRegistrationDate,
+      'registrationDate': registrationDate,
     };
   }
 
@@ -86,7 +91,7 @@ class DoctorModel {
       id,
       name,
       phone,
-      registrationDate?.substring(0, 10) ?? '',
+      registrationDate!.substring(0, 10),
       speciality ?? '',
       email ?? '',
       address ?? '',
