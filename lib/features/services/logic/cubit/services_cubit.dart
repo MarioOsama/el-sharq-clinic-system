@@ -24,6 +24,7 @@ class ServicesCubit extends Cubit<ServicesState> {
   TextEditingController serviceIconController = TextEditingController();
   String serviceIconPath = '';
   List<ServiceModel> servicesList = [];
+  List<ServiceModel> searchResult = [];
 
   // Setup section data
   void setupSectionData(AuthDataModel authData) {
@@ -133,6 +134,23 @@ class ServicesCubit extends Cubit<ServicesState> {
       emit(ServiceError('Failed to delete the service'));
     }
     emit(ServicesSuccess(services: servicesList));
+  }
+
+  // Search services
+  void onSearchServices(String value) async {
+    emit(ServicesLoading());
+
+    searchResult = servicesList
+        .where((service) =>
+            service.title.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+
+    if (value.isEmpty || searchResult.isEmpty) {
+      emit(ServicesSuccess(services: servicesList));
+      return;
+    }
+
+    emit(ServicesSuccess(services: searchResult));
   }
 
   void _onSuccessOperation() async {
