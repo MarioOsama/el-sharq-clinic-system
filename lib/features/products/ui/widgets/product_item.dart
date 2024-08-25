@@ -1,20 +1,25 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/product_item_action_button.dart';
+import 'package:el_sharq_clinic/features/products/ui/widgets/products_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({
     super.key,
+    required this.product,
   });
 
-  // TODO:Receive data model
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => showProductSheet(context, 'Product Details',
+          editable: false, product: product),
+      mouseCursor: SystemMouseCursors.click,
       child: Container(
         alignment: Alignment.center,
         decoration: _buildDecoration(),
@@ -43,21 +48,24 @@ class ProductItem extends StatelessWidget {
 
   ListTile _buildListTile() {
     return ListTile(
+      mouseCursor: SystemMouseCursors.click,
       horizontalTitleGap: 30.w,
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Text(
-          'Product Name',
+          product.title,
           style: AppTextStyles.font16DarkGreyMedium,
         ),
       ),
       subtitle: Text(
-        '150 LE',
+        '${product.price} LE',
         style: AppTextStyles.font16DarkGreyMedium.copyWith(
           fontWeight: FontWeight.bold,
         ),
       ),
-      trailing: ProductItemActionButton(),
+      trailing: ProductItemActionButton(
+        product: product,
+      ),
     );
   }
 }

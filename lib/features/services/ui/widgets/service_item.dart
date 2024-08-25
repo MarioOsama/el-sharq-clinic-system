@@ -23,6 +23,7 @@ class ServiceItem extends StatelessWidget {
         service: service,
         editable: false,
       ),
+      mouseCursor: SystemMouseCursors.click,
       child: Container(
         alignment: Alignment.center,
         decoration: _buildDecoration(),
@@ -51,6 +52,7 @@ class ServiceItem extends StatelessWidget {
 
   ListTile _buildListTile() {
     return ListTile(
+      mouseCursor: SystemMouseCursors.click,
       horizontalTitleGap: 30.w,
       leading: Image.asset(
         service.icon,

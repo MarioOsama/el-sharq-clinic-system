@@ -3,11 +3,15 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
+import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> showProductSheet(BuildContext context, String title,
-    {bool editable = true}) async {
+    {ProductModel? product, bool editable = true}) async {
+  final bool newProduct = product == null;
+  // Setup sheet data depends on service is existing or new
+
   await showCustomSideSheet(
     context: context,
     scrollable: false,
@@ -41,21 +45,19 @@ Future<void> showProductSheet(BuildContext context, String title,
         maxWidth: double.infinity,
       ),
       const Spacer(),
-      // _buildActionIfNeeded(context, editable),
-      _buildNewAction(context),
+      _buildActionIfNeeded(context, newProduct, editable),
     ]),
   );
 }
 
-// _buildActionIfNeeded(BuildContext context,
-//     bool editMode) {
-//   if (newService) {
-//     return _buildNewAction(context);
-//   } else if (editMode) {
-//     return _buildUpdateAction(context);
-//   }
-//   return const SizedBox.shrink();
-// }
+_buildActionIfNeeded(BuildContext context, bool newProduct, bool editMode) {
+  if (newProduct) {
+    return _buildNewAction(context);
+  } else if (editMode) {
+    return _buildUpdateAction(context);
+  }
+  return const SizedBox.shrink();
+}
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(

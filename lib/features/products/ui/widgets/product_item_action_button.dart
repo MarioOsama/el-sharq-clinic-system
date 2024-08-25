@@ -1,14 +1,17 @@
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
+import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
+import 'package:el_sharq_clinic/features/products/ui/widgets/products_side_sheet.dart';
 import 'package:flutter/material.dart';
 
 class ProductItemActionButton extends StatelessWidget {
   const ProductItemActionButton({
     super.key,
+    required this.product,
   });
 
-  // TODO: Receive data model
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,8 @@ class ProductItemActionButton extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 'Edit',
-            onTap: () {},
+            onTap: () =>
+                showProductSheet(context, 'Edit Product', product: product),
             child: const Text(
               'Edit',
               style: AppTextStyles.font14DarkGreyMedium,
