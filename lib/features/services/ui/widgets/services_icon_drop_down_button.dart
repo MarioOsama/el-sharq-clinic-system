@@ -29,8 +29,8 @@ class ServicesIconDropDownButton extends StatelessWidget {
         ),
         AppDropDownButton(
           initialValue: initialValue,
+          height: 65.h,
           enabled: enabled,
-          height: 61.h,
           items: const [
             Assets.assetsImagesPngDoubleMedicine,
             Assets.assetsImagesPngHeartRate,
