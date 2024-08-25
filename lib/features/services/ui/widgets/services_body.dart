@@ -1,10 +1,11 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/app_grid_view.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
-import 'package:el_sharq_clinic/features/services/ui/widgets/services_grid_view.dart';
+import 'package:el_sharq_clinic/features/services/ui/widgets/service_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,8 +50,9 @@ class ServicesBody extends StatelessWidget {
           child: Text('There are no services yet',
               style: AppTextStyles.font24DarkGreyMedium));
     }
-    return ServicesGridView(
-      services: services,
+    return AppGridView(
+      itemCount: services.length,
+      itemBuilder: (_, index) => ServiceItem(service: services[index]),
     );
   }
 }
