@@ -18,14 +18,16 @@ class CustomTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.sizeOf(context).height;
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: PaginatedDataTable2(
+        rowsPerPage: 10,
         columnSpacing: 10,
         columns: _buildTableColumns,
         horizontalMargin: 15,
         source: dataSource,
-        dataRowHeight: 50,
+        dataRowHeight: height * 0.058,
         headingRowColor: const WidgetStatePropertyAll(AppColors.grey),
         onPageChanged: onPageChanged,
       ),

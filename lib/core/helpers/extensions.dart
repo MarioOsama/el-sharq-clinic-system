@@ -28,4 +28,8 @@ extension StringExtensions on String {
     final int id = int.parse(this.replaceAll(prefix, ''));
     return (id + 1).toString().toId(idLength, prefix: prefix);
   }
+
+  bool isPhoneNumber() {
+    return RegExp(r"^\+?0[0-9]{10}$").hasMatch(this);
+  }
 }
