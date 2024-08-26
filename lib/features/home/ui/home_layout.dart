@@ -10,6 +10,7 @@ import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/owners_section.dart';
+import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:el_sharq_clinic/features/products/ui/products_section.dart';
 import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:el_sharq_clinic/features/services/ui/services_section.dart';
@@ -86,12 +87,11 @@ class _HomeLayoutState extends State<HomeLayout> {
                 getIt<ServicesCubit>()..setupSectionData(widget.authData),
             child: const ServicesSection(),
           ),
-      (context) => const ProductsSection(),
-      // const Text('Pet Owners'),
-      // const Text('Services'),
-      // const Text('Products'),
-      // const Text('Sales'),
-      // const Text('Settings'),
+      (context) => BlocProvider<ProductsCubit>(
+            create: (context) =>
+                getIt<ProductsCubit>()..setupSectionData(widget.authData),
+            child: const ProductsSection(),
+          ),
     ];
   }
 }
