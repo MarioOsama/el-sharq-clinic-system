@@ -21,8 +21,8 @@ class FirebaseServices {
 
     // Create the query with pagination
     if (limit == -1) {
-      query =
-          targetedCollection.orderBy(FieldPath.documentId, descending: true);
+      query = targetedCollection.orderBy(FieldPath.documentId,
+          descending: descendingOrder);
     } else {
       query = targetedCollection
           .orderBy(FieldPath.documentId, descending: descendingOrder)

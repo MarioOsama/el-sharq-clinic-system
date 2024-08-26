@@ -24,6 +24,7 @@ Future<void> showProductSheet(BuildContext context, String title,
             flex: 4,
             child: AppTextField(
               hint: 'Product Name',
+              initialValue: product?.title,
               enabled: editable,
               maxWidth: double.infinity,
             ),
@@ -32,6 +33,7 @@ Future<void> showProductSheet(BuildContext context, String title,
           Expanded(
             child: AppTextField(
               hint: 'Price',
+              initialValue: product?.price.toString(),
               enabled: editable,
             ),
           ),
@@ -40,6 +42,7 @@ Future<void> showProductSheet(BuildContext context, String title,
       verticalSpace(50),
       AppTextField(
         hint: 'Description',
+        initialValue: product?.description,
         enabled: editable,
         isMultiline: true,
         maxWidth: double.infinity,

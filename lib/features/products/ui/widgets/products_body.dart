@@ -1,10 +1,14 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_grid_view.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
+import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/product_item.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_switch_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductsBody extends StatelessWidget {
@@ -18,7 +22,10 @@ class ProductsBody extends StatelessWidget {
       child: Column(
         children: [
           _buildTabBar(context),
-          Expanded(child: _buildGridView(context)),
+          Expanded(
+              child: BlocBuilder<ProductsCubit, ProductsState>(
+            builder: _buildChild,
+          )),
         ],
       ),
     );
@@ -28,17 +35,38 @@ class ProductsBody extends StatelessWidget {
     return const ProductsSwitchButton();
   }
 
-  AppGridView _buildGridView(BuildContext context) {
+  Widget _buildChild(BuildContext context, ProductsState state) {
+    if (state is ProductsError) {
+      return Center(
+          child:
+              Text(state.message, style: AppTextStyles.font20DarkGreyMedium));
+    } else if (state is ProductsSuccess) {
+      if (state.products.isEmpty) {
+        return _buildEmptyView(state.selectedProductType);
+      }
+      return _buildGridView(context, state.products);
+    } else {
+      return const AnimatedLoadingIndicator();
+    }
+  }
+
+  AppGridView _buildGridView(
+      BuildContext context, List<ProductModel> products) {
     return AppGridView(
-      itemCount: 10,
+      itemCount: products.length,
       crossAxisCount: 4,
       childAspectRatio: 2,
       itemBuilder: (_, index) => ProductItem(
-        product: ProductModel(
-          id: index.toString(),
-          title: 'Product Name',
-          price: 150,
-        ),
+        product: products[index],
+      ),
+    );
+  }
+
+  Widget _buildEmptyView(ProductType? productType) {
+    return Center(
+      child: Text(
+        'No ${productType?.name ?? ProductType.medicines} found',
+        style: AppTextStyles.font20DarkGreyMedium,
       ),
     );
   }

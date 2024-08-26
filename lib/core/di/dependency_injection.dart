@@ -11,6 +11,8 @@ import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart'
 import 'package:el_sharq_clinic/features/owners/data/local/repos/owners_repo.dart';
 import 'package:el_sharq_clinic/features/owners/data/local/repos/pets_repo.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
+import 'package:el_sharq_clinic/features/products/data/repos/products_repo.dart';
+import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:el_sharq_clinic/features/services/data/repos/services_repo.dart';
 import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -33,6 +35,7 @@ void setupGetIt() {
   getIt.registerFactory<OwnersCubit>(() => OwnersCubit(getIt(), getIt()));
   getIt.registerFactory<DoctorsCubit>(() => DoctorsCubit(getIt()));
   getIt.registerFactory<ServicesCubit>(() => ServicesCubit(getIt()));
+  getIt.registerFactory<ProductsCubit>(() => ProductsCubit(getIt()));
 
   // Repos
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(getIt()));
@@ -41,4 +44,5 @@ void setupGetIt() {
   getIt.registerLazySingleton<PetsRepo>(() => PetsRepo(getIt()));
   getIt.registerLazySingleton<DoctorsRepo>(() => DoctorsRepo(getIt()));
   getIt.registerLazySingleton<ServicesRepo>(() => ServicesRepo(getIt()));
+  getIt.registerLazySingleton<ProductsRepo>(() => ProductsRepo(getIt()));
 }
