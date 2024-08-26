@@ -18,4 +18,18 @@ class ProductModel extends SelableItemModel {
       description: data['description'] ?? '',
     );
   }
+
+  ProductModel copyWith({
+    String? id,
+    double? price,
+    String? title,
+    String? description,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      price: price ?? this.price,
+      title: title ?? this.title,
+      description: description ?? this.description,
+    );
+  }
 }

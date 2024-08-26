@@ -19,4 +19,17 @@ class ProductsRepo {
       limit: -1,
     );
   }
+
+  Future<bool> addProduct(
+      {required int clinicIndex,
+      required String collection,
+      required ProductModel product}) async {
+    return _firebaseServices.addItem(
+      collection,
+      clinicIndex: clinicIndex,
+      itemModel: product,
+      id: product.id,
+      toFirestore: product.toFirestore,
+    );
+  }
 }
