@@ -113,6 +113,9 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void validateAndSaveCase() async {
+    if (!_validatePhoneIfExist()) {
+      return;
+    }
     final List<String> emptyFields = _getEmptyOfRequiredFields();
     // Check that there are no empty required fields
     if (emptyFields.isEmpty) {
@@ -139,6 +142,21 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     }
   }
 
+  bool _validatePhoneIfExist() {
+    if (phoneController.text.trim().isNotEmpty) {
+      if (phoneController.text.trim().length < 10 ||
+          phoneController.text.trim().length > 15 ||
+          !phoneController.text.trim().isPhoneNumber()) {
+        emit(NewCaseHistoryInvalid(
+          'Phone number should be 11 digits',
+        ));
+        return false;
+      }
+      return true;
+    }
+    return true;
+  }
+
   CaseHistoryModel getCaseHistoryById(String caseId) {
     try {
       if (searchResult.isEmpty) {
@@ -155,6 +173,9 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   void validateAndUpdateCase() async {
+    if (!_validatePhoneIfExist()) {
+      return;
+    }
     final List<String> emptyFields = _getEmptyOfRequiredFields();
     if (emptyFields.isEmpty) {
       emit(NewCaseHistoryLoading());

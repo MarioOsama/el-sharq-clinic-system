@@ -22,6 +22,8 @@ class FieldsRow extends StatelessWidget {
     this.firstText,
     this.secondText,
     this.onSaved,
+    this.firstValidator,
+    this.secondValidator,
   });
 
   /// Fields[0] for first field, fields[1] for second field
@@ -45,6 +47,9 @@ class FieldsRow extends StatelessWidget {
 
   final void Function(String field, String? value)? onSaved;
 
+  final String? Function(String? value)? firstValidator;
+  final String? Function(String? value)? secondValidator;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -56,6 +61,9 @@ class FieldsRow extends StatelessWidget {
                 ? (value) {
                     if (value!.trim().isEmpty) {
                       return 'Please enter a ${fields.first}';
+                    }
+                    if (firstValidator != null) {
+                      return firstValidator?.call(value);
                     }
                     return null;
                   }
@@ -81,6 +89,9 @@ class FieldsRow extends StatelessWidget {
                 ? (value) {
                     if (value!.trim().isEmpty) {
                       return 'Please enter a ${fields.last}';
+                    }
+                    if (secondValidator != null) {
+                      return secondValidator?.call(value);
                     }
                     return null;
                   }

@@ -1,3 +1,4 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
@@ -52,6 +53,12 @@ Future<void> showDoctorSheet(BuildContext context, String title,
             enabled: editable,
             validations: const [true, false],
             onSaved: doctorsCubit.onSaveDoctorFormField,
+            firstValidator: (value) {
+              if (!value!.isPhoneNumber()) {
+                return 'Please enter a valid phone number';
+              }
+              return null;
+            },
           ),
           verticalSpace(50),
           FieldsRow(

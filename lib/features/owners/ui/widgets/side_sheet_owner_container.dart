@@ -1,3 +1,4 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
@@ -46,6 +47,12 @@ class SideSheetOwnerContainer extends StatelessWidget {
               secondText: ownerModel?.phone,
               validations: const [true, true],
               enabled: editable,
+              secondValidator: (value) {
+                if (!value!.isPhoneNumber()) {
+                  return 'Please enter a valid phone number';
+                }
+                return null;
+              },
             ),
           ),
         ),
