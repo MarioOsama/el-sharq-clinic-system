@@ -24,6 +24,10 @@ class ProductsBody extends StatelessWidget {
           _buildTabBar(context),
           Expanded(
               child: BlocBuilder<ProductsCubit, ProductsState>(
+            buildWhen: (previous, current) =>
+                current is ProductsSuccess ||
+                current is ProductsError ||
+                current is ProductsLoading,
             builder: _buildChild,
           )),
         ],

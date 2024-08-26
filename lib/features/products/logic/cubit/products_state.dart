@@ -30,6 +30,17 @@ final class ProductSaving extends ProductsState {
   ProductSaving({required super.selectedProductType});
 }
 
+final class ProductInvalid extends ProductsState {
+  final String fieldName;
+  ProductInvalid({required this.fieldName, required super.selectedProductType});
+}
+
 final class ProductSuccessOperation extends ProductsState {
-  ProductSuccessOperation({required super.selectedProductType});
+  final String message;
+  ProductSuccessOperation(
+      {required this.message, required super.selectedProductType});
+}
+
+final class ProductErrorOperation extends ProductsState {
+  ProductErrorOperation({required super.selectedProductType});
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
@@ -20,10 +18,15 @@ class ProductsCubit extends Cubit<ProductsState> {
   List<ProductModel> medicinesList = [];
   List<ProductModel> accessoriesList = [];
   List<ProductModel> searchResult = [];
+  ProductModel productInfo = ProductModel(
+    id: '',
+    title: '',
+    price: 0,
+    description: '',
+  );
 
   // Setup section data
   void setupSectionData(AuthDataModel authData) {
-    log(selectedProductType.name);
     _authData = authData;
     _getProducts();
   }
@@ -57,14 +60,82 @@ class ProductsCubit extends Cubit<ProductsState> {
             : accessoriesList));
   }
 
+  void addProduct() async {
+    emit(ProductSaving(selectedProductType: selectedProductType));
+
+    final bool successAdding = await _productsRepo.addProduct(
+        clinicIndex: _authData!.clinicIndex,
+        collection: selectedProductType.name,
+        product: productInfo);
+
+    if (successAdding) {
+      if (selectedProductType == ProductType.medicines) {
+        medicinesList.add(productInfo);
+      } else {
+        accessoriesList.add(productInfo);
+      }
+    }
+
+    onSuccessOperation('Product added successfully');
+  }
+
   String _getErrorMessage(String action, String type) {
     return 'Failed to $action the $type';
   }
 
+  void onSuccessOperation(String operationMessage) {
+    emit(ProductsLoading(selectedProductType: selectedProductType));
+    emit(ProductSuccessOperation(
+        message: operationMessage, selectedProductType: selectedProductType));
+    Future.delayed(const Duration(seconds: 1), () {
+      emit(ProductsSuccess(
+          selectedProductType: selectedProductType,
+          products: selectedProductType == ProductType.medicines
+              ? medicinesList
+              : accessoriesList));
+    });
+  }
+
   // UI methods
+  void setupNewSheet() {
+    productFormKey = GlobalKey<FormState>();
+    productInfo = ProductModel(
+      id: '',
+      title: '',
+      price: 0,
+      description: '',
+    );
+  }
+
   void toggleProductType(ProductType type) {
     selectedProductType = type;
     emit(ProductsInitial(selectedProductType: selectedProductType));
     _getProducts();
+  }
+
+  void onRequiredFieldEmpty(String fieldName) {
+    emit(
+      ProductInvalid(
+          fieldName: 'Please enter a valid $fieldName',
+          selectedProductType: selectedProductType),
+    );
+  }
+
+  void onFieldSave(String field, String? value) {
+    productInfo = productInfo.copyWith(
+      id: productInfo.id == ''
+          ? DateTime.now().millisecondsSinceEpoch.toString()
+          : productInfo.id,
+      title: field == 'title' ? value : productInfo.title,
+      price: field == 'price' ? double.parse(value!) : productInfo.price,
+      description: field == 'description' ? value : productInfo.description,
+    );
+  }
+
+  void onSaveProduct() {
+    if (productFormKey.currentState!.validate()) {
+      productFormKey.currentState!.save();
+      addProduct();
+    }
   }
 }
