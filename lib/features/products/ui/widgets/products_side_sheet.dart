@@ -14,9 +14,9 @@ Future<void> showProductSheet(BuildContext context, String title,
   final ProductsCubit productsCubit = context.read<ProductsCubit>();
   final bool newProduct = product == null;
   // Setup sheet data depends on service is existing or new
-  if (newProduct) {
-    productsCubit.setupNewSheet();
-  }
+  newProduct
+      ? productsCubit.setupNewSheet()
+      : productsCubit.setupExistingSheet(product);
 
   await showCustomSideSheet(
     context: context,
@@ -109,6 +109,8 @@ AppTextButton _buildUpdateAction(BuildContext context) {
     text: 'Update Product',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () {
+      context.read<ProductsCubit>().onUpdateProduct();
+    },
   );
 }
