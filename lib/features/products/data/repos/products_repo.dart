@@ -32,4 +32,17 @@ class ProductsRepo {
       toFirestore: product.toFirestore,
     );
   }
+
+  Future<bool> updateProduct(
+      {required int clinicIndex,
+      required String collection,
+      required ProductModel product}) async {
+    return _firebaseServices.updateItem(
+      collection,
+      clinicIndex: clinicIndex,
+      itemModel: product,
+      id: product.id,
+      toFirestore: product.toFirestore,
+    );
+  }
 }
