@@ -148,10 +148,6 @@ class ProductsCubit extends Cubit<ProductsState> {
     productInfo = product;
   }
 
-  void setupExistingSheet(ProductModel product) {
-    productInfo = product;
-  }
-
   void toggleProductType(ProductType type) {
     selectedProductType = type;
     emit(ProductsInitial(selectedProductType: selectedProductType));
