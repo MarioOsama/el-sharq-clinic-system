@@ -75,8 +75,28 @@ class ProductsCubit extends Cubit<ProductsState> {
         accessoriesList.add(productInfo);
       }
     }
+  }
 
-    onSuccessOperation('Product added successfully');
+  void updateProduct() async {
+    emit(ProductSaving(selectedProductType: selectedProductType));
+
+    final bool successUpdating = await _productsRepo.updateProduct(
+        clinicIndex: _authData!.clinicIndex,
+        collection: selectedProductType.name,
+        product: productInfo);
+
+    if (successUpdating) {
+      if (selectedProductType == ProductType.medicines) {
+        final int index =
+            medicinesList.indexWhere((product) => product.id == productInfo.id);
+
+        medicinesList[index] = productInfo;
+      } else {
+        final int index = accessoriesList
+            .indexWhere((product) => product.id == productInfo.id);
+        accessoriesList[index] = productInfo;
+      }
+    }
   }
 
   String _getErrorMessage(String action, String type) {
@@ -105,6 +125,10 @@ class ProductsCubit extends Cubit<ProductsState> {
       price: 0,
       description: '',
     );
+  }
+
+  void setupExistingSheet(ProductModel product) {
+    productInfo = product;
   }
 
   void toggleProductType(ProductType type) {
@@ -136,6 +160,15 @@ class ProductsCubit extends Cubit<ProductsState> {
     if (productFormKey.currentState!.validate()) {
       productFormKey.currentState!.save();
       addProduct();
+      onSuccessOperation('Product updated successfully');
+    }
+  }
+
+  void onUpdateProduct() {
+    if (productFormKey.currentState!.validate()) {
+      productFormKey.currentState!.save();
+      updateProduct();
+      onSuccessOperation('Product updated successfully');
     }
   }
 }
