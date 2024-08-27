@@ -1,5 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/products/data/repos/products_repo.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_switch_button.dart';
@@ -60,8 +64,8 @@ class ProductsCubit extends Cubit<ProductsState> {
             : accessoriesList));
   }
 
-  void addProduct() async {
-    emit(ProductSaving(selectedProductType: selectedProductType));
+  Future<void> addProduct() async {
+    emit(ProductInProgress(selectedProductType: selectedProductType));
 
     final bool successAdding = await _productsRepo.addProduct(
         clinicIndex: _authData!.clinicIndex,
@@ -77,8 +81,8 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void updateProduct() async {
-    emit(ProductSaving(selectedProductType: selectedProductType));
+  Future<void> updateProduct() async {
+    emit(ProductInProgress(selectedProductType: selectedProductType));
 
     final bool successUpdating = await _productsRepo.updateProduct(
         clinicIndex: _authData!.clinicIndex,
@@ -99,8 +103,8 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
-  void deleteProduct(String id) async {
-    emit(ProductsLoading(selectedProductType: selectedProductType));
+  Future<void> deleteProduct(String id) async {
+    emit(ProductInProgress(selectedProductType: selectedProductType));
 
     final bool successDeleting = await _productsRepo.deleteProduct(
         clinicIndex: _authData!.clinicIndex,
@@ -120,10 +124,12 @@ class ProductsCubit extends Cubit<ProductsState> {
     return 'Failed to $action the $type';
   }
 
-  void onSuccessOperation(String operationMessage) {
+  void onSuccessOperation(String operationMessage, {int popCount = 2}) {
     emit(ProductsLoading(selectedProductType: selectedProductType));
     emit(ProductSuccessOperation(
-        message: operationMessage, selectedProductType: selectedProductType));
+        message: operationMessage,
+        selectedProductType: selectedProductType,
+        popCount: popCount));
     Future.delayed(const Duration(seconds: 1), () {
       emit(ProductsSuccess(
           selectedProductType: selectedProductType,
@@ -157,7 +163,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   void onRequiredFieldEmpty(String fieldName) {
     emit(
       ProductInvalid(
-          fieldName: 'Please enter a valid $fieldName',
+          message: 'Please enter a valid $fieldName',
           selectedProductType: selectedProductType),
     );
   }
@@ -173,24 +179,24 @@ class ProductsCubit extends Cubit<ProductsState> {
     );
   }
 
-  void onSaveProduct() {
+  void onSaveProduct() async {
     if (productFormKey.currentState!.validate()) {
       productFormKey.currentState!.save();
-      addProduct();
+      await addProduct();
       onSuccessOperation('Product saved successfully');
     }
   }
 
-  void onUpdateProduct() {
+  void onUpdateProduct() async {
     if (productFormKey.currentState!.validate()) {
       productFormKey.currentState!.save();
-      updateProduct();
+      await updateProduct();
       onSuccessOperation('Product updated successfully');
     }
   }
 
-  void onDeleteProduct(String id) {
-    deleteProduct(id);
-    onSuccessOperation('Product deleted successfully');
+  void onDeleteProduct(String id) async {
+    await deleteProduct(id);
+    onSuccessOperation('Product deleted successfully', popCount: 1);
   }
 }
