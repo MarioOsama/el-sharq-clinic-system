@@ -83,13 +83,13 @@ class _HomeLayoutState extends State<HomeLayout> {
             child: const DoctorsSection(),
           ),
       (context) => BlocProvider<ServicesCubit>(
-            create: (context) =>
-                getIt<ServicesCubit>()..setupSectionData(widget.authData),
+            create: (context) => getIt<ServicesCubit>()
+              ..setupSectionData(widget.authData, context),
             child: const ServicesSection(),
           ),
       (context) => BlocProvider<ProductsCubit>(
-            create: (context) =>
-                getIt<ProductsCubit>()..setupSectionData(widget.authData),
+            create: (context) => getIt<ProductsCubit>()
+              ..setupSectionData(widget.authData, context),
             child: const ProductsSection(),
           ),
     ];

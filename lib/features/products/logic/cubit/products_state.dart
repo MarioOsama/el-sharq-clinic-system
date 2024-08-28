@@ -1,23 +1,40 @@
 part of 'products_cubit.dart';
 
 abstract class ProductsState {
-  final ProductType? selectedProductType;
-  ProductsState({this.selectedProductType});
+  final ProductType selectedProductType;
+  ProductsState({required this.selectedProductType});
   takeAction(BuildContext context) {}
 }
 
 final class ProductsInitial extends ProductsState {
-  ProductsInitial({super.selectedProductType});
+  ProductsInitial({required super.selectedProductType});
 }
 
 final class ProductsLoading extends ProductsState {
-  ProductsLoading({super.selectedProductType});
+  ProductsLoading({required super.selectedProductType});
 }
 
 final class ProductsSuccess extends ProductsState {
   final List<ProductModel> products;
 
   ProductsSuccess({required this.products, required super.selectedProductType});
+
+  @override
+  void takeAction(BuildContext context) {
+    if (products.isNotEmpty) {
+      if (selectedProductType == ProductType.medicines) {
+        context.read<MainCubit>().updateMedicinesList(products);
+      } else {
+        context.read<MainCubit>().updateAccessoriesList(products);
+      }
+    }
+  }
+}
+
+final class ProductsSearchSuccess extends ProductsState {
+  final List<ProductModel> products;
+  ProductsSearchSuccess(
+      {required this.products, required super.selectedProductType});
 }
 
 final class ProductsError extends ProductsState {

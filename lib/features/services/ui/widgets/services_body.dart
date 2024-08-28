@@ -22,9 +22,13 @@ class ServicesBody extends StatelessWidget {
         buildWhen: (_, current) =>
             current is ServicesLoading ||
             current is ServicesSuccess ||
+            current is ServicesSearchSuccess ||
             current is ServicesError,
         builder: (context, state) {
           if (state is ServicesSuccess) {
+            return _buildSuccess(state.services);
+          }
+          if (state is ServicesSearchSuccess) {
             return _buildSuccess(state.services);
           }
           if (state is ServicesError) {

@@ -26,6 +26,7 @@ class ProductsBody extends StatelessWidget {
               child: BlocBuilder<ProductsCubit, ProductsState>(
             buildWhen: (previous, current) =>
                 current is ProductsSuccess ||
+                current is ProductsSearchSuccess ||
                 current is ProductsError ||
                 current is ProductsLoading,
             builder: _buildChild,
@@ -45,17 +46,23 @@ class ProductsBody extends StatelessWidget {
           child:
               Text(state.message, style: AppTextStyles.font20DarkGreyMedium));
     } else if (state is ProductsSuccess) {
-      if (state.products.isEmpty) {
-        return _buildEmptyView(state.selectedProductType);
-      }
-      return _buildGridView(context, state.products);
+      return _buildSuccess(context, state.products, state.selectedProductType);
+    } else if (state is ProductsSearchSuccess) {
+      return _buildSuccess(context, state.products, state.selectedProductType);
     } else {
       return const AnimatedLoadingIndicator();
     }
   }
 
-  AppGridView _buildGridView(
-      BuildContext context, List<ProductModel> products) {
+  Widget _buildSuccess(
+      BuildContext context, List<ProductModel> products, ProductType type) {
+    if (products.isEmpty) {
+      return _buildEmptyView(type);
+    }
+    return _buildGridView(products);
+  }
+
+  AppGridView _buildGridView(List<ProductModel> products) {
     return AppGridView(
       itemCount: products.length,
       crossAxisCount: 4,
@@ -66,10 +73,10 @@ class ProductsBody extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyView(ProductType? productType) {
+  Widget _buildEmptyView(ProductType productType) {
     return Center(
       child: Text(
-        'No ${productType?.name ?? ProductType.medicines} found',
+        'No ${productType.name} found',
         style: AppTextStyles.font20DarkGreyMedium,
       ),
     );

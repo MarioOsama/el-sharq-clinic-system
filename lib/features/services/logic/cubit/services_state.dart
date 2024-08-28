@@ -11,6 +11,18 @@ final class ServicesLoading extends ServicesState {}
 final class ServicesSuccess extends ServicesState {
   final List<ServiceModel> services;
   ServicesSuccess({required this.services});
+
+  @override
+  void takeAction(BuildContext context) {
+    if (services.isNotEmpty) {
+      context.read<MainCubit>().updateServicesList(services);
+    }
+  }
+}
+
+final class ServicesSearchSuccess extends ServicesState {
+  final List<ServiceModel> services;
+  ServicesSearchSuccess({required this.services});
 }
 
 final class ServicesError extends ServicesState {

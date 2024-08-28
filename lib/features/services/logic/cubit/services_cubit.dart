@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/assets.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -8,6 +9,7 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:el_sharq_clinic/features/services/data/repos/services_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'services_state.dart';
 
@@ -27,17 +29,28 @@ class ServicesCubit extends Cubit<ServicesState> {
   List<ServiceModel> searchResult = [];
 
   // Setup section data
-  void setupSectionData(AuthDataModel authData) {
+  void setupSectionData(AuthDataModel authData, BuildContext context) {
     _authData = authData;
-    _getServices();
+    _getServices(context);
   }
 
   // Get services
-  Future<void> _getServices() async {
+  void _getServices(BuildContext context) async {
     emit(ServicesLoading());
-    servicesList =
-        await _servicesRepo.getServices(_authData!.clinicIndex, null);
+
+    getLoadedServicesIfExist(context);
+
+    if (servicesList.isEmpty) {
+      servicesList =
+          await _servicesRepo.getServices(_authData!.clinicIndex, null);
+    }
     emit(ServicesSuccess(services: servicesList));
+  }
+
+  void getLoadedServicesIfExist(BuildContext context) {
+    if (servicesList.isEmpty) {
+      servicesList = context.read<MainCubit>().servicesList;
+    }
   }
 
   // Save new service
@@ -150,7 +163,7 @@ class ServicesCubit extends Cubit<ServicesState> {
       return;
     }
 
-    emit(ServicesSuccess(services: searchResult));
+    emit(ServicesSearchSuccess(services: searchResult));
   }
 
   void _onSuccessOperation() async {

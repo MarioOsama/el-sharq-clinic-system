@@ -11,7 +11,8 @@ class ProductsBlocListener extends StatelessWidget {
       listenWhen: (previous, current) =>
           current is ProductInProgress ||
           current is ProductInvalid ||
-          current is ProductSuccessOperation,
+          current is ProductSuccessOperation ||
+          current is ProductsSuccess,
       listener: (context, state) {
         state.takeAction(context);
       },

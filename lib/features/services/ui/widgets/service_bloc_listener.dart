@@ -14,7 +14,8 @@ class ServicesBlocListener extends StatelessWidget {
           current is ServiceAdded ||
           current is ServiceDeleted ||
           current is ServiceUpdated ||
-          current is ServiceError,
+          current is ServiceError ||
+          current is ServicesSuccess,
       listener: (context, state) {
         state.takeAction(context);
       },
