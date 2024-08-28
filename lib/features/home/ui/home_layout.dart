@@ -8,6 +8,7 @@ import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart'
 import 'package:el_sharq_clinic/features/doctors/ui/doctors_section.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_app_bar.dart';
 import 'package:el_sharq_clinic/features/home/ui/widgets/custom_drawer.dart';
+import 'package:el_sharq_clinic/features/invoices/ui/invoices_section.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
 import 'package:el_sharq_clinic/features/owners/ui/owners_section.dart';
 import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
@@ -92,6 +93,7 @@ class _HomeLayoutState extends State<HomeLayout> {
               ..setupSectionData(widget.authData, context),
             child: const ProductsSection(),
           ),
+      (context) => const InvoicesSection(),
     ];
   }
 }

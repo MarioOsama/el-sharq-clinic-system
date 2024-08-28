@@ -12,7 +12,8 @@ class AppTextButton extends StatelessWidget {
       this.height,
       this.filled = true,
       this.icon,
-      this.color});
+      this.color,
+      this.textStyle});
 
   final String text;
   final void Function() onPressed;
@@ -21,6 +22,7 @@ class AppTextButton extends StatelessWidget {
   final bool? filled;
   final IconData? icon;
   final Color? color;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,11 @@ class AppTextButton extends StatelessWidget {
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(text,
-            style: AppTextStyles.font20DarkGreyMedium.copyWith(
-                color: filled!
-                    ? AppColors.white
-                    : AppColors.darkGrey.withOpacity(0.5))),
+            style: textStyle ??
+                AppTextStyles.font20DarkGreyMedium.copyWith(
+                    color: filled!
+                        ? AppColors.white
+                        : AppColors.darkGrey.withOpacity(0.5))),
       ),
     );
   }
@@ -53,10 +56,11 @@ class AppTextButton extends StatelessWidget {
       label: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(text,
-            style: AppTextStyles.font20DarkGreyMedium.copyWith(
-                color: filled!
-                    ? AppColors.white
-                    : AppColors.darkGrey.withOpacity(0.5))),
+            style: textStyle ??
+                AppTextStyles.font20DarkGreyMedium.copyWith(
+                    color: filled!
+                        ? AppColors.white
+                        : AppColors.darkGrey.withOpacity(0.5))),
       ),
     );
   }

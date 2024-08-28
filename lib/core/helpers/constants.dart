@@ -26,7 +26,7 @@ abstract class AppConstant {
     DrawerItemModel(title: 'Doctors', icon: Icons.person_outline),
     DrawerItemModel(title: 'Services', icon: Icons.medical_services_outlined),
     DrawerItemModel(title: 'Products', icon: Icons.shopping_bag_outlined),
-    DrawerItemModel(title: 'Sales', icon: Icons.attach_money_outlined),
+    DrawerItemModel(title: 'Invoices', icon: Icons.attach_money_outlined),
     DrawerItemModel(title: 'Settings', icon: Icons.settings_outlined),
   ];
 
@@ -72,6 +72,15 @@ H.R:""";
     'Doctor Name',
     'Phone',
     'Registration Date',
+    ''
+  ];
+
+  // Invoices
+  static const List<String> invoicesTableHeaders = [
+    'Invoice ID',
+    'Total',
+    'Number of Items',
+    'Date',
     ''
   ];
 }
