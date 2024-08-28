@@ -120,11 +120,26 @@ class ProductsCubit extends Cubit<ProductsState> {
     }
   }
 
+  bool _checkProductExistance() {
+    if (selectedProductType == ProductType.medicines) {
+      if (medicinesList.any((product) =>
+          product.title.toLowerCase() == productInfo.title.toLowerCase())) {
+        return true;
+      }
+    } else {
+      if (accessoriesList.any((product) =>
+          product.title.toLowerCase() == productInfo.title.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   String _getErrorMessage(String action, String type) {
     return 'Failed to $action the $type';
   }
 
-  void onSuccessOperation(String operationMessage, {int popCount = 2}) {
+  void _onSuccessOperation(String operationMessage, {int popCount = 2}) {
     emit(ProductsLoading(selectedProductType: selectedProductType));
     emit(ProductSuccessOperation(
         message: operationMessage,
@@ -182,21 +197,60 @@ class ProductsCubit extends Cubit<ProductsState> {
   void onSaveProduct() async {
     if (productFormKey.currentState!.validate()) {
       productFormKey.currentState!.save();
+      final bool isExistingProduct = _checkProductExistance();
+      if (isExistingProduct) {
+        emit(ProductInvalid(
+            message: 'Product already exist',
+            selectedProductType: selectedProductType));
+        return;
+      }
       await addProduct();
-      onSuccessOperation('Product saved successfully');
+      _onSuccessOperation('Product saved successfully');
     }
   }
 
   void onUpdateProduct() async {
     if (productFormKey.currentState!.validate()) {
       productFormKey.currentState!.save();
+      final bool isExistingProduct = _checkProductExistance();
+      if (isExistingProduct) {
+        emit(ProductInvalid(
+            message: 'Product already exist',
+            selectedProductType: selectedProductType));
+        return;
+      }
       await updateProduct();
-      onSuccessOperation('Product updated successfully');
+      _onSuccessOperation('Product updated successfully');
     }
   }
 
   void onDeleteProduct(String id) async {
     await deleteProduct(id);
-    onSuccessOperation('Product deleted successfully', popCount: 1);
+    _onSuccessOperation('Product deleted successfully', popCount: 1);
+  }
+
+  void onSearch(String value) {
+    if (value.isEmpty) {
+      searchResult = [];
+      emit(ProductsSuccess(
+          selectedProductType: selectedProductType,
+          products: selectedProductType == ProductType.medicines
+              ? medicinesList
+              : accessoriesList));
+
+      return;
+    } else {
+      searchResult = selectedProductType == ProductType.medicines
+          ? medicinesList
+              .where((product) =>
+                  product.title.toLowerCase().contains(value.toLowerCase()))
+              .toList()
+          : accessoriesList
+              .where((product) =>
+                  product.title.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+    }
+    emit(ProductsSuccess(
+        selectedProductType: selectedProductType, products: searchResult));
   }
 }
