@@ -21,7 +21,9 @@ class ProductsSwitchButton extends StatelessWidget {
           expandedInsets: EdgeInsets.zero,
           selected: {productType},
           onSelectionChanged: (value) {
-            context.read<ProductsCubit>().toggleProductType(value.first!);
+            context
+                .read<ProductsCubit>()
+                .onToggleProductType(value.first!, context);
           },
           style: _buildStyle,
           segments: _getSegments(productType),

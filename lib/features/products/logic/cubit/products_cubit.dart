@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -8,12 +9,14 @@ import 'package:el_sharq_clinic/features/products/data/models/product_model.dart
 import 'package:el_sharq_clinic/features/products/data/repos/products_repo.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_switch_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
   final ProductsRepo _productsRepo;
-  ProductsCubit(this._productsRepo) : super(ProductsInitial());
+  ProductsCubit(this._productsRepo)
+      : super(ProductsInitial(selectedProductType: ProductType.medicines));
 
   // Variables
   AuthDataModel? _authData;
@@ -30,15 +33,18 @@ class ProductsCubit extends Cubit<ProductsState> {
   );
 
   // Setup section data
-  void setupSectionData(AuthDataModel authData) {
+  void setupSectionData(AuthDataModel authData, BuildContext context) {
     _authData = authData;
-    _getProducts();
+    _getProducts(context);
   }
 
-  void _getProducts() async {
+  void _getProducts(BuildContext context) async {
     emit(ProductsLoading(
       selectedProductType: selectedProductType,
     ));
+
+    getLoadedProductsIfExist(context);
+
     if (ProductType.medicines == selectedProductType && medicinesList.isEmpty ||
         ProductType.accessories == selectedProductType &&
             accessoriesList.isEmpty) {
@@ -62,6 +68,14 @@ class ProductsCubit extends Cubit<ProductsState> {
         products: selectedProductType == ProductType.medicines
             ? medicinesList
             : accessoriesList));
+  }
+
+  void getLoadedProductsIfExist(BuildContext context) {
+    if (medicinesList.isEmpty) {
+      medicinesList = context.read<MainCubit>().medicinesList;
+    } else if (accessoriesList.isEmpty) {
+      accessoriesList = context.read<MainCubit>().accessorieList;
+    }
   }
 
   Future<void> addProduct() async {
@@ -169,10 +183,9 @@ class ProductsCubit extends Cubit<ProductsState> {
     productInfo = product;
   }
 
-  void toggleProductType(ProductType type) {
+  void onToggleProductType(ProductType type, BuildContext context) {
     selectedProductType = type;
-    emit(ProductsInitial(selectedProductType: selectedProductType));
-    _getProducts();
+    _getProducts(context);
   }
 
   void onRequiredFieldEmpty(String fieldName) {
@@ -250,7 +263,7 @@ class ProductsCubit extends Cubit<ProductsState> {
                   product.title.toLowerCase().contains(value.toLowerCase()))
               .toList();
     }
-    emit(ProductsSuccess(
+    emit(ProductsSearchSuccess(
         selectedProductType: selectedProductType, products: searchResult));
   }
 }

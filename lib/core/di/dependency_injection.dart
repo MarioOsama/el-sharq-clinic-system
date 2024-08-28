@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_factory.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/repos/case_history_repo.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
@@ -36,6 +37,7 @@ void setupGetIt() {
   getIt.registerFactory<DoctorsCubit>(() => DoctorsCubit(getIt()));
   getIt.registerFactory<ServicesCubit>(() => ServicesCubit(getIt()));
   getIt.registerFactory<ProductsCubit>(() => ProductsCubit(getIt()));
+  getIt.registerFactory<MainCubit>(() => MainCubit());
 
   // Repos
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(getIt()));

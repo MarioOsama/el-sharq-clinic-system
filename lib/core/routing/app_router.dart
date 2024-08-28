@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/routing/app_routes.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
@@ -22,8 +23,11 @@ class AppRouter {
         );
       case AppRoutes.home:
         return MaterialPageRoute(
-          builder: (_) => HomeLayout(
-            authData: arguments as AuthDataModel,
+          builder: (_) => BlocProvider<MainCubit>(
+            create: (context) => getIt<MainCubit>(),
+            child: HomeLayout(
+              authData: arguments as AuthDataModel,
+            ),
           ),
         );
       default:
