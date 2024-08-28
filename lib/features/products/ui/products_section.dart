@@ -2,10 +2,12 @@ import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
+import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_body.dart';
 import 'package:el_sharq_clinic/features/products/ui/widgets/products_side_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsSection extends StatelessWidget {
   const ProductsSection({super.key});
@@ -17,7 +19,9 @@ class ProductsSection extends StatelessWidget {
       actions: [
         // Search bar
         SectionSearchBar(
-            hintText: 'Search by product name', onChanged: (value) {}),
+            hintText: 'Search by product name',
+            onChanged: (value) =>
+                context.read<ProductsCubit>().onSearch(value)),
         SectionActionButton(
           newText: 'New Product',
           onNewPressed: () => showProductSheet(context, 'New Product'),
