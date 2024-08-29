@@ -16,6 +16,7 @@ class ServicesRepo {
       fromFirestore: ServiceModel.fromFirestore,
       lastId: lastId,
       descendingOrder: false,
+      limit: -1,
     );
   }
 

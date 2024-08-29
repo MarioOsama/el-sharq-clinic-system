@@ -13,7 +13,7 @@ class ProductModel extends SelableItemModel {
     final data = doc.data() as Map<String, dynamic>;
     return ProductModel(
       id: doc.id,
-      price: data['price'],
+      price: double.parse(data['price'].toString()),
       title: data['title'],
       description: data['description'] ?? '',
     );
