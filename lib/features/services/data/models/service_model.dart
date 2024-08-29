@@ -17,7 +17,7 @@ class ServiceModel extends SelableItemModel {
     return ServiceModel(
       id: doc.id,
       title: data['title'],
-      price: data['price'],
+      price: double.parse(data['price'].toString()),
       icon: data['icon'],
       description: data['description'] ?? '',
     );

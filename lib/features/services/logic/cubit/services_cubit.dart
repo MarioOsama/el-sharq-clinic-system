@@ -85,8 +85,7 @@ class ServicesCubit extends Cubit<ServicesState> {
     } else if (servicePriceController.text.isEmpty ||
         double.tryParse(servicePriceController.text) == null ||
         double.parse(servicePriceController.text) <= 0) {
-      emit(ServiceError(
-          'Service price is required, and must be a positive number greater than 0'));
+      emit(ServiceError('Please enter a valid price'));
     } else {
       valid = true;
     }

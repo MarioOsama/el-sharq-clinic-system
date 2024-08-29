@@ -54,9 +54,11 @@ Future<void> showProductSheet(BuildContext context, String title,
                   initialValue: product?.price.toString(),
                   enabled: editable,
                   validator: (p0) {
-                    if (p0!.trim().isEmpty || double.tryParse(p0) == null) {
+                    if (p0!.trim().isEmpty ||
+                        double.tryParse(p0) == null ||
+                        p0 == '0') {
                       productsCubit.onRequiredFieldEmpty('Price');
-                      return 'Enter a valid price';
+                      return 'Service price is required, and must be a positive number greater than 0';
                     }
                     return null;
                   },
