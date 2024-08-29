@@ -52,15 +52,23 @@ class ProductItem extends StatelessWidget {
       horizontalTitleGap: 30.w,
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),
-        child: Text(
-          product.title,
-          style: AppTextStyles.font16DarkGreyMedium,
+        child: FittedBox(
+          alignment: Alignment.centerLeft,
+          fit: BoxFit.scaleDown,
+          child: Text(
+            product.title,
+            style: AppTextStyles.font16DarkGreyMedium,
+          ),
         ),
       ),
-      subtitle: Text(
-        '${product.price} LE',
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
-          fontWeight: FontWeight.bold,
+      subtitle: FittedBox(
+        alignment: Alignment.centerLeft,
+        fit: BoxFit.scaleDown,
+        child: Text(
+          '${product.price} LE',
+          style: AppTextStyles.font16DarkGreyMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       trailing: ProductItemActionButton(

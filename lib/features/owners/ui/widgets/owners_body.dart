@@ -38,7 +38,7 @@ class _OwnersBodyState extends State<OwnersBody> {
 
   Widget _buildChild(BuildContext context, OwnersState state) {
     if (state is OwnersSuccess) {
-      return _buildSuccess(context, state);
+      return _buildSuccess(state);
     }
     if (state is OwnersError) {
       return Center(
@@ -48,7 +48,7 @@ class _OwnersBodyState extends State<OwnersBody> {
     return const Center(child: AnimatedLoadingIndicator());
   }
 
-  CustomTable _buildSuccess(BuildContext context, OwnersState state) {
+  CustomTable _buildSuccess(OwnersState state) {
     final ownersCubit = context.read<OwnersCubit>();
     return CustomTable(
       onPageChanged: (firstIndex) {
