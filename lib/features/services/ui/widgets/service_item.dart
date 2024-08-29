@@ -59,15 +59,23 @@ class ServiceItem extends StatelessWidget {
       ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),
-        child: Text(
-          service.title,
-          style: AppTextStyles.font16DarkGreyMedium,
+        child: FittedBox(
+          alignment: Alignment.centerLeft,
+          fit: BoxFit.scaleDown,
+          child: Text(
+            service.title,
+            style: AppTextStyles.font16DarkGreyMedium,
+          ),
         ),
       ),
-      subtitle: Text(
-        '${service.price} LE',
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
-          fontWeight: FontWeight.bold,
+      subtitle: FittedBox(
+        alignment: Alignment.centerLeft,
+        fit: BoxFit.scaleDown,
+        child: Text(
+          '${service.price} LE',
+          style: AppTextStyles.font16DarkGreyMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       trailing: ServiceItemActionButton(service: service),

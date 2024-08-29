@@ -38,4 +38,12 @@ class ProductModel extends SelableItemModel {
       description: description ?? this.description,
     );
   }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return super.toMap()
+      ..addAll({
+        'quantity': quantity,
+      });
+  }
 }
