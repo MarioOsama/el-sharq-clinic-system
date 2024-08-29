@@ -50,6 +50,26 @@ Future<void> showProductSheet(BuildContext context, String title,
               horizontalSpace(20),
               Expanded(
                 child: AppTextField(
+                  hint: 'Quantity',
+                  initialValue: product?.quantity.toString(),
+                  enabled: editable,
+                  validator: (p0) {
+                    if (p0!.trim().isEmpty ||
+                        double.tryParse(p0) == null ||
+                        p0 == '0') {
+                      productsCubit.onRequiredFieldEmpty('Quantity');
+                      return 'Product quantity is required, and must be a positive number greater than 0';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => context
+                      .read<ProductsCubit>()
+                      .onFieldSave('quantity', value),
+                ),
+              ),
+              horizontalSpace(20),
+              Expanded(
+                child: AppTextField(
                   hint: 'Price',
                   initialValue: product?.price.toString(),
                   enabled: editable,
@@ -58,7 +78,7 @@ Future<void> showProductSheet(BuildContext context, String title,
                         double.tryParse(p0) == null ||
                         p0 == '0') {
                       productsCubit.onRequiredFieldEmpty('Price');
-                      return 'Service price is required, and must be a positive number greater than 0';
+                      return 'Product price is required, and must be a positive number greater than 0';
                     }
                     return null;
                   },
