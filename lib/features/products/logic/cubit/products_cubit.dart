@@ -29,6 +29,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     id: '',
     title: '',
     price: 0,
+    quantity: 0,
     description: '',
   );
 
@@ -136,13 +137,21 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   bool _checkProductExistance() {
     if (selectedProductType == ProductType.medicines) {
-      if (medicinesList.any((product) =>
-          product.title.toLowerCase() == productInfo.title.toLowerCase())) {
+      if (medicinesList
+          .where((medicine) =>
+              medicine.title == productInfo.title &&
+              medicine.id != productInfo.id)
+          .isNotEmpty) {
         return true;
       }
     } else {
-      if (accessoriesList.any((product) =>
-          product.title.toLowerCase() == productInfo.title.toLowerCase())) {
+      if (accessoriesList
+          .where(
+            (accessory) =>
+                accessory.title == productInfo.title &&
+                accessory.id != productInfo.id,
+          )
+          .isNotEmpty) {
         return true;
       }
     }
@@ -175,6 +184,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       id: '',
       title: '',
       price: 0,
+      quantity: 0,
       description: '',
     );
   }
@@ -203,6 +213,7 @@ class ProductsCubit extends Cubit<ProductsState> {
           : productInfo.id,
       title: field == 'title' ? value : productInfo.title,
       price: field == 'price' ? double.parse(value!) : productInfo.price,
+      quantity: field == 'quantity' ? int.parse(value!) : productInfo.quantity,
       description: field == 'description' ? value : productInfo.description,
     );
   }
