@@ -6,6 +6,7 @@ import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_row_action_button.dart';
+import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +21,10 @@ class _InvoicesBodyState extends State<InvoicesBody> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InvoicesCubit, InvoicesState>(
+      buildWhen: (previous, current) =>
+          current is InvoicesSuccess ||
+          current is InvoicesError ||
+          current is InvoicesLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
           color: state is InvoicesSuccess
@@ -45,7 +50,7 @@ class _InvoicesBodyState extends State<InvoicesBody> {
   CustomTable _buildSuccess(InvoicesState state) {
     final invoicesCubit = context.read<InvoicesCubit>();
     return CustomTable(
-      onPageChanged: (firstIndex) {},
+      onPageChanged: (firstIndex) => invoicesCubit.getNextPage(firstIndex),
       fields: AppConstant.invoicesTableHeaders,
       dataSource: CustomTableDataSource(
         columnsCount: AppConstant.invoicesTableHeaders.length,
@@ -54,8 +59,10 @@ class _InvoicesBodyState extends State<InvoicesBody> {
           id: id,
         ),
         tappableCellIndex: 0,
-        onSelectionChanged: (index, selected) {},
-        onTappableCellTap: (id) {},
+        onSelectionChanged: (index, selected) =>
+            invoicesCubit.onMultiSelection(index, selected),
+        onTappableCellTap: (id) => showInvoiceSheet(context, 'Invoice Details',
+            invoice: invoicesCubit.getInvoiceById(id), editable: false),
         selectedRows: invoicesCubit.selectedRows,
       ),
     );

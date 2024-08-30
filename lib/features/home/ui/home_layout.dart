@@ -95,8 +95,8 @@ class _HomeLayoutState extends State<HomeLayout> {
             child: const ProductsSection(),
           ),
       (context) => BlocProvider<InvoicesCubit>(
-            create: (context) =>
-                getIt<InvoicesCubit>()..setupSectionData(widget.authData),
+            create: (context) => getIt<InvoicesCubit>()
+              ..setupSectionData(widget.authData, context),
             child: const InvoicesSection(),
           ),
     ];

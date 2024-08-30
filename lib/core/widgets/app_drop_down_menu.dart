@@ -8,18 +8,25 @@ class AppDropDownMenu<T> extends StatelessWidget {
     super.key,
     required this.hint,
     required this.items,
-    required this.itemBuilder,
-    required this.onChanged,
+    this.itemBuilder,
+    this.onChanged,
     this.enabled,
     this.controller,
+    this.initialSelection,
+    this.onFilter,
+    this.onFocused,
   });
 
   final String hint;
   final List<T> items;
   final TextEditingController? controller;
-  final DropdownMenuEntry<String> Function(int index) itemBuilder;
-  final void Function(String? vlaue) onChanged;
+  final DropdownMenuEntry<String> Function(int index)? itemBuilder;
+  final void Function(String? vlaue)? onChanged;
   final bool? enabled;
+  final String? initialSelection;
+  final List<DropdownMenuEntry<String>> Function(
+      List<DropdownMenuEntry<String>> entries, String filter)? onFilter;
+  final void Function()? onFocused;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +39,13 @@ class AppDropDownMenu<T> extends StatelessWidget {
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         DropdownMenu(
+          focusNode: FocusNode()..addListener(() => onFocused?.call()),
+          initialSelection: initialSelection,
           controller: controller,
           dropdownMenuEntries: _getEntries(),
           onSelected: onChanged,
           enableFilter: true,
-          filterCallback: _onFilteredDoctors,
+          filterCallback: onFilter ?? _onFiltered,
           enabled: enabled ?? true,
           textStyle: AppTextStyles.font20DarkGreyMedium,
           inputDecorationTheme: _buildDecorationTheme(),
@@ -64,7 +73,7 @@ class AppDropDownMenu<T> extends StatelessWidget {
     );
   }
 
-  List<DropdownMenuEntry<String>> _onFilteredDoctors(
+  List<DropdownMenuEntry<String>> _onFiltered(
       List<DropdownMenuEntry<String>> entries, String filter) {
     final filteredEntries = entries
         .where(
@@ -76,7 +85,11 @@ class AppDropDownMenu<T> extends StatelessWidget {
 
   List<DropdownMenuEntry<String>> _getEntries() {
     return List.generate(items.length, (index) {
-      return itemBuilder(index);
+      return itemBuilder?.call(index) ??
+          DropdownMenuEntry(
+            value: items[index].toString(),
+            label: items[index].toString(),
+          );
     });
   }
 }

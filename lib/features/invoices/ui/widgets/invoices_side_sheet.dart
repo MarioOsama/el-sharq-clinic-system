@@ -2,14 +2,23 @@ import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
+import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
+import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoice_side_sheet_items_column.dart';
-import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoice_new_item_buttons_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> showInvoiceSheet(BuildContext context, String title,
-    {bool editable = true}) async {
+    {InvoiceModel? invoice, bool editable = true}) async {
   final double height = MediaQuery.sizeOf(context).height;
+
+  final bool newInvoice = invoice == null;
+  final InvoicesCubit invoicesCubit = context.read<InvoicesCubit>();
+
+  newInvoice
+      ? invoicesCubit.setupNewSheet()
+      : invoicesCubit.setupExistingSheet(invoice);
 
   await showCustomSideSheet(
     context: context,
@@ -19,24 +28,27 @@ Future<void> showInvoiceSheet(BuildContext context, String title,
         verticalSpace(50),
         _buildAddItemButtons(context, editable),
         verticalSpace(50),
-        InvoiceSideSheetItemsColumn(
-          editable: editable,
-          itemsFormKeys: [GlobalKey<FormState>()],
-          onSaved: (field, value, index) => null,
+        ListenableBuilder(
+          listenable: invoicesCubit.numberOfItemsNotifier,
+          builder: (ctx, child) => InvoiceSideSheetItemsColumn(
+            editable: editable,
+            invoice: invoice,
+            cubitContext: context,
+          ),
         ),
-        verticalSpace(height * 0.4),
-        _buildActionIfNeeded(context, true),
+        verticalSpace(height * 0.25),
+        _buildActionIfNeeded(context, newInvoice),
       ],
     ),
   );
 }
 
-InvoiceNewItemButtonsRow _buildAddItemButtons(
-    BuildContext context, bool editable) {
-  return InvoiceNewItemButtonsRow(
-    onAddService: () {},
-    onAddMedicine: () {},
-    onAddAccessory: () {},
+AppTextButton _buildAddItemButtons(BuildContext context, bool editable) {
+  return AppTextButton(
+    text: 'Add Item',
+    width: MediaQuery.sizeOf(context).width,
+    onPressed: () => context.read<InvoicesCubit>().incrementItems(),
+    height: 70.h,
   );
 }
 
@@ -52,6 +64,8 @@ AppTextButton _buildNewAction(BuildContext context) {
     text: 'Save Invoice',
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
-    onPressed: () {},
+    onPressed: () => context.read<InvoicesCubit>().itemFormsKeys.forEach((key) {
+      key.currentState!.save();
+    }),
   );
 }

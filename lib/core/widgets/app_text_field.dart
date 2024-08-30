@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
     this.validator,
     this.initialValue,
     this.onSaved,
+    this.onChanged,
   });
 
   final TextEditingController? controller;
@@ -38,6 +39,7 @@ class AppTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? initialValue;
   final void Function(String? value)? onSaved;
+  final void Function(String value)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class AppTextField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: validator,
+      onChanged: onChanged,
       onSaved: onSaved,
       initialValue: initialValue,
       style: AppTextStyles.font20DarkGreyMedium,

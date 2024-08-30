@@ -61,14 +61,7 @@ class AppDropDownButton extends StatelessWidget {
     return BoxDecoration(
       color: enabled ?? true ? AppColors.white : AppColors.grey,
       borderRadius: BorderRadius.circular(10),
-      boxShadow: [
-        BoxShadow(
-          color: AppColors.black.withOpacity(0.1),
-          blurRadius: 10,
-          offset: const Offset(0, 5),
-        )
-      ],
-      border: Border.all(color: AppColors.grey),
+      border: Border.all(color: AppColors.darkGrey),
     );
   }
 

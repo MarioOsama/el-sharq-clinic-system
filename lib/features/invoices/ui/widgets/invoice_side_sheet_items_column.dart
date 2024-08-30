@@ -1,63 +1,68 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
+import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoice_side_sheet_item_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InvoiceSideSheetItemsColumn extends StatelessWidget {
   const InvoiceSideSheetItemsColumn({
     super.key,
+    this.invoice,
     required this.editable,
-    required this.itemsFormKeys,
-    this.onSaved,
+    required this.cubitContext,
   });
 
   final bool editable;
-  final List<GlobalKey<FormState>> itemsFormKeys;
-  final void Function(String field, String? value, int itemIndex)? onSaved;
+  final InvoiceModel? invoice;
+  final BuildContext cubitContext;
 
   @override
   Widget build(BuildContext context) {
+    final cubit = cubitContext.read<InvoicesCubit>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _getItems(itemsFormKeys.length),
+      children: _getItems(cubit),
     );
   }
 
-  List<Widget> _getItems(int numberOfItems) {
+  List<Widget> _getItems(InvoicesCubit cubit) {
     return List.generate(
-      numberOfItems,
+      cubit.numberOfItemsNotifier.value,
       (index) => Padding(
         padding: const EdgeInsets.only(bottom: 30),
         child: Stack(
           children: [
             InvoiceSideSheetItemContainer(
-              itemType: 'Service',
               index: index + 1,
-              itemFormKey: itemsFormKeys[index],
+              itemFormKey: cubit.itemFormsKeys[index],
               editable: editable,
+              cubitContext: cubitContext,
               onSaved: (field, value) {
-                if (onSaved != null) onSaved!(field, value, index);
+                cubit.onSaveInvoiceItemFormField(field, value, index);
               },
             ),
-            if (index != 0 && editable) _buildRemoveButton(index),
+            if (index != 0 && editable) _buildRemoveButton(index, cubit),
           ],
         ),
       ),
     );
   }
 
-  Positioned _buildRemoveButton(int index) {
+  Positioned _buildRemoveButton(int index, InvoicesCubit cubit) {
     return Positioned(
       top: 30.h,
       right: 0,
       child: IconButton(
-          hoverColor: Colors.transparent,
-          icon: const Icon(
-            Icons.cancel,
-            color: AppColors.red,
-            size: 30,
-          ),
-          onPressed: () {}),
+        hoverColor: Colors.transparent,
+        icon: const Icon(
+          Icons.cancel,
+          color: AppColors.red,
+          size: 30,
+        ),
+        onPressed: () => cubit.decrementItems(index),
+      ),
     );
   }
 }

@@ -17,3 +17,15 @@ final class InvoicesError extends InvoicesState {
 
   InvoicesError({required this.message});
 }
+
+final class InvoiceItemsChanged extends InvoicesState {
+  final int numberOfItems;
+
+  InvoiceItemsChanged({required this.numberOfItems});
+}
+
+final class InvoiceItemTypeChanged extends InvoicesState {
+  final int index;
+  final String type;
+  InvoiceItemTypeChanged({required this.index, required this.type});
+}
