@@ -17,4 +17,23 @@ class InvoicesRepo {
       lastId: lastInvoiceId,
     );
   }
+
+  Future<bool> addNewInvoice(int clinicIndex, InvoiceModel invoiceModel) async {
+    return await _firebaseServices.addItem<InvoiceModel>(
+      collectionName,
+      id: invoiceModel.id,
+      clinicIndex: clinicIndex,
+      itemModel: invoiceModel,
+      toFirestore: invoiceModel.toFirestore,
+    );
+  }
+
+  Future<String?> getLastInvoiceId(
+      int clinicIndex, bool descendingOrder) async {
+    return await _firebaseServices.getFirstItemId(
+      collectionName,
+      clinicIndex: clinicIndex,
+      descendingOrder: descendingOrder,
+    );
+  }
 }

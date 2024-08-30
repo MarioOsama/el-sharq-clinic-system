@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 
 class InvoiceModel {
   final String id;
-  final List<String> items;
+  final List<InvoiceItemModel> items;
   final int numberOfItems;
   final double total;
   final double discount;
@@ -19,7 +20,7 @@ class InvoiceModel {
 
   InvoiceModel copyWith({
     String? id,
-    List<String>? items,
+    List<InvoiceItemModel>? items,
     int? numberOfItems,
     double? total,
     double? discount,
@@ -38,7 +39,7 @@ class InvoiceModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'items': items,
+      'items': items.map((e) => e.toFirestore()).toList(),
       'numberOfItems': numberOfItems,
       'total': total,
       'discount': discount,
@@ -50,7 +51,9 @@ class InvoiceModel {
     final data = doc.data() as Map<String, dynamic>;
     return InvoiceModel(
       id: doc.id,
-      items: data['items'].cast<String>(),
+      items: (data['items'] as List)
+          .map((e) => InvoiceItemModel.fromFirestore(e))
+          .toList(),
       numberOfItems: data['numberOfItems'],
       total: double.parse(data['total'].toString()),
       discount: double.parse(data['discount'].toString()),
@@ -73,13 +76,13 @@ class InvoiceModel {
 
   List<String> toList() {
     return [
+      id,
       '$total LE',
       numberOfItems.toString(),
       date.substring(0, 10),
       date.substring(11, 19),
       discount.toString(),
-      [...items].toString(),
-      id
+      items.map((e) => e.name).toList().join('/n'),
     ];
   }
 }
