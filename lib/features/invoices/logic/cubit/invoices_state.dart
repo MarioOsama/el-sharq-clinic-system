@@ -30,6 +30,24 @@ final class InvoiceConstrutingError extends InvoicesState {
   final String message;
 
   InvoiceConstrutingError({required this.message});
+
+  @override
+  void takeAction(BuildContext context) {
+    super.takeAction(context);
+    showDialog(
+      context: context,
+      builder: (ctx) => AppDialog(
+        title: 'Error',
+        content: message,
+        dialogType: DialogType.error,
+        action: AppTextButton(
+          text: 'OK',
+          onPressed: () => context.pop(),
+          filled: false,
+        ),
+      ),
+    );
+  }
 }
 
 final class InvoiceItemTypeChanged extends InvoicesState {
