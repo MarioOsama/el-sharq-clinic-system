@@ -59,8 +59,9 @@ class _InvoicesBodyState extends State<InvoicesBody> {
           id: id,
         ),
         tappableCellIndex: 0,
-        onSelectionChanged: (index, selected) =>
-            invoicesCubit.onMultiSelection(index, selected),
+        onSelectionChanged: (index, selected) => setState(() {
+          invoicesCubit.onMultiSelection(index, selected);
+        }),
         onTappableCellTap: (id) => showInvoiceSheet(context, 'Invoice Details',
             invoice: invoicesCubit.getInvoiceById(id), editable: false),
         selectedRows: invoicesCubit.selectedRows,

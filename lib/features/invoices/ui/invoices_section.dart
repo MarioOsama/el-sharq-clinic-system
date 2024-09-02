@@ -1,10 +1,15 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/password_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
+import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_body.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_side_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InvoicesSection extends StatelessWidget {
   const InvoicesSection({super.key});
@@ -17,8 +22,8 @@ class InvoicesSection extends StatelessWidget {
         SectionActionButton(
           newText: 'New Invoice',
           onNewPressed: () => showInvoiceSheet(context, 'New Invoice'),
-          onDeletePressed: () {},
-          valueNotifier: ValueNotifier(false),
+          onDeletePressed: () => _onDeleteDoctors(context),
+          valueNotifier: context.read<InvoicesCubit>().showDeleteButtonNotifier,
         ),
       ],
       child: Expanded(
@@ -29,6 +34,33 @@ class InvoicesSection extends StatelessWidget {
             const InvoicesBlocListener(),
           ],
         ),
+      ),
+    );
+  }
+
+  void _onDeleteDoctors(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AppAlertDialog(
+        alertMessage: 'Are you sure you want to delete these doctor profiles?\n'
+            'This action cannot be undone.',
+        onConfirm: () {
+          context.pop();
+          showDialog(
+            context: context,
+            builder: (ctx) => PasswordDialog(
+              actionTitle: 'Confirm Delete',
+              onActionPressed: (password) {
+                context
+                    .read<InvoicesCubit>()
+                    .onDeleteSelectedInvoices(password);
+              },
+            ),
+          );
+        },
+        onCancel: () {
+          context.pop();
+        },
       ),
     );
   }

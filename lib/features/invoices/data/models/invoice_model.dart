@@ -70,10 +70,11 @@ class InvoiceModel {
   List<String> toList() {
     return [
       id,
-      '$total LE',
+      '$total',
       items.length.toString(),
       date.substring(0, 10),
       date.substring(11, 19),
+      '$discount',
       discount.toString(),
       items.map((e) => e.name).toList().join('/n'),
     ];
