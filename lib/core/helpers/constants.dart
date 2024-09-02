@@ -78,10 +78,11 @@ H.R:""";
   // Invoices
   static const List<String> invoicesTableHeaders = [
     'Invoice ID',
-    'Total',
+    'Total (LE)',
     'Number of Items',
     'Date',
     'Time',
+    'Discount (LE)',
     ''
   ];
 }

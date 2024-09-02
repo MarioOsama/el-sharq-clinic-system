@@ -28,6 +28,14 @@ class InvoicesRepo {
     );
   }
 
+  Future<bool> deleteInvoice(int clinicIndex, String id) async {
+    return _firebaseServices.deleteItem(
+      collectionName,
+      id: id,
+      clinicIndex: clinicIndex,
+    );
+  }
+
   Future<String?> getLastInvoiceId(
       int clinicIndex, bool descendingOrder) async {
     return _firebaseServices.getFirstItemId(

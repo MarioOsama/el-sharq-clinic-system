@@ -176,6 +176,44 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     });
   }
 
+  // Delete Invoice Functions
+  void deleteInvoice(String id) async {
+    emit(InvoiceInProgress());
+    final bool isDeleted = await _invoicesRepo.deleteInvoice(
+      authData!.clinicIndex,
+      id,
+    );
+    if (isDeleted) {
+      invoicesList.removeWhere((invoice) => invoice!.id == id);
+      showDeleteButtonNotifier.value = false;
+      _onSuccessOperation('Invoice deleted successfully');
+    } else {
+      emit(InvoicesError(message: 'Failed to delete the invoice'));
+    }
+  }
+
+  void deleteSelectedInvoices() async {
+    emit(InvoicesLoading());
+    try {
+      final List<String> deletedInvoicesId = [];
+      // Get all the selected doctors
+      for (int i = 0; i < selectedRows.length; i++) {
+        if (selectedRows.elementAt(i)) {
+          deletedInvoicesId.add(invoicesList.elementAt(i)!.id);
+        }
+      }
+      // Delete all the selected doctors
+      for (String doctorId in deletedInvoicesId) {
+        await _invoicesRepo.deleteInvoice(authData!.clinicIndex, doctorId);
+        invoicesList.removeWhere((element) => element!.id == doctorId);
+      }
+      showDeleteButtonNotifier.value = false;
+      _onSuccessOperation('Invoices deleted successfully', popCount: 1);
+    } catch (e) {
+      emit(InvoicesError(message: 'Failed to delete these selected cases'));
+    }
+  }
+
   // UI Functions
   void setupNewSheet() {
     itemFormsKeys = [GlobalKey<FormState>()];
@@ -368,6 +406,25 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   void onSaveNewInvoice() {
     if (_validateInvoiceItems()) {
       addNewInvoice();
+    }
+  }
+
+  void onDeleteInvoice(
+    String invoiceId,
+    String clinicPassword,
+  ) {
+    if (authData!.userModel.password == clinicPassword) {
+      deleteInvoice(invoiceId);
+    } else {
+      emit(InvoiceConstrutingError(message: 'Password is incorrect'));
+    }
+  }
+
+  void onDeleteSelectedInvoices(String clinicPassword) {
+    if (authData!.userModel.password == clinicPassword) {
+      deleteSelectedInvoices();
+    } else {
+      emit(InvoiceConstrutingError(message: 'Password is incorrect'));
     }
   }
 }

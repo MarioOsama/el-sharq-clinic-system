@@ -46,6 +46,7 @@ class _InvoiceSideSheetItemContainerState
     price: 0,
   );
 
+  late TextEditingController priceController;
   late TextEditingController totalPriceController;
   late TextEditingController quantityController;
   late TextEditingController itemNameController;
@@ -56,9 +57,7 @@ class _InvoiceSideSheetItemContainerState
   @override
   void initState() {
     super.initState();
-    totalPriceController = TextEditingController();
-    quantityController = TextEditingController();
-    itemNameController = TextEditingController();
+    _setupControllers();
     if (widget.invoiceItem != null) {
       _setupExistingItem();
     } else {
@@ -141,12 +140,27 @@ class _InvoiceSideSheetItemContainerState
                   ],
                 ),
                 verticalSpace(20),
-                AppTextField(
-                  enabled: widget.editable,
-                  controller: totalPriceController,
-                  maxWidth: double.infinity,
-                  hint: 'Total: ',
-                  readOnly: true,
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: AppTextField(
+                        enabled: widget.editable,
+                        controller: totalPriceController,
+                        maxWidth: double.infinity,
+                        hint: 'Total: ',
+                      ),
+                    ),
+                    horizontalSpace(70),
+                    Expanded(
+                      child: AppTextField(
+                        controller: priceController,
+                        enabled: widget.editable,
+                        hint: 'Price',
+                        readOnly: true,
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -188,6 +202,13 @@ class _InvoiceSideSheetItemContainerState
     setState(() {});
   }
 
+  void _setupControllers() {
+    priceController = TextEditingController();
+    totalPriceController = TextEditingController();
+    quantityController = TextEditingController();
+    itemNameController = TextEditingController();
+  }
+
   void _resetControllers() {
     totalPriceController.text = '0';
     quantityController.text = '1';
@@ -215,6 +236,7 @@ class _InvoiceSideSheetItemContainerState
   void _onItemNameChanged(String? value) {
     cubit.onItemSelected(value, itemType, widget.index - 1);
     itemModel = cubit.itemsList[widget.index - 1];
+    priceController.text = itemModel.price.toString();
     totalPriceController.text =
         (itemModel.quantity * itemModel.price).toString();
     quantityController.text = '1';
@@ -223,7 +245,9 @@ class _InvoiceSideSheetItemContainerState
   void _setupExistingItem() {
     itemModel = widget.invoiceItem!;
     items = [itemModel.name];
-    totalPriceController.text = itemModel.price.toString();
+    priceController.text = itemModel.price.toString();
+    totalPriceController.text =
+        (itemModel.price * itemModel.quantity).toString();
     quantityController.text = itemModel.quantity.toString();
     itemNameController.text = itemModel.name;
     itemType = itemModel.type;
@@ -233,6 +257,7 @@ class _InvoiceSideSheetItemContainerState
   void _setupNewItem() {
     cubit = widget.cubitContext.read<InvoicesCubit>();
     items = cubit.servicesList.map((e) => e.title).toList();
+    priceController.text = '0';
     totalPriceController.text = '0';
     quantityController.text = '1';
     itemNameController.text = 'Choose $itemType';

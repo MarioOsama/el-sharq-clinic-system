@@ -8,7 +8,7 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     this.controller,
-    this.hint,
+    required this.hint,
     this.maxWidth,
     this.maxHeight,
     this.textStyle,
@@ -27,7 +27,7 @@ class AppTextField extends StatelessWidget {
   });
 
   final TextEditingController? controller;
-  final String? hint;
+  final String hint;
   final double? maxWidth;
   final double? maxHeight;
   final TextStyle? textStyle;
@@ -56,7 +56,7 @@ class AppTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          hint!,
+          hint,
           style: AppTextStyles.font16DarkGreyMedium
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
