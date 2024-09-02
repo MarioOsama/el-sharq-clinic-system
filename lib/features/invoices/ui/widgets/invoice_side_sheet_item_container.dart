@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
@@ -15,14 +17,12 @@ class InvoiceSideSheetItemContainer extends StatefulWidget {
     required this.index,
     required this.editable,
     required this.itemFormKey,
-    this.onSaved,
     required this.cubitContext,
   });
 
   final int index;
   final bool editable;
   final GlobalKey<FormState> itemFormKey;
-  final void Function(String field, String? value)? onSaved;
   final BuildContext cubitContext;
 
   @override
@@ -33,15 +33,15 @@ class InvoiceSideSheetItemContainer extends StatefulWidget {
 class _InvoiceSideSheetItemContainerState
     extends State<InvoiceSideSheetItemContainer> {
   final List<String> itemTypesList = const [
-    'Service',
+    'Services',
     'Medicines',
     'Accessories'
   ];
   int selectedTypeIndex = 0;
-  String itemType = 'Service';
+  String itemType = 'Services';
   InvoiceItemModel itemModel = InvoiceItemModel(
     name: '',
-    type: 'Service',
+    type: 'Services',
     quantity: 0,
     price: 0,
   );
@@ -49,6 +49,7 @@ class _InvoiceSideSheetItemContainerState
   late TextEditingController totalPriceController;
   late TextEditingController quantityController;
   late TextEditingController itemNameController;
+
   late InvoicesCubit cubit;
   late List<String> items;
 
@@ -67,6 +68,7 @@ class _InvoiceSideSheetItemContainerState
 
   @override
   Widget build(BuildContext context) {
+    log('${widget.index}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -123,17 +125,15 @@ class _InvoiceSideSheetItemContainerState
                       child: AppTextField(
                         controller: quantityController,
                         enabled: widget.editable,
-                        hint: 'Number of items',
+                        hint: 'Quantity',
                         onChanged: _onNumberOfItemsChanged,
+                        numeric: true,
                         validator: (value) {
-                          if (value!.isEmpty ||
-                              double.tryParse(value) == null) {
-                            return 'Please enter a valid number of items';
+                          if (quantityController.text == '0') {
+                            log('Invalid 👋🏻');
+                            return 'Quantity cannot be 0';
                           }
                           return null;
-                        },
-                        onSaved: (value) {
-                          widget.onSaved?.call('number of items', value);
                         },
                       ),
                     ),
@@ -145,9 +145,6 @@ class _InvoiceSideSheetItemContainerState
                   maxWidth: double.infinity,
                   hint: 'Total: ',
                   readOnly: true,
-                  onSaved: (value) {
-                    widget.onSaved?.call('total', value);
-                  },
                 )
               ],
             ),
@@ -158,11 +155,12 @@ class _InvoiceSideSheetItemContainerState
   }
 
   void _onTypeChanged(String? value) {
+    cubit.onResetInvoiceItem(widget.index - 1);
     switch (value) {
-      case 'Service':
+      case 'Services':
         items = cubit.servicesList.map((e) => e.title).toList();
         selectedTypeIndex = itemTypesList.indexOf(value!);
-        itemType = 'Service';
+        itemType = 'Services';
         _resetControllers();
         break;
       case 'Medicines':
@@ -180,8 +178,8 @@ class _InvoiceSideSheetItemContainerState
 
       default:
         items = cubit.servicesList.map((e) => e.title).toList();
-        selectedTypeIndex = itemTypesList.indexOf('Service');
-        itemType = 'Service';
+        selectedTypeIndex = itemTypesList.indexOf('Services');
+        itemType = 'Services';
         _resetControllers();
         break;
     }
@@ -198,15 +196,22 @@ class _InvoiceSideSheetItemContainerState
     if (value.isEmpty ||
         double.tryParse(value) == null ||
         double.tryParse(value)! < 0) {
+      quantityController.text = '0';
       return;
     }
-    quantityController.text = value;
+    if (RegExp(r'^0').hasMatch(value)) {
+      quantityController.text = value.substring(1);
+    } else {
+      quantityController.text = value;
+    }
+
     totalPriceController.text =
         (double.parse(value) * itemModel.price).toString();
+    cubit.updateItemQuantity(widget.index - 1, double.parse(value));
   }
 
   void _onItemNameChanged(String? value) {
-    cubit.onItemSelected(value, itemType, widget.index);
+    cubit.onItemSelected(value, itemType, widget.index - 1);
     itemModel = cubit.itemsList[widget.index - 1];
     totalPriceController.text =
         (itemModel.quantity * itemModel.price).toString();
@@ -217,6 +222,7 @@ class _InvoiceSideSheetItemContainerState
   void dispose() {
     totalPriceController.dispose();
     quantityController.dispose();
+    itemNameController.dispose();
     super.dispose();
   }
 }

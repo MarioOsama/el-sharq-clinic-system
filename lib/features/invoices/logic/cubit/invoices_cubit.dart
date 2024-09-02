@@ -1,9 +1,12 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/repos/invoices_repo.dart';
@@ -21,9 +24,9 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   // Variables
   AuthDataModel? authData;
   ValueNotifier<bool> showDeleteButtonNotifier = ValueNotifier(false);
-  ValueNotifier<int> numberOfItemsNotifier = ValueNotifier(0);
-  List<GlobalKey<FormState>> itemFormsKeys = [];
+  TextEditingController totalController = TextEditingController();
 
+  List<GlobalKey<FormState>> itemFormsKeys = [];
   List<InvoiceModel?> invoicesList = [];
   List<InvoiceModel?> searchResult = [];
   List<bool> selectedRows = [];
@@ -40,7 +43,6 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     items: [],
     total: 0,
     discount: 0,
-    numberOfItems: 0,
   );
 
   // Get Invoices Functions
@@ -100,32 +102,51 @@ class InvoicesCubit extends Cubit<InvoicesState> {
 
   // Add New Invoice Functions
   void addNewInvoice() async {
-    emit(InvoicesLoading());
+    emit(InvoiceInProgress());
     // Save items forms
-    _validateAndSaveItemsForms();
-
-    try {
-      final bool isAdded = await _invoicesRepo.addNewInvoice(
-        authData!.clinicIndex,
-        invoiceInfo,
-      );
-      if (isAdded) {
-        emit(InvoicesSuccess(invoices: invoicesList));
-      } else {
-        emit(InvoicesError(message: 'Failed to add the invoice'));
-      }
-    } catch (e) {
+    _setInvoiceIdentifiers();
+    final bool isAdded = await _invoicesRepo.addNewInvoice(
+      authData!.clinicIndex,
+      invoiceInfo,
+    );
+    if (isAdded) {
+      invoicesList.insert(0, invoiceInfo);
+      _onSuccessOperation('Invoice added successfully');
+    } else {
       emit(InvoicesError(message: 'Failed to add the invoice'));
     }
   }
 
-  _validateAndSaveItemsForms() {
+  void _setInvoiceIdentifiers() {
+    invoiceInfo = invoiceInfo.copyWith(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      date: DateTime.now().toString(),
+    );
+  }
+
+  bool _validateInvoiceItems() {
     for (int i = 0; i < itemFormsKeys.length; i++) {
-      if (itemFormsKeys[i].currentState!.validate()) {
+      if (itemFormsKeys[i].currentState!.validate() &&
+          invoiceInfo.items[i].name.trim() != '') {
         itemFormsKeys[i].currentState!.save();
-        invoiceInfo.items.add(itemsList[i]);
+      } else {
+        emit(InvoiceConstrutingError(
+          message: 'Item ${i + 1} is not valid, please check it',
+        ));
+        return false;
       }
     }
+    if (invoiceInfo.discount > invoiceInfo.total) {
+      emit(InvoiceConstrutingError(
+        message: 'Discount can\'t be greater than total',
+      ));
+      return false;
+    }
+    emit(InvoiceConstruting(
+        invoiceModel: invoiceInfo.copyWith(
+      items: itemsList,
+    )));
+    return true;
   }
 
   Future<String?> getFirstInvoiceId() async {
@@ -142,15 +163,22 @@ class InvoicesCubit extends Cubit<InvoicesState> {
             as InvoiceModel;
       }
     } catch (e) {
-      log(e.toString());
       emit(InvoicesError(message: 'Failed to get the owner'));
       rethrow;
     }
   }
 
+  void _onSuccessOperation(String message, {int popCount = 2}) async {
+    emit(InvoicesLoading());
+    emit(InvoiceSuccessOperation(message: message, popCount: popCount));
+    await Future.delayed(const Duration(seconds: 1), () {
+      selectedRows = List.filled(invoicesList.length, false);
+      emit(InvoicesSuccess(invoices: invoicesList));
+    });
+  }
+
   // UI Functions
   void setupNewSheet() {
-    numberOfItemsNotifier.value = 1;
     itemFormsKeys = [GlobalKey<FormState>()];
     itemsList = [
       InvoiceItemModel(
@@ -166,19 +194,18 @@ class InvoicesCubit extends Cubit<InvoicesState> {
       items: itemsList,
       total: 0,
       discount: 0,
-      numberOfItems: numberOfItemsNotifier.value,
     );
+    emit(InvoiceConstruting(invoiceModel: invoiceInfo));
   }
 
   void setupExistingSheet(InvoiceModel invoice) {
     itemFormsKeys =
-        List.generate(invoice.numberOfItems, (_) => GlobalKey<FormState>());
-    numberOfItemsNotifier.value = invoice.numberOfItems;
+        List.generate(invoice.items.length, (_) => GlobalKey<FormState>());
     invoiceInfo = invoice;
+    emit(InvoiceConstruting(invoiceModel: invoiceInfo));
   }
 
   void incrementItems() {
-    numberOfItemsNotifier.value++;
     itemFormsKeys.add(GlobalKey<FormState>());
     itemsList.add(
       InvoiceItemModel(
@@ -188,24 +215,29 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         price: 0,
       ),
     );
-    emit(InvoiceItemsChanged(numberOfItems: numberOfItemsNotifier.value));
+    emit(InvoiceConstruting(
+        invoiceModel: invoiceInfo.copyWith(
+      items: itemsList,
+    )));
   }
 
   void decrementItems(int index) {
-    numberOfItemsNotifier.value--;
     itemFormsKeys.removeAt(index);
-    final deletedItem = itemsList.removeAt(index);
-    invoiceInfo.items.remove(deletedItem);
-    emit(InvoiceItemsChanged(numberOfItems: numberOfItemsNotifier.value));
+    itemsList.removeAt(index);
+    emit(InvoiceConstruting(
+        invoiceModel: invoiceInfo.copyWith(
+      items: itemsList,
+    )));
+    updateTotal();
   }
 
   void onSaveInvoiceItemFormField(String field, String? value, int index) {
-    log('field: $field, value: $value, index: $index');
     itemsList[index] = itemsList[index].copyWith(
       name: field == 'name' ? value! : itemsList[index].name,
       type: field == 'type' ? value! : itemsList[index].type,
-      quantity:
-          field == 'quantity' ? int.parse(value!) : itemsList[index].quantity,
+      quantity: field == 'quantity'
+          ? double.parse(value!)
+          : itemsList[index].quantity,
       price: field == 'price' ? double.parse(value!) : itemsList[index].price,
     );
   }
@@ -277,22 +309,67 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   }
 
   void onItemSelected(String? value, String itemType, int itemIndex) {
+    log('Selected Item value: $value');
     if (value != null && value.trim().isNotEmpty && value != 'No items found') {
       SelableItemModel item;
-      if (itemType == 'Service') {
+      if (itemType == 'Services') {
         item = servicesList.firstWhere((service) => service.title == value);
       } else if (itemType == 'Medicines') {
         item = medicinesList.firstWhere((service) => service.title == value);
       } else {
         item = accessoriesList.firstWhere((service) => service.title == value);
       }
-      itemsList[itemIndex - 1] = itemsList[itemIndex - 1].copyWith(
+      itemsList[itemIndex] = itemsList[itemIndex].copyWith(
         name: item.title,
         type: itemType,
         quantity: 1,
         price: item.price,
       );
-      log('Items List: $itemsList');
+    } else {
+      itemsList[itemIndex] = itemsList[itemIndex].copyWith(
+        name: '',
+        type: '',
+        quantity: 1,
+        price: 0,
+      );
+    }
+    updateTotal();
+  }
+
+  void onResetInvoiceItem(int index) {
+    itemsList[index] = itemsList[index].copyWith(
+      name: '',
+      type: '',
+      quantity: 1,
+      price: 0,
+    );
+    updateTotal();
+  }
+
+  void updateItemQuantity(int index, double quantity) {
+    itemsList[index] = itemsList[index].copyWith(quantity: quantity);
+    emit(InvoiceConstruting(
+        invoiceModel: invoiceInfo.copyWith(items: itemsList)));
+    updateTotal();
+  }
+
+  void updateDiscount(double discount) {
+    invoiceInfo = invoiceInfo.copyWith(discount: discount);
+    emit(InvoiceConstruting(invoiceModel: invoiceInfo));
+  }
+
+  void updateTotal() {
+    invoiceInfo = invoiceInfo.copyWith(
+      total: itemsList
+          .map((item) => item.price * item.quantity)
+          .fold(0, (previousValue, element) => previousValue! + element),
+    );
+    emit(InvoiceConstruting(invoiceModel: invoiceInfo));
+  }
+
+  void onSaveNewInvoice() {
+    if (_validateInvoiceItems()) {
+      addNewInvoice();
     }
   }
 }
