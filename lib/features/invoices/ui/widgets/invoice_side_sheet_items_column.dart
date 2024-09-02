@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoice_side_sheet_item_container.dart';
+import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoice_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,13 +26,24 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
     final cubit = cubitContext.read<InvoicesCubit>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _getItems(cubit),
+      children: [
+        ..._getItems(cubit),
+        InvoiceSummary(
+          total: cubit.invoiceInfo.total,
+          cubit: cubit,
+        ),
+      ],
     );
   }
 
   List<Widget> _getItems(InvoicesCubit cubit) {
+    cubit.itemFormsKeys.forEach((element) {
+      log(element.currentState?.validate().toString() ?? 'Form not valid');
+    });
+    // log(cubit.itemFormsKeys.for.toString());
+
     return List.generate(
-      cubit.numberOfItemsNotifier.value,
+      cubit.invoiceInfo.items.length,
       (index) => Padding(
         padding: const EdgeInsets.only(bottom: 30),
         child: Stack(
@@ -39,9 +53,6 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
               itemFormKey: cubit.itemFormsKeys[index],
               editable: editable,
               cubitContext: cubitContext,
-              onSaved: (field, value) {
-                cubit.onSaveInvoiceItemFormField(field, value, index);
-              },
             ),
             if (index != 0 && editable) _buildRemoveButton(index, cubit),
           ],

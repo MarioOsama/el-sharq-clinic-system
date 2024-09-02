@@ -1,6 +1,7 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextField extends StatelessWidget {
@@ -22,6 +23,7 @@ class AppTextField extends StatelessWidget {
     this.initialValue,
     this.onSaved,
     this.onChanged,
+    this.numeric,
   });
 
   final TextEditingController? controller;
@@ -40,6 +42,7 @@ class AppTextField extends StatelessWidget {
   final String? initialValue;
   final void Function(String? value)? onSaved;
   final void Function(String value)? onChanged;
+  final bool? numeric;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,11 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       validator: validator,
       onChanged: onChanged,
+      inputFormatters: numeric ?? false
+          ? <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+            ]
+          : null,
       onSaved: onSaved,
       initialValue: initialValue,
       style: AppTextStyles.font20DarkGreyMedium,

@@ -4,7 +4,6 @@ import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model
 class InvoiceModel {
   final String id;
   final List<InvoiceItemModel> items;
-  final int numberOfItems;
   final double total;
   final double discount;
   final String date;
@@ -12,7 +11,6 @@ class InvoiceModel {
   const InvoiceModel({
     required this.id,
     required this.items,
-    required this.numberOfItems,
     required this.total,
     required this.discount,
     required this.date,
@@ -21,7 +19,6 @@ class InvoiceModel {
   InvoiceModel copyWith({
     String? id,
     List<InvoiceItemModel>? items,
-    int? numberOfItems,
     double? total,
     double? discount,
     String? date,
@@ -29,7 +26,6 @@ class InvoiceModel {
     return InvoiceModel(
       id: id ?? this.id,
       items: items ?? this.items,
-      numberOfItems: numberOfItems ?? this.numberOfItems,
       total: total ?? this.total,
       discount: discount ?? this.discount,
       date: date ?? this.date,
@@ -40,7 +36,6 @@ class InvoiceModel {
     return {
       'id': id,
       'items': items.map((e) => e.toFirestore()).toList(),
-      'numberOfItems': numberOfItems,
       'total': total,
       'discount': discount,
       'date': date,
@@ -54,9 +49,8 @@ class InvoiceModel {
       items: (data['items'] as List)
           .map((e) => InvoiceItemModel.fromFirestore(e))
           .toList(),
-      numberOfItems: data['numberOfItems'],
-      total: double.parse(data['total'].toString()),
-      discount: double.parse(data['discount'].toString()),
+      total: data['total'],
+      discount: data['discount'],
       date: data['date'],
     );
   }
@@ -66,7 +60,6 @@ class InvoiceModel {
     for (var key in map.keys.toList()) {
       if (map[key] == null ||
           map[key].toString().trim().isEmpty ||
-          map[key] == 0 ||
           key == 'id') {
         map.remove(key);
       }
@@ -78,11 +71,16 @@ class InvoiceModel {
     return [
       id,
       '$total LE',
-      numberOfItems.toString(),
+      items.length.toString(),
       date.substring(0, 10),
       date.substring(11, 19),
       discount.toString(),
       items.map((e) => e.name).toList().join('/n'),
     ];
+  }
+
+  @override
+  String toString() {
+    return 'InvoiceModel(id: $id, items: $items, numberOfItems: ${items.length}, total: $total, discount: $discount, date: $date)';
   }
 }

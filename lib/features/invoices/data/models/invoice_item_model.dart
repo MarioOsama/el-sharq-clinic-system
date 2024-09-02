@@ -1,7 +1,7 @@
 class InvoiceItemModel {
   final String name;
   final double price;
-  final int quantity;
+  final double quantity;
   final String type;
 
   InvoiceItemModel(
@@ -13,8 +13,8 @@ class InvoiceItemModel {
   factory InvoiceItemModel.fromFirestore(Map<String, dynamic> data) {
     return InvoiceItemModel(
       name: data['name'],
-      price: double.parse(data['price']),
-      quantity: int.parse(data['quantity']),
+      price: data['price'],
+      quantity: data['quantity'],
       type: data['type'],
     );
   }
@@ -31,7 +31,7 @@ class InvoiceItemModel {
   InvoiceItemModel copyWith({
     String? name,
     double? price,
-    int? quantity,
+    double? quantity,
     String? type,
   }) {
     return InvoiceItemModel(
@@ -40,5 +40,10 @@ class InvoiceItemModel {
       quantity: quantity ?? this.quantity,
       type: type ?? this.type,
     );
+  }
+
+  @override
+  String toString() {
+    return 'InvoiceItemModel(name: $name, price: $price, quantity: $quantity, type: $type)';
   }
 }

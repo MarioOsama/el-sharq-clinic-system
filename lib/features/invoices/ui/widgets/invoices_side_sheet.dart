@@ -28,13 +28,16 @@ Future<void> showInvoiceSheet(BuildContext context, String title,
         verticalSpace(50),
         _buildAddItemButtons(context, editable),
         verticalSpace(50),
-        ListenableBuilder(
-          listenable: invoicesCubit.numberOfItemsNotifier,
-          builder: (ctx, child) => InvoiceSideSheetItemsColumn(
-            editable: editable,
-            invoice: invoice,
-            cubitContext: context,
-          ),
+        BlocBuilder<InvoicesCubit, InvoicesState>(
+          bloc: invoicesCubit,
+          buildWhen: (previous, current) => current is InvoiceConstruting,
+          builder: (_, state) {
+            return InvoiceSideSheetItemsColumn(
+              editable: editable,
+              invoice: invoice,
+              cubitContext: context,
+            );
+          },
         ),
         verticalSpace(height * 0.25),
         _buildActionIfNeeded(context, newInvoice),
@@ -61,11 +64,8 @@ _buildActionIfNeeded(BuildContext context, bool newInvoice) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Invoice',
-    width: MediaQuery.sizeOf(context).width,
-    height: 70.h,
-    onPressed: () => context.read<InvoicesCubit>().itemFormsKeys.forEach((key) {
-      key.currentState!.save();
-    }),
-  );
+      text: 'Save Invoice',
+      width: MediaQuery.sizeOf(context).width,
+      height: 70.h,
+      onPressed: () => context.read<InvoicesCubit>().onSaveNewInvoice());
 }
