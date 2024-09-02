@@ -1,16 +1,17 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
+import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class InvoiceSummary extends StatelessWidget {
-  const InvoiceSummary({super.key, required this.total, required this.cubit});
+  const InvoiceSummary(
+      {super.key, required this.total, required this.cubit, this.invoiceItem});
 
   final double total;
   final InvoicesCubit cubit;
+  final InvoiceModel? invoiceItem;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +19,17 @@ class InvoiceSummary extends StatelessWidget {
       bloc: cubit,
       buildWhen: (previous, current) => current is InvoiceConstruting,
       builder: (context, state) {
-        if (state is InvoiceConstruting) {
-          log(state.invoiceModel.toString());
-        }
-        log('InvoiceSummary builder');
         final summaryMap = _calculateSummary(state);
         return Row(
           children: [
             Expanded(
               child: AppTextField(
                 hint: 'Discount (LE)',
+                initialValue: invoiceItem != null
+                    ? invoiceItem!.discount.toString()
+                    : '0',
+                enabled: invoiceItem == null,
+                numeric: true,
                 onChanged: (value) {
                   if (value.isEmpty) {
                     value = '0';
@@ -82,12 +84,12 @@ class InvoiceSummary extends StatelessWidget {
     };
     if (state is InvoiceConstruting) {
       summaryMap['Total'] = state.invoiceModel.total;
-      summaryMap['Discount (%)'] = state.invoiceModel.discount != 0
-          ? state.invoiceModel.discount / summaryMap['Total']! * 100
-          : 0.0;
+      summaryMap['Discount (%)'] = state.invoiceModel.discount == 0
+          ? 0
+          : state.invoiceModel.discount / state.invoiceModel.total * 100;
 
       summaryMap['Total after discount'] =
-          summaryMap['Total']! - state.invoiceModel.discount;
+          state.invoiceModel.total - state.invoiceModel.discount;
       summaryMap['Number of items'] =
           state.invoiceModel.items.length.toDouble();
     }

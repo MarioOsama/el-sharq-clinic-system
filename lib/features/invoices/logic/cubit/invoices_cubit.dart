@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
@@ -7,6 +5,7 @@ import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/repos/invoices_repo.dart';
@@ -309,7 +308,6 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   }
 
   void onItemSelected(String? value, String itemType, int itemIndex) {
-    log('Selected Item value: $value');
     if (value != null && value.trim().isNotEmpty && value != 'No items found') {
       SelableItemModel item;
       if (itemType == 'Services') {

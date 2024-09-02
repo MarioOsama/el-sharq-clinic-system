@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
@@ -18,12 +16,14 @@ class InvoiceSideSheetItemContainer extends StatefulWidget {
     required this.editable,
     required this.itemFormKey,
     required this.cubitContext,
+    this.invoiceItem,
   });
 
   final int index;
   final bool editable;
   final GlobalKey<FormState> itemFormKey;
   final BuildContext cubitContext;
+  final InvoiceItemModel? invoiceItem;
 
   @override
   State<InvoiceSideSheetItemContainer> createState() =>
@@ -56,19 +56,18 @@ class _InvoiceSideSheetItemContainerState
   @override
   void initState() {
     super.initState();
-    cubit = widget.cubitContext.read<InvoicesCubit>();
-    items = cubit.servicesList.map((e) => e.title).toList();
     totalPriceController = TextEditingController();
     quantityController = TextEditingController();
     itemNameController = TextEditingController();
-    totalPriceController.text = '0';
-    quantityController.text = '1';
-    itemNameController.text = 'Choose $itemType';
+    if (widget.invoiceItem != null) {
+      _setupExistingItem();
+    } else {
+      _setupNewItem();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    log('${widget.index}');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -115,9 +114,11 @@ class _InvoiceSideSheetItemContainerState
                         enabled: widget.editable,
                         hint: 'Item Name',
                         items: items,
-                        onFilter: (entries, filter) =>
-                            cubit.onItemSearch(entries, items, filter),
-                        onChanged: _onItemNameChanged,
+                        onFilter: widget.editable
+                            ? (entries, filter) =>
+                                cubit.onItemSearch(entries, items, filter)
+                            : null,
+                        onChanged: widget.editable ? _onItemNameChanged : null,
                       ),
                     ),
                     horizontalSpace(70),
@@ -126,11 +127,11 @@ class _InvoiceSideSheetItemContainerState
                         controller: quantityController,
                         enabled: widget.editable,
                         hint: 'Quantity',
-                        onChanged: _onNumberOfItemsChanged,
+                        onChanged:
+                            widget.editable ? _onNumberOfItemsChanged : null,
                         numeric: true,
                         validator: (value) {
                           if (quantityController.text == '0') {
-                            log('Invalid 👋🏻');
                             return 'Quantity cannot be 0';
                           }
                           return null;
@@ -141,6 +142,7 @@ class _InvoiceSideSheetItemContainerState
                 ),
                 verticalSpace(20),
                 AppTextField(
+                  enabled: widget.editable,
                   controller: totalPriceController,
                   maxWidth: double.infinity,
                   hint: 'Total: ',
@@ -216,6 +218,24 @@ class _InvoiceSideSheetItemContainerState
     totalPriceController.text =
         (itemModel.quantity * itemModel.price).toString();
     quantityController.text = '1';
+  }
+
+  void _setupExistingItem() {
+    itemModel = widget.invoiceItem!;
+    items = [itemModel.name];
+    totalPriceController.text = itemModel.price.toString();
+    quantityController.text = itemModel.quantity.toString();
+    itemNameController.text = itemModel.name;
+    itemType = itemModel.type;
+    selectedTypeIndex = itemTypesList.indexOf(itemType);
+  }
+
+  void _setupNewItem() {
+    cubit = widget.cubitContext.read<InvoicesCubit>();
+    items = cubit.servicesList.map((e) => e.title).toList();
+    totalPriceController.text = '0';
+    quantityController.text = '1';
+    itemNameController.text = 'Choose $itemType';
   }
 
   @override

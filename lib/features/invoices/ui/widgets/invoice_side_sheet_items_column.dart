@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
@@ -28,20 +27,17 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ..._getItems(cubit),
+        verticalSpace(30),
         InvoiceSummary(
           total: cubit.invoiceInfo.total,
           cubit: cubit,
+          invoiceItem: invoice,
         ),
       ],
     );
   }
 
   List<Widget> _getItems(InvoicesCubit cubit) {
-    cubit.itemFormsKeys.forEach((element) {
-      log(element.currentState?.validate().toString() ?? 'Form not valid');
-    });
-    // log(cubit.itemFormsKeys.for.toString());
-
     return List.generate(
       cubit.invoiceInfo.items.length,
       (index) => Padding(
@@ -53,6 +49,7 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
               itemFormKey: cubit.itemFormsKeys[index],
               editable: editable,
               cubitContext: cubitContext,
+              invoiceItem: editable ? null : cubit.invoiceInfo.items[index],
             ),
             if (index != 0 && editable) _buildRemoveButton(index, cubit),
           ],
