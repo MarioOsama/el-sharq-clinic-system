@@ -47,17 +47,42 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   // Get Invoices Functions
   void setupSectionData(
       AuthDataModel authenticationData, BuildContext context) {
-    _setupSelableItemsListsData(context);
     _setAuthData(authenticationData);
+    _setupSelableItemsListsData(context);
     _getPaginatedInvoices();
   }
 
-  void _setupSelableItemsListsData(BuildContext context) {
-    servicesList = context.read<MainCubit>().servicesList;
+  void _setupSelableItemsListsData(BuildContext context) async {
+    final MainCubit mainCubit = context.read<MainCubit>();
+    servicesList = mainCubit.servicesList;
+    medicinesList = mainCubit.medicinesList;
+    accessoriesList = mainCubit.accessorieList;
+    if (servicesList.isEmpty ||
+        medicinesList.isEmpty ||
+        accessoriesList.isEmpty) {
+      await loadSelableItemsLists();
+      updateSelableItemsListsInMainCubit(mainCubit);
+    }
+  }
 
-    medicinesList = context.read<MainCubit>().medicinesList;
+  Future<void> loadSelableItemsLists() async {
+    final result =
+        await _invoicesRepo.loadSelableItemsLists(authData!.clinicIndex);
+    servicesList = result[0] as List<ServiceModel>;
+    medicinesList = result[1] as List<ProductModel>;
+    accessoriesList = result[2] as List<ProductModel>;
+  }
 
-    accessoriesList = context.read<MainCubit>().accessorieList;
+  void updateSelableItemsListsInMainCubit(MainCubit cubit) {
+    cubit.updateServicesList(
+      servicesList,
+    );
+    cubit.updateMedicinesList(
+      medicinesList,
+    );
+    cubit.updateAccessoriesList(
+      accessoriesList,
+    );
   }
 
   void _setAuthData(AuthDataModel authenticationData) {

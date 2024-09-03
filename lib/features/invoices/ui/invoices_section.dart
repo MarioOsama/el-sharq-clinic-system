@@ -19,11 +19,19 @@ class InvoicesSection extends StatelessWidget {
     return SectionContainer(
       title: 'Invoices',
       actions: [
-        SectionActionButton(
-          newText: 'New Invoice',
-          onNewPressed: () => showInvoiceSheet(context, 'New Invoice'),
-          onDeletePressed: () => _onDeleteDoctors(context),
-          valueNotifier: context.read<InvoicesCubit>().showDeleteButtonNotifier,
+        BlocBuilder<InvoicesCubit, InvoicesState>(
+          builder: (context, state) {
+            if (state is InvoicesLoading) {
+              return const SizedBox.shrink();
+            }
+            return SectionActionButton(
+              newText: 'New Invoice',
+              onNewPressed: () => showInvoiceSheet(context, 'New Invoice'),
+              onDeletePressed: () => _onDeleteDoctors(context),
+              valueNotifier:
+                  context.read<InvoicesCubit>().showDeleteButtonNotifier,
+            );
+          },
         ),
       ],
       child: Expanded(
