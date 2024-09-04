@@ -40,23 +40,20 @@ class _HomeLayoutState extends State<HomeLayout> {
       body: Row(
         children: [
           Expanded(
-              child: CustomDrawer(
-            currentSelectedIndex: selectedDrawerItemIndex,
-            onItemTap: (index) {
-              setState(() {
-                selectedDrawerItemIndex = index;
-              });
-            },
-          )),
-          Expanded(
-            flex: 5,
-            child: Center(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return drawerItems[selectedDrawerItemIndex](context);
-                },
-              ),
+            child: CustomDrawer(
+              currentSelectedIndex: selectedDrawerItemIndex,
+              onItemTap: (index) {
+                setState(() {
+                  selectedDrawerItemIndex = index;
+                });
+              },
             ),
+          ),
+          Expanded(
+            flex: 6,
+            child: LayoutBuilder(builder: (context, constraints) {
+              return drawerItems[selectedDrawerItemIndex](context);
+            }),
           ),
         ],
       ),

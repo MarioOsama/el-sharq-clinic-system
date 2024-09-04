@@ -1,4 +1,3 @@
-import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +13,10 @@ class SectionContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          verticalSpace(30),
           actions != null ? _buildHeaderWithActions() : _buildHeader(),
           child,
         ],
