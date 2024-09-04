@@ -1,14 +1,14 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/features/dashboard/data/models/list_tile_item_model.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
+import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class LowStockProducts extends StatelessWidget {
   const LowStockProducts({super.key, required this.items});
 
-  final List<ListTileItemModel> items;
+  final List<ProductModel> items;
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +55,19 @@ class LowStockProducts extends StatelessWidget {
     );
   }
 
-  ListTile _getItem(ListTileItemModel item) {
+  ListTile _getItem(ProductModel item) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
-        item.productName,
+        item.title,
         style: AppTextStyles.font16DarkGreyMedium,
       ),
-      subtitle: Text(
-        item.productType,
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
-          color: AppColors.darkGrey.withOpacity(0.5),
-        ),
-      ),
+      // subtitle: Text(
+      //   item.,
+      //   style: AppTextStyles.font16DarkGreyMedium.copyWith(
+      //     color: AppColors.darkGrey.withOpacity(0.5),
+      //   ),
+      // ),
       trailing: Text(
         item.quantity.toString(),
         style: AppTextStyles.font16DarkGreyMedium,

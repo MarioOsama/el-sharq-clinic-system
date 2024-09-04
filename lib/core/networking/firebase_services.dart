@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseServices {
@@ -176,6 +178,94 @@ class FirebaseServices {
         .collection(targetedCollection.path)
         .where(field, isGreaterThanOrEqualTo: value.toLowerCase())
         .where(field, isLessThan: '$value\uf7ff')
+        .get();
+
+    // Converting [dataSnapshot] into T type
+    final List<T> items =
+        querySnapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    return items;
+  }
+
+  Future<List<T>> getDocsByDate<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required String dateField,
+    required DateTime startDate,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+    DateTime? endDate,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    startDate = DateTime(
+      startDate.year,
+      startDate.month,
+      startDate.day,
+      0,
+      0,
+      0,
+    );
+
+    endDate = endDate ?? DateTime.now();
+
+    // Query Firestore
+    QuerySnapshot snapshot = await _firestore
+        .collection(targetedCollection.path)
+        .where(dateField, isGreaterThanOrEqualTo: startDate.toString())
+        .where(dateField, isLessThanOrEqualTo: endDate.toString())
+        .get();
+
+    // Converting [dataSnapshot] into T type
+    final List<T> items =
+        snapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    return items;
+  }
+
+  Future<List<T>> getDocsByStringDate<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required String dateField,
+    required String stringStartDate,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+    String? stringEndDate,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+
+    // Query Firestore
+    QuerySnapshot snapshot = await _firestore
+        .collection(targetedCollection.path)
+        .where(dateField,
+            isGreaterThanOrEqualTo: stringStartDate.substring(0, 10))
+        .where(dateField,
+            isLessThanOrEqualTo:
+                stringEndDate ?? stringStartDate.substring(0, 10))
+        .get();
+
+    // Converting [dataSnapshot] into T type
+    final List<T> items =
+        snapshot.docs.map((doc) => fromFirestore(doc)).toList();
+
+    return items;
+  }
+
+  Future<List<T>> getItemsEqualOrLessValue<T>(
+    String collectionName, {
+    required int clinicIndex,
+    required String field,
+    required int value,
+    required T Function(QueryDocumentSnapshot<Object?> doc) fromFirestore,
+  }) async {
+    // Get the clinic document reference
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+    final targetedCollection = clinicDoc.reference.collection(collectionName);
+    final QuerySnapshot querySnapshot = await _firestore
+        .collection(targetedCollection.path)
+        .where(field, isLessThanOrEqualTo: value)
         .get();
 
     // Converting [dataSnapshot] into T type

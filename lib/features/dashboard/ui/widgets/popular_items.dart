@@ -1,14 +1,14 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/features/dashboard/data/models/list_tile_item_model.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
+import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:flutter/material.dart';
 
 class PopularItems extends StatelessWidget {
   const PopularItems({super.key, required this.items});
 
-  final List<ListTileItemModel> items;
+  final List<InvoiceItemModel> items;
 
   @override
   Widget build(BuildContext context) {
@@ -46,53 +46,41 @@ class PopularItems extends StatelessWidget {
           'Item',
           style: AppTextStyles.font16DarkGreyMedium,
         ),
-        Spacer(
-          flex: 2,
-        ),
-        Text(
-          'Quantity',
-          style: AppTextStyles.font16DarkGreyMedium,
-        ),
         Spacer(),
         Text(
-          'Total Price',
+          'Info',
           style: AppTextStyles.font16DarkGreyMedium,
         ),
       ],
     );
   }
 
-  Widget _getItem(ListTileItemModel item) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
+  Widget _getItem(InvoiceItemModel item) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(
+        item.name,
+        style: AppTextStyles.font16DarkGreyMedium,
+      ),
+      subtitle: Text(
+        item.type,
+        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          color: AppColors.darkGrey.withOpacity(0.5),
+        ),
+      ),
+      trailing: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.productName,
-                style: AppTextStyles.font16DarkGreyMedium,
-              ),
-              verticalSpace(5),
-              Text(
-                item.productType,
-                style: AppTextStyles.font16DarkGreyMedium.copyWith(
-                  color: AppColors.darkGrey.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-          const Spacer(),
           Text(
-            item.quantity.toString(),
+            '${item.quantity.toStringAsFixed(2)} Items',
             style: AppTextStyles.font16DarkGreyMedium,
           ),
-          const Spacer(),
           Text(
-            (item.price * item.quantity).toString(),
-            style: AppTextStyles.font16DarkGreyMedium,
-          ),
+            '${(item.price * item.quantity).toStringAsFixed(2)} LE',
+            style: AppTextStyles.font14DarkGreyMedium.copyWith(
+              color: AppColors.darkGrey.withOpacity(0.5),
+            ),
+          )
         ],
       ),
     );

@@ -47,7 +47,7 @@ class InvoiceModel {
     return InvoiceModel(
       id: doc.id,
       items: (data['items'] as List)
-          .map((e) => InvoiceItemModel.fromFirestore(e))
+          .map((e) => InvoiceItemModel.fromMap(e))
           .toList(),
       total: data['total'],
       discount: data['discount'],

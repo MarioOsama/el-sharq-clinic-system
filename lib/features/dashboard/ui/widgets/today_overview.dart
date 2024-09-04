@@ -1,10 +1,13 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/highlights_row.dart';
 import 'package:flutter/material.dart';
 
 class TodayOverview extends StatelessWidget {
-  const TodayOverview({super.key});
+  const TodayOverview({super.key, required this.state});
+
+  final DashboardSuccess state;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,12 @@ class TodayOverview extends StatelessWidget {
           style: AppTextStyles.font22DarkGreyMedium,
         ),
         verticalSpace(40),
-        const TodayHighlightsRow(),
+        TodayHighlightsRow(
+          cases: state.todayCasesCount,
+          owners: state.todayOwnersCount,
+          invoices: state.todayInvoicesCount,
+          revenue: state.todayRevenue,
+        ),
       ],
     );
   }

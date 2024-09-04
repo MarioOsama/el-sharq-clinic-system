@@ -3,26 +3,31 @@ import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class _BarChart extends StatefulWidget {
-  const _BarChart();
+class CasesBarChart extends StatefulWidget {
+  final Map<String, int> weeklyCases;
+
+  const CasesBarChart({super.key, required this.weeklyCases});
 
   @override
-  State<_BarChart> createState() => _BarChartState();
+  State<CasesBarChart> createState() => CasesBarChartState();
 }
 
-class _BarChartState extends State<_BarChart> {
+class CasesBarChartState extends State<CasesBarChart> {
   int touchedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barTouchData: barTouchData,
-        titlesData: titlesData,
-        borderData: borderData,
-        barGroups: barGroups,
-        gridData: const FlGridData(show: false),
-        maxY: 20,
+    return AspectRatio(
+      aspectRatio: 2.8,
+      child: BarChart(
+        BarChartData(
+          barTouchData: barTouchData,
+          titlesData: titlesData,
+          borderData: borderData,
+          barGroups: barGroups,
+          gridData: const FlGridData(show: false),
+          maxY: maxY,
+        ),
       ),
     );
   }
@@ -62,64 +67,19 @@ class _BarChartState extends State<_BarChart> {
         ),
       );
 
-  Widget getLeftTitles(double value, TitleMeta meta) {
-    final style = AppTextStyles.font14DarkGreyMedium.copyWith(
-      color: AppColors.blue,
-      fontWeight: FontWeight.bold,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = '0';
-        break;
-      case 10:
-        text = '10';
-        break;
-      case 20:
-        text = '20';
-        break;
-      default:
-        return Container();
-    }
-    return Text(text, style: style);
-  }
-
   Widget getTitles(double value, TitleMeta meta) {
     final style = AppTextStyles.font14DarkGreyMedium.copyWith(
       color: AppColors.blue,
       fontWeight: FontWeight.bold,
     );
-    String text;
-    switch (value.toInt()) {
-      case 0:
-        text = 'Mn';
-        break;
-      case 1:
-        text = 'Te';
-        break;
-      case 2:
-        text = 'Wd';
-        break;
-      case 3:
-        text = 'Tu';
-        break;
-      case 4:
-        text = 'Fr';
-        break;
-      case 5:
-        text = 'St';
-        break;
-      case 6:
-        text = 'Sn';
-        break;
-      default:
-        text = '';
-        break;
-    }
+
+    List<String> days = widget.weeklyCases.keys.toList();
+    String text = days[value.toInt()];
+
     return SideTitleWidget(
       axisSide: meta.axisSide,
       space: 4,
-      child: Text(text, style: style),
+      child: Text(text.substring(0, 3), style: style),
     );
   }
 
@@ -131,10 +91,9 @@ class _BarChartState extends State<_BarChart> {
             getTitlesWidget: getTitles,
           ),
         ),
-        leftTitles: AxisTitles(
+        leftTitles: const AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: getLeftTitles,
+            showTitles: false,
           ),
         ),
         topTitles: const AxisTitles(
@@ -149,11 +108,15 @@ class _BarChartState extends State<_BarChart> {
         show: false,
       );
 
+  double get maxY =>
+      (widget.weeklyCases.values.reduce((a, b) => a > b ? a : b) * 1.1)
+          .toDouble();
+
   List<BarChartGroupData> get barGroups {
     final BackgroundBarChartRodData backgroundBarChartRodData =
         BackgroundBarChartRodData(
       show: true,
-      toY: 20,
+      toY: maxY,
       fromY: 0,
       color: AppColors.blue.withOpacity(0.25),
     );
@@ -167,129 +130,22 @@ class _BarChartState extends State<_BarChart> {
       ],
     );
 
-    return [
-      BarChartGroupData(
-        x: 0,
+    return widget.weeklyCases.entries.map((entry) {
+      int index = widget.weeklyCases.keys.toList().indexOf(entry.key);
+      return BarChartGroupData(
+        x: index,
         barRods: [
           BarChartRodData(
             width: 30,
             backDrawRodData:
-                touchedIndex == 0 ? backgroundBarChartRodData : null,
-            toY: 8,
+                touchedIndex == index ? backgroundBarChartRodData : null,
+            toY: entry.value.toDouble(),
             color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 0 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 0 ? gradient : null,
+            gradient: touchedIndex == index ? gradient : null,
           )
         ],
         showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 1,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 1 ? backgroundBarChartRodData : null,
-            toY: 10,
-            color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 1 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 1 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 2,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 2 ? backgroundBarChartRodData : null,
-            toY: 14,
-            color: AppColors.blue.withOpacity(0.9),
-            borderRadius: touchedIndex == 2 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 2 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 3,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 3 ? backgroundBarChartRodData : null,
-            toY: 15,
-            color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 3 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 3 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 4,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 4 ? backgroundBarChartRodData : null,
-            toY: 13,
-            color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 4 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 4 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 5,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 5 ? backgroundBarChartRodData : null,
-            toY: 10,
-            color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 5 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 5 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-      BarChartGroupData(
-        x: 6,
-        barRods: [
-          BarChartRodData(
-            width: 30,
-            backDrawRodData:
-                touchedIndex == 6 ? backgroundBarChartRodData : null,
-            toY: 16,
-            color: AppColors.blue.withOpacity(0.85),
-            borderRadius: touchedIndex == 6 ? BorderRadius.circular(10) : null,
-            gradient: touchedIndex == 6 ? gradient : null,
-          )
-        ],
-        showingTooltipIndicators: [0],
-      ),
-    ];
-  }
-}
-
-class CasesBarChart extends StatefulWidget {
-  const CasesBarChart({super.key});
-
-  @override
-  State<CasesBarChart> createState() => _CasesBarChartState();
-}
-
-class _CasesBarChartState extends State<CasesBarChart> {
-  @override
-  Widget build(BuildContext context) {
-    return const AspectRatio(
-      aspectRatio: 2.8,
-      child: _BarChart(),
-    );
+      );
+    }).toList();
   }
 }
