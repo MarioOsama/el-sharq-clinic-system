@@ -7,12 +7,14 @@ class SectionDetailsContainer extends StatelessWidget {
       required this.child,
       this.padding,
       this.color,
+      this.borderRadiusValue,
       this.borderRadius});
 
   final Widget child;
   final EdgeInsets? padding;
   final Color? color;
-  final double? borderRadius;
+  final double? borderRadiusValue;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class SectionDetailsContainer extends StatelessWidget {
 
   BoxDecoration _buildContainerDecoration() {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(borderRadius ?? 10),
+      borderRadius:
+          borderRadius ?? BorderRadius.circular(borderRadiusValue ?? 10),
       color: color ?? AppColors.white,
     );
   }

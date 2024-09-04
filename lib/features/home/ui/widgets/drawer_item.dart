@@ -16,7 +16,7 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: _buildContainerDecoration(),
@@ -26,7 +26,7 @@ class DrawerItem extends StatelessWidget {
             color: isSelected ? AppColors.white : AppColors.darkGrey,
           ),
           title: _buildTitle(drawerItemModel.title, isSelected),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         ),
       ),
     );
@@ -35,7 +35,7 @@ class DrawerItem extends StatelessWidget {
   BoxDecoration _buildContainerDecoration() {
     return BoxDecoration(
       color: isSelected ? AppColors.blue : AppColors.white,
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(8),
     );
   }
 

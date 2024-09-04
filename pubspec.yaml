@@ -41,6 +41,7 @@ dependencies:
   screen_retriever: ^0.1.9
   side_sheet: ^1.0.4
   window_manager: ^0.4.0
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0
