@@ -8,11 +8,13 @@ class OverviewItem extends StatelessWidget {
     required this.title,
     required this.value,
     required this.iconData,
+    this.decimals = 0,
   });
 
   final String title;
-  final String value;
+  final double value;
   final IconData iconData;
+  final int? decimals;
 
   @override
   Widget build(BuildContext context) {
@@ -25,27 +27,30 @@ class OverviewItem extends StatelessWidget {
         children: [
           Icon(
             iconData,
-            size: 55,
+            size: 50,
             color: AppColors.darkGrey,
           ),
           const Spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                clipBehavior: Clip.antiAlias,
-                child: Text(
-                  value,
-                  style: AppTextStyles.font32DarkGreyMedium
-                      .copyWith(fontWeight: FontWeight.bold),
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  clipBehavior: Clip.antiAlias,
+                  child: Text(
+                    value.toStringAsFixed(decimals!),
+                    style: AppTextStyles.font32DarkGreyMedium.copyWith(
+                        fontWeight: FontWeight.bold, color: AppColors.blue),
+                  ),
                 ),
-              ),
-              Text(
-                title,
-                style: AppTextStyles.font18DarkGreyMedium,
-              ),
-            ],
+                Text(
+                  title,
+                  style: AppTextStyles.font18DarkGreyMedium,
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/case_history_section.dart';
+import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
 import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart';
 import 'package:el_sharq_clinic/features/doctors/ui/doctors_section.dart';
@@ -65,7 +66,11 @@ class _HomeLayoutState extends State<HomeLayout> {
     //TODO: Remove all authData params from section widgets
     //TODO: Remove all log statements
     return [
-      (context) => DashboardSection(authData: widget.authData),
+      (context) => BlocProvider(
+            create: (context) =>
+                getIt<DashboardCubit>()..setupSectionData(widget.authData),
+            child: DashboardSection(authData: widget.authData),
+          ),
       (context) => BlocProvider<CaseHistoryCubit>(
             create: (context) =>
                 getIt<CaseHistoryCubit>()..setupSectionData(widget.authData),

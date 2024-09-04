@@ -1,11 +1,14 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/features/dashboard/data/models/pie_chart_item_model.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SalesPieChart extends StatefulWidget {
-  const SalesPieChart({super.key});
+  const SalesPieChart({super.key, required this.items});
+
+  final List<PieChartItemModel> items;
 
   @override
   State<SalesPieChart> createState() => _SalesPieChartState();
@@ -13,12 +16,6 @@ class SalesPieChart extends StatefulWidget {
 
 class _SalesPieChartState extends State<SalesPieChart> {
   int touchedIndex = -1;
-
-  final colorsList = [
-    AppColors.red,
-    AppColors.blue,
-    AppColors.green,
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +32,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
                   touchedIndex = -1;
                   return;
                 }
+
                 touchedIndex =
                     pieTouchResponse.touchedSection!.touchedSectionIndex;
               });
@@ -44,7 +42,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
             show: false,
           ),
           sectionsSpace: 3,
-          centerSpaceRadius: 60,
+          centerSpaceRadius: 70.r,
           sections: showingSections(),
         ),
       ),
@@ -52,18 +50,25 @@ class _SalesPieChartState extends State<SalesPieChart> {
   }
 
   List<PieChartSectionData> showingSections() {
-    return List.generate(colorsList.length, (i) {
+    return List.generate(widget.items.length, (i) {
       final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.sp : 16.sp;
+      final fontSize = isTouched ? 14.sp : 16.sp;
       final radius = isTouched ? 90.r : 70.r;
+      final Color color = widget.items[i].color;
+      final double value =
+          isTouched ? widget.items[i].value : widget.items[i].percentage;
+      final String displayedValue = isTouched
+          ? '${widget.items[i].value.toStringAsFixed(0)} LE'
+          : widget.items[i].percentage.toStringAsFixed(2);
 
       return PieChartSectionData(
-        color: colorsList[i].withOpacity(0.85),
-        value: i == 0 ? 60 : 20,
-        title: i == 0 ? '60%' : '20%',
+        color: color,
+        value: !isTouched && touchedIndex != -1 ? null : value,
+        title: !isTouched && touchedIndex != -1 ? null : displayedValue,
         radius: radius,
         titleStyle: AppTextStyles.font20DarkGreyMedium.copyWith(
-          color: isTouched ? AppColors.white : AppColors.black,
+          color: isTouched ? AppColors.black : AppColors.white,
+          fontWeight: isTouched ? FontWeight.bold : FontWeight.normal,
           fontSize: fontSize,
         ),
         titlePositionPercentageOffset: 0.55,

@@ -5,7 +5,9 @@ import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_ti
 import 'package:flutter/material.dart';
 
 class CasesLastWeek extends StatelessWidget {
-  const CasesLastWeek({super.key});
+  const CasesLastWeek({super.key, required this.weeklyCases});
+
+  final Map<String, int> weeklyCases;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,9 @@ class CasesLastWeek extends StatelessWidget {
         children: [
           const StatisticsItemTitle(title: 'Cases Last Week'),
           verticalSpace(40),
-          const CasesBarChart(),
+          CasesBarChart(
+            weeklyCases: weeklyCases,
+          ),
         ],
       ),
     );

@@ -10,7 +10,7 @@ class InvoiceItemModel {
       required this.quantity,
       required this.type});
 
-  factory InvoiceItemModel.fromFirestore(Map<String, dynamic> data) {
+  factory InvoiceItemModel.fromMap(Map<String, dynamic> data) {
     return InvoiceItemModel(
       name: data['name'],
       price: data['price'],
