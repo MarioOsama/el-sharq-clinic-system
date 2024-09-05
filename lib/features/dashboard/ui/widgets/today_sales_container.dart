@@ -46,7 +46,7 @@ class TodaySalesContainer extends StatelessWidget {
   }
 
   List<PieChartItemModel> _getPieChartItemsList(Map<String, double> dataMap) {
-    if (dataMap.values.any((value) => value == 0)) {
+    if (dataMap.values.every((value) => value == 0)) {
       return [];
     }
     final List<Color> colors = [

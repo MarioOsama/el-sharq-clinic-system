@@ -59,11 +59,11 @@ class _SalesPieChartState extends State<SalesPieChart> {
           isTouched ? widget.items[i].value : widget.items[i].percentage;
       final String displayedValue = isTouched
           ? '${widget.items[i].value.toStringAsFixed(0)} LE'
-          : widget.items[i].percentage.toStringAsFixed(2);
+          : widget.items[i].percentage.toStringAsFixed(1);
 
       return PieChartSectionData(
         color: color,
-        value: !isTouched && touchedIndex != -1 ? null : value,
+        value: value,
         title: !isTouched && touchedIndex != -1 ? null : displayedValue,
         radius: radius,
         titleStyle: AppTextStyles.font20DarkGreyMedium.copyWith(
@@ -71,7 +71,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
           fontWeight: isTouched ? FontWeight.bold : FontWeight.normal,
           fontSize: fontSize,
         ),
-        titlePositionPercentageOffset: 0.55,
+        titlePositionPercentageOffset: 0.5,
       );
     });
   }
