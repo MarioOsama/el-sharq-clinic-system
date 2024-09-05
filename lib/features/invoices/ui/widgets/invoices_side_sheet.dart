@@ -67,5 +67,5 @@ AppTextButton _buildNewAction(BuildContext context) {
       text: 'Save Invoice',
       width: MediaQuery.sizeOf(context).width,
       height: 70.h,
-      onPressed: () => context.read<InvoicesCubit>().onSaveNewInvoice());
+      onPressed: () => context.read<InvoicesCubit>().onSaveNewInvoice(context));
 }

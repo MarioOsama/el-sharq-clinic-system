@@ -48,6 +48,19 @@ class InvoicesRepo {
     );
   }
 
+  Future<bool> updateInvoiceProductDetails(
+      {required int clinicIndex,
+      required String collection,
+      required ProductModel product}) async {
+    return _firebaseServices.updateItem(
+      collection,
+      clinicIndex: clinicIndex,
+      itemModel: product,
+      id: product.id,
+      toFirestore: product.toFirestore,
+    );
+  }
+
   Future<List<List<SelableItemModel>>> loadSelableItemsLists(
       int clinicIndex) async {
     final result = await Future.wait([

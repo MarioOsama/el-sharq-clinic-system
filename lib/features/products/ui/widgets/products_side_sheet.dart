@@ -53,6 +53,7 @@ Future<void> showProductSheet(BuildContext context, String title,
                   hint: 'Quantity',
                   initialValue: product?.quantity.toString(),
                   enabled: editable,
+                  numeric: true,
                   validator: (p0) {
                     if (p0!.trim().isEmpty ||
                         double.tryParse(p0) == null ||
@@ -73,6 +74,7 @@ Future<void> showProductSheet(BuildContext context, String title,
                   hint: 'Price',
                   initialValue: product?.price.toString(),
                   enabled: editable,
+                  numeric: true,
                   validator: (p0) {
                     if (p0!.trim().isEmpty ||
                         double.tryParse(p0) == null ||
