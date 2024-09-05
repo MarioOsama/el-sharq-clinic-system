@@ -125,7 +125,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   }
 
   // Add New Invoice Functions
-  void addNewInvoice() async {
+  void addNewInvoice(BuildContext context) async {
     emit(InvoiceInProgress());
     // Save items forms
     _setInvoiceIdentifiers();
@@ -134,11 +134,67 @@ class InvoicesCubit extends Cubit<InvoicesState> {
       invoiceInfo,
     );
     if (isAdded) {
+      _decrementInvoiceItemsQuantity(context);
       invoicesList.insert(0, invoiceInfo);
       _onSuccessOperation('Invoice added successfully');
     } else {
       emit(InvoicesError(message: 'Failed to add the invoice'));
     }
+  }
+
+  void _decrementInvoiceItemsQuantity(BuildContext context) {
+    final Map<String, List<ProductModel>> itemsMap = {
+      'Medicines': [],
+      'Accessories': [],
+    };
+    // Update product items lists localy
+    for (InvoiceItemModel item in invoiceInfo.items) {
+      if (item.type == 'Medicines') {
+        final ProductModel medicine =
+            _updateInvoiceItemQuantity(item, medicinesList);
+        itemsMap['Medicines']!.add(medicine);
+      } else if (item.type == 'Accessories') {
+        final ProductModel accessory =
+            _updateInvoiceItemQuantity(item, accessoriesList);
+        itemsMap['Accessories']!.add(accessory);
+      }
+    }
+    context.read<MainCubit>().updateMedicinesList(medicinesList);
+    context.read<MainCubit>().updateAccessoriesList(accessoriesList);
+
+    // Update selable items lists in Firestore
+    _updateSelableItemsListsInFirestore(itemsMap);
+  }
+
+  ProductModel _updateInvoiceItemQuantity(
+      InvoiceItemModel item, List<ProductModel> itemsList) {
+    final int itemIndex =
+        itemsList.indexWhere((service) => service.title == item.name);
+    itemsList[itemIndex] = itemsList[itemIndex].copyWith(
+      quantity: itemsList[itemIndex].quantity - item.quantity,
+    );
+    return itemsList[itemIndex];
+  }
+
+  _updateSelableItemsListsInFirestore(
+      Map<String, List<ProductModel>> itemsMap) async {
+    itemsMap.forEach((productsType, productsList) async {
+      if (productsType == 'Medicines') {
+        for (final medicine in productsList) {
+          await _invoicesRepo.updateInvoiceProductDetails(
+              clinicIndex: authData!.clinicIndex,
+              collection: 'medicines',
+              product: medicine);
+        }
+      } else if (productsType == 'Accessories') {
+        for (final accessory in productsList) {
+          await _invoicesRepo.updateInvoiceProductDetails(
+              clinicIndex: authData!.clinicIndex,
+              collection: 'accessories',
+              product: accessory);
+        }
+      }
+    });
   }
 
   void _setInvoiceIdentifiers() {
@@ -428,9 +484,9 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     emit(InvoiceConstruting(invoiceModel: invoiceInfo));
   }
 
-  void onSaveNewInvoice() {
+  void onSaveNewInvoice(BuildContext context) {
     if (_validateInvoiceItems()) {
-      addNewInvoice();
+      addNewInvoice(context);
     }
   }
 

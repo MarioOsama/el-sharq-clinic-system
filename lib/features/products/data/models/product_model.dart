@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
 
 class ProductModel extends SelableItemModel {
-  final int quantity;
+  final double quantity;
 
   ProductModel({
     required super.id,
@@ -18,7 +18,7 @@ class ProductModel extends SelableItemModel {
       id: doc.id,
       price: double.parse(data['price'].toString()),
       title: data['title'],
-      quantity: data['quantity'],
+      quantity: double.parse(data['quantity'].toString()),
       description: data['description'] ?? '',
     );
   }
@@ -28,7 +28,7 @@ class ProductModel extends SelableItemModel {
     double? price,
     String? title,
     String? description,
-    int? quantity,
+    double? quantity,
   }) {
     return ProductModel(
       id: id ?? this.id,

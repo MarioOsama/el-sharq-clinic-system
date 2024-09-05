@@ -213,7 +213,8 @@ class ProductsCubit extends Cubit<ProductsState> {
           : productInfo.id,
       title: field == 'title' ? value : productInfo.title,
       price: field == 'price' ? double.parse(value!) : productInfo.price,
-      quantity: field == 'quantity' ? int.parse(value!) : productInfo.quantity,
+      quantity:
+          field == 'quantity' ? double.parse(value!) : productInfo.quantity,
       description: field == 'description' ? value : productInfo.description,
     );
   }
