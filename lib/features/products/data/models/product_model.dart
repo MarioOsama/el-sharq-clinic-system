@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
 
-enum ProductType { accessories, medicines }
+enum ProductType { medicines, accessories }
 
 class ProductModel extends SelableItemModel {
   final double quantity;
