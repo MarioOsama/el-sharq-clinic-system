@@ -21,30 +21,35 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   void setupSectionData(AuthDataModel authData, MainCubit mainCubit) async {
     setAuthData(authData);
-    final int todayCasesCount = await getTodayCasesCount();
-    final int todayOwnersCount = await getTodayRegisteredOwnersCount();
-    final List<InvoiceModel> lastWeekInvoices = await getLastWeekInvoices();
-    final List<InvoiceModel> todayInvoices = getTodayInvoices(lastWeekInvoices);
-    final List<InvoiceItemModel> lastWeekPopularItems =
-        getLastWeekPopularItems(lastWeekInvoices);
-    final List<CaseHistoryModel> cases = await getLastWeekCases();
-    final List<List<SelableItemModel>> selableItemsList =
-        await _setupSelableItemsListsData(mainCubit);
-    final List<ProductModel> lowStockProducts = getLowStockProducts([
-      ...selableItemsList[1].cast<ProductModel>(),
-      ...selableItemsList[2].cast<ProductModel>(),
-    ]);
-    emit(DashboardSuccess(
-      todayCasesCount: todayCasesCount,
-      todayOwnersCount: todayOwnersCount,
-      todayInvoicesCount: todayInvoices.length,
-      todayInvoicesTotal: _getInvoicesTotal(todayInvoices),
-      todayRevenue: _getTodayRevenue(todayInvoices),
-      todaySalesMap: _getTodaySalesCategories(todayInvoices),
-      weeklyCasesMap: _getWeeklyCasesMap(cases),
-      popularItems: lastWeekPopularItems,
-      lowStockProducts: lowStockProducts,
-    ));
+    try {
+      final int todayCasesCount = await getTodayCasesCount();
+      final int todayOwnersCount = await getTodayRegisteredOwnersCount();
+      final List<InvoiceModel> lastWeekInvoices = await getLastWeekInvoices();
+      final List<InvoiceModel> todayInvoices =
+          getTodayInvoices(lastWeekInvoices);
+      final List<InvoiceItemModel> lastWeekPopularItems =
+          getLastWeekPopularItems(lastWeekInvoices);
+      final List<CaseHistoryModel> cases = await getLastWeekCases();
+      final List<List<SelableItemModel>> selableItemsList =
+          await _setupSelableItemsListsData(mainCubit);
+      final List<ProductModel> lowStockProducts = getLowStockProducts([
+        ...selableItemsList[1].cast<ProductModel>(),
+        ...selableItemsList[2].cast<ProductModel>(),
+      ]);
+      emit(DashboardSuccess(
+        todayCasesCount: todayCasesCount,
+        todayOwnersCount: todayOwnersCount,
+        todayInvoicesCount: todayInvoices.length,
+        todayInvoicesTotal: _getInvoicesTotal(todayInvoices),
+        todayRevenue: _getTodayRevenue(todayInvoices),
+        todaySalesMap: _getTodaySalesCategories(todayInvoices),
+        weeklyCasesMap: _getWeeklyCasesMap(cases),
+        popularItems: lastWeekPopularItems,
+        lowStockProducts: lowStockProducts,
+      ));
+    } catch (e) {
+      emit(DashboardError(message: "Something went wrong"));
+    }
   }
 
   Future<List<List<SelableItemModel>>> _setupSelableItemsListsData(

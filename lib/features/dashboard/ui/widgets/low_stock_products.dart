@@ -61,12 +61,12 @@ class LowStockProducts extends StatelessWidget {
         item.title,
         style: AppTextStyles.font16DarkGreyMedium,
       ),
-      // subtitle: Text(
-      //   item.,
-      //   style: AppTextStyles.font16DarkGreyMedium.copyWith(
-      //     color: AppColors.darkGrey.withOpacity(0.5),
-      //   ),
-      // ),
+      subtitle: Text(
+        item.type.toString().replaceAll('ProductType.', ''),
+        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          color: AppColors.darkGrey.withOpacity(0.5),
+        ),
+      ),
       trailing: Text(
         item.quantity.toString(),
         style: AppTextStyles.font16DarkGreyMedium,
