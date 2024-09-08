@@ -18,7 +18,9 @@ class InvoicesRowActionButton extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 'Print',
-            onTap: () {},
+            onTap: () {
+              context.read<InvoicesCubit>().onPrintInvoice(id);
+            },
             child: const Text(
               'Print',
               style: AppTextStyles.font14DarkGreyMedium,

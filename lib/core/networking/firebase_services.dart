@@ -206,7 +206,16 @@ class FirebaseServices {
       0,
     );
 
-    endDate = endDate ?? DateTime.now();
+    endDate = endDate ??
+        DateTime(
+          startDate.year,
+          startDate.month,
+          startDate.day,
+          23,
+          59,
+          59,
+          999,
+        );
 
     // Query Firestore
     QuerySnapshot snapshot = await _firestore

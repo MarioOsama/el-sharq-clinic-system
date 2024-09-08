@@ -70,7 +70,7 @@ class InvoiceModel {
   List<String> toList() {
     return [
       id,
-      '$total',
+      (total - discount).toStringAsFixed(1),
       items.length.toString(),
       date.substring(0, 10),
       date.substring(11, 19),
