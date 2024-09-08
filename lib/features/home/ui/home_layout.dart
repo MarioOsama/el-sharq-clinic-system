@@ -18,6 +18,7 @@ import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dar
 import 'package:el_sharq_clinic/features/products/ui/products_section.dart';
 import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
 import 'package:el_sharq_clinic/features/services/ui/services_section.dart';
+import 'package:el_sharq_clinic/features/settings/ui/settings_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -102,6 +103,7 @@ class _HomeLayoutState extends State<HomeLayout> {
               ..setupSectionData(widget.authData, context),
             child: const InvoicesSection(),
           ),
+      (context) => const SettingsSection(),
     ];
   }
 }

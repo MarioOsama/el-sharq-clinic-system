@@ -51,17 +51,23 @@ class AppTextField extends StatelessWidget {
         : _buildTextFieldWithOutsideHint();
   }
 
-  Column _buildTextFieldWithOutsideHint() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          hint,
-          style: AppTextStyles.font16DarkGreyMedium
-              .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
-        ),
-        _buildTextFieldWithInsideHint(null),
-      ],
+  ConstrainedBox _buildTextFieldWithOutsideHint() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: maxWidth ?? 300.w,
+        maxHeight: maxHeight ?? double.infinity,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            hint,
+            style: AppTextStyles.font16DarkGreyMedium
+                .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
+          ),
+          _buildTextFieldWithInsideHint(null),
+        ],
+      ),
     );
   }
 
