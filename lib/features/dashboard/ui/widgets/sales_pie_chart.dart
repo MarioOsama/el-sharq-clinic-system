@@ -53,14 +53,14 @@ class _SalesPieChartState extends State<SalesPieChart> {
     return List.generate(widget.items.length, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 14.sp : 16.sp;
-      final radius = isTouched ? 90.r : 70.r;
+      final radius = isTouched ? 105.r : 85.r;
       final Color color = widget.items[i].color;
       final double value = isTouched
           ? widget.items[i].value
           : double.parse(widget.items[i].percentage.toStringAsFixed(1));
       final String displayedValue = isTouched
           ? '${widget.items[i].value.toStringAsFixed(0)} LE'
-          : widget.items[i].percentage.toStringAsFixed(1);
+          : '${widget.items[i].percentage.toStringAsFixed(1)}%';
 
       return PieChartSectionData(
         color: color,

@@ -8,6 +8,7 @@ class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitial());
 
   // Variables
+  bool isSelableItemListsLoaded = false;
   List<ProductModel> medicinesList = [];
   List<ProductModel> accessorieList = [];
   List<ServiceModel> servicesList = [];

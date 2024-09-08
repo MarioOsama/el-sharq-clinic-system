@@ -1,10 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
 import 'package:el_sharq_clinic/features/dashboard/data/repos/dashboard_repo.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
+import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 part 'dashboard_state.dart';
@@ -15,7 +19,7 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   AuthDataModel? authData;
 
-  void setupSectionData(AuthDataModel authData) async {
+  void setupSectionData(AuthDataModel authData, MainCubit mainCubit) async {
     setAuthData(authData);
     final int todayCasesCount = await getTodayCasesCount();
     final int todayOwnersCount = await getTodayRegisteredOwnersCount();
@@ -24,7 +28,12 @@ class DashboardCubit extends Cubit<DashboardState> {
     final List<InvoiceItemModel> lastWeekPopularItems =
         getLastWeekPopularItems(lastWeekInvoices);
     final List<CaseHistoryModel> cases = await getLastWeekCases();
-    final List<ProductModel> lowStockProducts = await getLowStockProducts();
+    final List<List<SelableItemModel>> selableItemsList =
+        await _setupSelableItemsListsData(mainCubit);
+    final List<ProductModel> lowStockProducts = getLowStockProducts([
+      ...selableItemsList[1].cast<ProductModel>(),
+      ...selableItemsList[2].cast<ProductModel>(),
+    ]);
     emit(DashboardSuccess(
       todayCasesCount: todayCasesCount,
       todayOwnersCount: todayOwnersCount,
@@ -36,6 +45,40 @@ class DashboardCubit extends Cubit<DashboardState> {
       popularItems: lastWeekPopularItems,
       lowStockProducts: lowStockProducts,
     ));
+  }
+
+  Future<List<List<SelableItemModel>>> _setupSelableItemsListsData(
+      MainCubit mainCubit) async {
+    if (mainCubit.isSelableItemListsLoaded == false) {
+      final List<List<SelableItemModel>> selableItemsList =
+          await loadSelableItemsLists();
+      updateSelableItemsListsInMainCubit(
+          mainCubit,
+          selableItemsList[0].cast<ServiceModel>(),
+          selableItemsList[1].cast<ProductModel>(),
+          selableItemsList[2].cast<ProductModel>());
+      mainCubit.isSelableItemListsLoaded = true;
+      return selableItemsList;
+    }
+    return [
+      mainCubit.servicesList,
+      mainCubit.medicinesList,
+      mainCubit.accessorieList
+    ];
+  }
+
+  Future<List<List<SelableItemModel>>> loadSelableItemsLists() async {
+    return await _dashboardRepo.loadSelableItemsLists(authData!.clinicIndex);
+  }
+
+  void updateSelableItemsListsInMainCubit(
+      MainCubit cubit,
+      List<ServiceModel> servicesList,
+      List<ProductModel> medicinesList,
+      List<ProductModel> accessoriesList) {
+    cubit.updateServicesList(servicesList);
+    cubit.updateMedicinesList(medicinesList);
+    cubit.updateAccessoriesList(accessoriesList);
   }
 
   void setAuthData(AuthDataModel authData) {
@@ -149,7 +192,7 @@ class DashboardCubit extends Cubit<DashboardState> {
     return casesMap;
   }
 
-  Future<List<ProductModel>> getLowStockProducts() async {
-    return await _dashboardRepo.getLowStockProducts(authData!.clinicIndex, 5);
+  List<ProductModel> getLowStockProducts(List<ProductModel> products) {
+    return products.where((product) => product.quantity <= 5).toList();
   }
 }

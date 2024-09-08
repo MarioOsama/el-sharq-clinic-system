@@ -57,20 +57,6 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     servicesList = mainCubit.servicesList;
     medicinesList = mainCubit.medicinesList;
     accessoriesList = mainCubit.accessorieList;
-    if (servicesList.isEmpty ||
-        medicinesList.isEmpty ||
-        accessoriesList.isEmpty) {
-      await loadSelableItemsLists();
-      updateSelableItemsListsInMainCubit(mainCubit);
-    }
-  }
-
-  Future<void> loadSelableItemsLists() async {
-    final result =
-        await _invoicesRepo.loadSelableItemsLists(authData!.clinicIndex);
-    servicesList = result[0] as List<ServiceModel>;
-    medicinesList = result[1] as List<ProductModel>;
-    accessoriesList = result[2] as List<ProductModel>;
   }
 
   void updateSelableItemsListsInMainCubit(MainCubit cubit) {

@@ -64,7 +64,7 @@ class DashboardBody extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  width: 500.w,
+                  width: 550.w,
                   child: AspectRatio(
                     aspectRatio: 2,
                     child: CasesLastWeek(
@@ -74,7 +74,7 @@ class DashboardBody extends StatelessWidget {
                 ),
                 const Spacer(),
                 SizedBox(
-                  width: 500.w,
+                  width: 550.w,
                   child: AspectRatio(
                     aspectRatio: 2,
                     child: TodaySalesContainer(
@@ -92,7 +92,7 @@ class DashboardBody extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                    width: 500.w,
+                    width: 550.w,
                     child: AspectRatio(
                         aspectRatio: 2,
                         child: LowStockProducts(
@@ -100,7 +100,7 @@ class DashboardBody extends StatelessWidget {
                         ))),
                 const Spacer(),
                 SizedBox(
-                  width: 500.w,
+                  width: 550.w,
                   child: AspectRatio(
                       aspectRatio: 2,
                       child: PopularItems(

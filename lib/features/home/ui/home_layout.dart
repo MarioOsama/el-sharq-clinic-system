@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
@@ -67,8 +68,8 @@ class _HomeLayoutState extends State<HomeLayout> {
     //TODO: Remove all log statements
     return [
       (context) => BlocProvider(
-            create: (context) =>
-                getIt<DashboardCubit>()..setupSectionData(widget.authData),
+            create: (context) => getIt<DashboardCubit>()
+              ..setupSectionData(widget.authData, context.read<MainCubit>()),
             child: DashboardSection(authData: widget.authData),
           ),
       (context) => BlocProvider<CaseHistoryCubit>(

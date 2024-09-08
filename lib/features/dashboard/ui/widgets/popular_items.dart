@@ -1,6 +1,7 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,7 @@ class PopularItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-      decoration: _buildBoxDecoration(),
+    return DashboardStatsContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,7 +24,7 @@ class PopularItems extends StatelessWidget {
             color: AppColors.darkGrey.withOpacity(0.25),
           ),
           AspectRatio(
-            aspectRatio: 3.5,
+            aspectRatio: 2.85,
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
@@ -83,25 +82,6 @@ class PopularItems extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  BoxDecoration _buildBoxDecoration() {
-    return BoxDecoration(
-      borderRadius: BorderRadius.circular(10),
-      color: AppColors.white,
-      border: Border.all(
-        color: AppColors.darkGrey.withOpacity(0.25),
-        width: 1,
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: AppColors.black.withOpacity(0.15),
-          blurRadius: 3,
-          spreadRadius: 2,
-          offset: const Offset(2, 2),
-        ),
-      ],
     );
   }
 }
