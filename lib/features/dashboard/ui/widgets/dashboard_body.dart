@@ -31,7 +31,7 @@ class DashboardBody extends StatelessWidget {
     if (state is DashboardSuccess) {
       return _buildSuccess(state);
     } else if (state is DashboardError) {
-      return _buildError('Something went wrong');
+      return _buildError(state.message);
     }
 
     return _buildLoading();

@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,24 +35,17 @@ class ProductsSwitchButton extends StatelessWidget {
   }
 
   List<ButtonSegment<ProductType>> _getSegments(ProductType? productType) {
-    return [
-      ButtonSegment(
-        value: ProductType.medicines,
-        label: Text('Medicines',
+    return List.generate(ProductType.values.length, (index) {
+      final type = ProductType.values[index];
+      return ButtonSegment(
+        value: type,
+        label: Text(type.name,
             style: AppTextStyles.font24DarkGreyMedium.copyWith(
-                color: productType == ProductType.medicines
+                color: productType == type
                     ? AppColors.white
                     : AppColors.darkGrey)),
-      ),
-      ButtonSegment(
-        value: ProductType.accessories,
-        label: Text('Accessories',
-            style: AppTextStyles.font24DarkGreyMedium.copyWith(
-                color: productType == ProductType.accessories
-                    ? AppColors.white
-                    : AppColors.darkGrey)),
-      ),
-    ];
+      );
+    });
   }
 
   ButtonStyle get _buildStyle {
@@ -70,5 +64,3 @@ class ProductsSwitchButton extends StatelessWidget {
     );
   }
 }
-
-enum ProductType { accessories, medicines }

@@ -7,7 +7,6 @@ import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/products/data/repos/products_repo.dart';
-import 'package:el_sharq_clinic/features/products/ui/widgets/products_switch_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,11 +29,12 @@ class ProductsCubit extends Cubit<ProductsState> {
     title: '',
     price: 0,
     quantity: 0,
+    type: ProductType.medicines,
     description: '',
   );
 
   // Setup section data
-  void setupSectionData(AuthDataModel authData, BuildContext context) {
+  void setupSectionData(AuthDataModel authData, BuildContext context) async {
     _authData = authData;
     _getProducts(context);
   }
@@ -185,6 +185,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       title: '',
       price: 0,
       quantity: 0,
+      type: selectedProductType,
       description: '',
     );
   }
