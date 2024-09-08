@@ -4,6 +4,7 @@ import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/password_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
+import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
 import 'package:el_sharq_clinic/features/invoices/logic/cubit/invoices_cubit.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/invoices/ui/widgets/invoices_body.dart';
@@ -19,6 +20,13 @@ class InvoicesSection extends StatelessWidget {
     return SectionContainer(
       title: 'Invoices',
       actions: [
+        // Search bar
+        SectionSearchBar(
+          hintText: 'Search by date',
+          onChanged: (value) {
+            context.read<InvoicesCubit>().onSearchInvoice(value);
+          },
+        ),
         BlocBuilder<InvoicesCubit, InvoicesState>(
           builder: (context, state) {
             if (state is InvoicesLoading) {

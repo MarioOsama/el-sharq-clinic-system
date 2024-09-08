@@ -9,10 +9,12 @@ import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/repos/invoices_repo.dart';
+import 'package:el_sharq_clinic/features/invoices/ui/widgets/pdf_invoice.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pdf/pdf.dart';
 
 part 'invoices_state.dart';
 
@@ -476,6 +478,23 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     }
   }
 
+  void onSearchInvoice(String value) async {
+    // Emit loading state to show loading indicator & refresh invoices
+    emit(InvoicesLoading());
+    value = value.toLowerCase();
+
+    // Search invoice by date
+    searchResult = await _invoicesRepo.searchInvoices(
+        authData!.clinicIndex, value, 'date');
+
+    if (value.isEmpty || searchResult.isEmpty) {
+      emit(InvoicesSuccess(invoices: invoicesList));
+      return;
+    }
+
+    emit(InvoicesSuccess(invoices: searchResult));
+  }
+
   void onDeleteInvoice(
     String invoiceId,
     String clinicPassword,
@@ -493,5 +512,10 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     } else {
       emit(InvoiceConstrutingError(message: 'Password is incorrect'));
     }
+  }
+
+  void onPrintInvoice(String id) async {
+    final invoice = getInvoiceById(id);
+    await PdfInvoice.generateInvoice(PdfPageFormat.a6, invoice);
   }
 }

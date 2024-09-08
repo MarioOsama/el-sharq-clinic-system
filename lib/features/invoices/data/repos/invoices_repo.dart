@@ -58,4 +58,20 @@ class InvoicesRepo {
       toFirestore: product.toFirestore,
     );
   }
+
+  Future<List<InvoiceModel>> searchInvoices(
+      int clinicIndex, String value, String field) async {
+    final date = DateTime.tryParse(value);
+    if (date != null) {
+      return _firebaseServices.getDocsByDate<InvoiceModel>(
+        collectionName,
+        clinicIndex: clinicIndex,
+        dateField: 'date',
+        startDate: date,
+        fromFirestore: InvoiceModel.fromFirestore,
+      );
+    } else {
+      return [];
+    }
+  }
 }
