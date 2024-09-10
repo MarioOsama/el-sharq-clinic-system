@@ -20,6 +20,8 @@ import 'package:el_sharq_clinic/features/products/data/repos/products_repo.dart'
 import 'package:el_sharq_clinic/features/products/logic/cubit/products_cubit.dart';
 import 'package:el_sharq_clinic/features/services/data/repos/services_repo.dart';
 import 'package:el_sharq_clinic/features/services/logic/cubit/services_cubit.dart';
+import 'package:el_sharq_clinic/features/settings/data/repos/settings_repo.dart';
+import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt getIt = GetIt.instance;
@@ -43,6 +45,7 @@ void setupGetIt() {
   getIt.registerFactory<ServicesCubit>(() => ServicesCubit(getIt()));
   getIt.registerFactory<ProductsCubit>(() => ProductsCubit(getIt()));
   getIt.registerFactory<InvoicesCubit>(() => InvoicesCubit(getIt()));
+  getIt.registerFactory<SettingsCubit>(() => SettingsCubit(getIt()));
   getIt.registerFactory<MainCubit>(() => MainCubit());
 
   // Repos
@@ -55,4 +58,5 @@ void setupGetIt() {
   getIt.registerLazySingleton<ServicesRepo>(() => ServicesRepo(getIt()));
   getIt.registerLazySingleton<ProductsRepo>(() => ProductsRepo(getIt()));
   getIt.registerLazySingleton<InvoicesRepo>(() => InvoicesRepo(getIt()));
+  getIt.registerLazySingleton<SettingsRepo>(() => SettingsRepo(getIt()));
 }

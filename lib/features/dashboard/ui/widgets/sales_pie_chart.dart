@@ -55,9 +55,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
       final fontSize = isTouched ? 14.sp : 16.sp;
       final radius = isTouched ? 105.r : 85.r;
       final Color color = widget.items[i].color;
-      final double value = isTouched
-          ? widget.items[i].value
-          : double.parse(widget.items[i].percentage.toStringAsFixed(1));
+      final double value = widget.items[i].value;
       final String displayedValue = isTouched
           ? '${widget.items[i].value.toStringAsFixed(0)} LE'
           : '${widget.items[i].percentage.toStringAsFixed(1)}%';

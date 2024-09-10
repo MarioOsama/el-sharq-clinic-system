@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
@@ -31,16 +33,14 @@ class AuthCubit extends Cubit<AuthState> {
           .then(
         (value) {
           if (value != null) {
-            emit(AuthSuccess(AuthDataModel(
-                clinicIndex: AppConstant.clinicsList.indexOf(selectedClinic),
-                userModel: value.data(),
-                clinicName: selectedClinic)));
-            return value.data();
+            log(value.toString());
+            emit(AuthSuccess(
+              value,
+            ));
+          } else {
+            emit(AuthFailure(
+                'Invalid username or password for the selected clinic'));
           }
-          emit(AuthFailure(
-              'Invalid username or password for the selected clinic'));
-
-          return null;
         },
       );
     }

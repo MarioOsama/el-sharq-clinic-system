@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 
 class AuthFirebaseServices {
@@ -6,25 +9,48 @@ class AuthFirebaseServices {
 
   final FirebaseFirestore _firestore;
 
-  Future<QueryDocumentSnapshot<UserModel>?> openWithUserNameAndPassword(
+  Future<AuthDataModel?> openWithUserNameAndPassword(
       int clinicIndex, String userName, String password) async {
-    final clinicDoc =
-        await _firestore.collection('clinics').doc('clinic$clinicIndex').get();
-
-    // Get users collection with converter
-    final usersCollection = await _getNestedCollection(
-      clinicDoc,
-      'users',
-      (snapshot) => UserModel.fromFirestore(snapshot),
-      (user) => user.toFirestore(),
-    );
-
     try {
-      return usersCollection.docs.firstWhere(
-        (user) =>
-            user.data().userName == userName &&
-            user.data().password == password,
+      final clinicDoc = await _firestore
+          .collection('clinics')
+          .doc('clinic$clinicIndex')
+          .get();
+
+      // Get users collection with converter
+      final usersCollection = await _getNestedCollection<UserModel>(
+        clinicDoc,
+        'users',
+        (snapshot) => UserModel.fromFirestore(snapshot),
+        (user) => user.toFirestore(),
       );
+      final List<QueryDocumentSnapshot<UserModel>> userDocs =
+          usersCollection.docs;
+
+      // Check if user exists
+      final UserModel user = userDocs.map((e) => e.data()).toList().firstWhere(
+            (user) => user.userName == userName && user.password == password,
+            orElse: () => UserModel.empty(),
+          );
+
+      log(user.toString());
+
+      // If user exists
+      if (!user.isEmpty) {
+        return AuthDataModel(
+          clinicIndex: clinicIndex,
+          userModel: user,
+          clinicName: clinicDoc.data()!['clinicName'],
+          language: clinicDoc.data()!['language'],
+          theme: clinicDoc.data()!['theme'],
+          lowStockLimit: clinicDoc.data()!['lowStockLimit'],
+        );
+      }
+
+      // If user doesn't exist
+      return null;
+
+      // When catching an error return null
     } catch (e) {
       return null;
     }
@@ -43,21 +69,4 @@ class AuthFirebaseServices {
         )
         .get();
   }
-
-  // Future<void> signOut() async {
-  //   await FirebaseAuth.instance.signOut();
-  // }
-  //
-  //
-  // Future<void> updatePassword(String password) async {
-  //   await FirebaseAuth.instance.currentUser!.updatePassword(password);
-  // }
-  //
-  // Future<void> updateEmail(String email) async {
-  //   await FirebaseAuth.instance.currentUser!.updateEmail(email);
-  // }
-  //
-  // Future<void> deleteAccount() async {
-  //   await FirebaseAuth.instance.currentUser!.delete();
-  // }
 }

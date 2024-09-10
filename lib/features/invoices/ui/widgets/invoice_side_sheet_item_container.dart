@@ -148,6 +148,7 @@ class _InvoiceSideSheetItemContainerState
                         enabled: widget.editable,
                         controller: totalPriceController,
                         maxWidth: double.infinity,
+                        readOnly: true,
                         hint: 'Total: ',
                       ),
                     ),

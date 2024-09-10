@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
+import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/settings_segmented_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SettingsBody extends StatelessWidget {
@@ -11,48 +15,65 @@ class SettingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authData = context.read<SettingsCubit>().authData!;
+    log(authData.theme.toString());
     return SectionDetailsContainer(
       padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 40.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _buildSegmentedButtonListTile('Language', ['English', 'Arabic']),
-          verticalSpace(40.h),
-          _buildSegmentedButtonListTile('Theme', ['Light', 'Dark']),
-          verticalSpace(40.h),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text(
-              'Low Stock Limit',
-              style: AppTextStyles.font24DarkGreyMedium,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            _buildSegmentedButtonListTile(
+              'Language',
+              ['English', 'Arabic'],
+              authData.language,
+              context,
+              onLanguageChanged,
             ),
-            subtitle: Text(
-              'The default low stock limit is 5',
-              style: AppTextStyles.font16DarkGreyMedium.copyWith(
-                color: Colors.grey,
+            verticalSpace(40.h),
+            _buildSegmentedButtonListTile(
+              'Theme',
+              ['Light', 'Dark'],
+              authData.theme,
+              context,
+              onThemeChanged,
+            ),
+            verticalSpace(40.h),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text(
+                'Low Stock Limit',
+                style: AppTextStyles.font24DarkGreyMedium,
+              ),
+              subtitle: Text(
+                'The default low stock limit is 5',
+                style: AppTextStyles.font16DarkGreyMedium.copyWith(
+                  color: Colors.grey,
+                ),
+              ),
+              trailing: AppTextField(
+                maxHeight: 50.h,
+                initialValue: authData.lowStockLimit.toString(),
+                insideHint: true,
+                hint: 'Limit',
+                numeric: true,
+                onChanged: (value) => onLowStockLimitChanged(value, context),
               ),
             ),
-            trailing: AppTextField(
-              maxHeight: 50.h,
-              initialValue: '5',
-              insideHint: true,
-              hint: 'Limit',
-              numeric: true,
-            ),
-          ),
-          verticalSpace(40.h),
-          const Divider(),
-          verticalSpace(10.h),
-          _buildSideSheetListTile('Change Password', () {}),
-          verticalSpace(10.h),
-          const Divider(),
-          verticalSpace(10.h),
-          _buildSideSheetListTile('Change Clinic Name', () {}),
-          verticalSpace(10.h),
-          const Divider(),
-          verticalSpace(10.h),
-          _buildSideSheetListTile('Add User Account', () {}),
-        ],
+            verticalSpace(40.h),
+            const Divider(),
+            verticalSpace(10.h),
+            _buildSideSheetListTile('Change Password', () {}),
+            verticalSpace(10.h),
+            const Divider(),
+            verticalSpace(10.h),
+            _buildSideSheetListTile('Change Clinic Name', () {}),
+            verticalSpace(10.h),
+            const Divider(),
+            verticalSpace(10.h),
+            _buildSideSheetListTile('Add User Account', () {}),
+          ],
+        ),
       ),
     );
   }
@@ -69,21 +90,41 @@ class SettingsBody extends StatelessWidget {
     );
   }
 
-  ListTile _buildSegmentedButtonListTile(String title, List<String> values) {
+  ListTile _buildSegmentedButtonListTile(
+    String title,
+    List<String> values,
+    String selected,
+    BuildContext context,
+    Function(String, BuildContext) onSelectionChanged,
+  ) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
         title,
         style: AppTextStyles.font24DarkGreyMedium,
       ),
-      trailing: SizedBox(
-        width: 300.w,
-        height: 50.h,
+      trailing: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 300.w, maxHeight: 100.h),
         child: SettingsSegmentedButton<String>(
-          selected: values.first,
+          onSelectionChanged: (value) => onSelectionChanged(value, context),
+          selected: selected,
           titles: values,
         ),
       ),
     );
+  }
+
+  void onLanguageChanged(String value, BuildContext context) {
+    context.read<SettingsCubit>().changeLanguage(value);
+  }
+
+  void onThemeChanged(String value, BuildContext context) {
+    context.read<SettingsCubit>().changeTheme(value);
+  }
+
+  void onLowStockLimitChanged(String value, BuildContext context) {
+    context
+        .read<SettingsCubit>()
+        .changeLowStockLimit(double.tryParse(value) ?? 0);
   }
 }
