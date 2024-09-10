@@ -21,10 +21,27 @@ class UserModel {
     );
   }
 
+  factory UserModel.empty() {
+    return UserModel(
+      id: '',
+      userName: '',
+      password: '',
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'userName': userName,
       'password': password,
     };
+  }
+
+  bool get isEmpty {
+    return id.isEmpty && userName.isEmpty && password.isEmpty;
+  }
+
+  @override
+  String toString() {
+    return 'UserModel(id: $id, userName: $userName, password: $password)';
   }
 }

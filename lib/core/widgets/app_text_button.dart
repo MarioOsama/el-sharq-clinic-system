@@ -13,7 +13,8 @@ class AppTextButton extends StatelessWidget {
       this.filled = true,
       this.icon,
       this.color,
-      this.textStyle});
+      this.textStyle,
+      this.enabled = true});
 
   final String text;
   final void Function() onPressed;
@@ -23,6 +24,7 @@ class AppTextButton extends StatelessWidget {
   final IconData? icon;
   final Color? color;
   final TextStyle? textStyle;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class AppTextButton extends StatelessWidget {
   TextButton _buildTextButton() {
     return TextButton(
       style: _buildButtonStyle(),
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text(text,
@@ -48,7 +50,7 @@ class AppTextButton extends StatelessWidget {
   TextButton _buildTextButtonWithIcon() {
     return TextButton.icon(
       style: _buildButtonStyle(),
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       icon: Icon(
         icon,
         color: AppColors.white,
@@ -71,7 +73,11 @@ class AppTextButton extends StatelessWidget {
         width ?? 300.w,
         height ?? 50.h,
       ),
-      backgroundColor: filled! ? color ?? AppColors.blue : AppColors.white,
+      backgroundColor: enabled
+          ? filled!
+              ? color ?? AppColors.blue
+              : AppColors.white
+          : AppColors.darkGrey.withOpacity(0.5),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),

@@ -3,22 +3,46 @@ import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SettingsSegmentedButton<T> extends StatelessWidget {
+class SettingsSegmentedButton<T> extends StatefulWidget {
   const SettingsSegmentedButton(
-      {super.key, required this.titles, required this.selected});
+      {super.key,
+      required this.titles,
+      required this.selected,
+      required this.onSelectionChanged});
 
   final T selected;
   final List<T> titles;
+  final Function(T value) onSelectionChanged;
+
+  @override
+  State<SettingsSegmentedButton<T>> createState() =>
+      _SettingsSegmentedButtonState<T>();
+}
+
+class _SettingsSegmentedButtonState<T>
+    extends State<SettingsSegmentedButton<T>> {
+  late T selected;
+
+  @override
+  void initState() {
+    super.initState();
+    selected = widget.selected;
+  }
 
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<T>(
-      // expandedInsets: EdgeInsets.zero,
       selectedIcon: const SizedBox.shrink(),
-      onSelectionChanged: (value) {},
+      onSelectionChanged: (value) {
+        widget.onSelectionChanged(value.first);
+        setState(() {
+          selected = value.first;
+        });
+      },
       selected: {selected},
-      segments: _getSegments(titles),
+      segments: _getSegments(widget.titles),
       style: _buildStyle,
+      expandedInsets: EdgeInsets.zero,
     );
   }
 
@@ -44,12 +68,12 @@ class SettingsSegmentedButton<T> extends StatelessWidget {
       selectedBackgroundColor: AppColors.blue.withOpacity(0.85),
       selectedForegroundColor: AppColors.white,
       side: const BorderSide(color: AppColors.darkGrey, width: 1),
+      maximumSize: Size(300.w, 100.h),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
     );
   }
 }
