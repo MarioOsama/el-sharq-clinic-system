@@ -1,7 +1,12 @@
-import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
+import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
 
 class SettingsRepo {
-  final FirebaseServices _firebaseServices;
+  final AuthFirebaseServices _authFirebaseServices;
 
-  SettingsRepo(this._firebaseServices);
+  SettingsRepo(this._authFirebaseServices);
+
+  Future<void> updatePreferences(AuthDataModel authData) async {
+    await _authFirebaseServices.updatePreferences(authData);
+  }
 }
