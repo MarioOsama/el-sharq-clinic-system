@@ -35,6 +35,17 @@ class AuthDataModel {
     );
   }
 
+  factory AuthDataModel.empty() {
+    return AuthDataModel(
+      clinicIndex: 0,
+      userModel: UserModel.empty(),
+      clinicName: '',
+      language: 'en',
+      theme: 'light',
+      lowStockLimit: 0,
+    );
+  }
+
   Map<String, dynamic> toFirestore() {
     return {
       'clinicIndex': clinicIndex,

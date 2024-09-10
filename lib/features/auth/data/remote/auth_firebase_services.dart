@@ -69,4 +69,16 @@ class AuthFirebaseServices {
         )
         .get();
   }
+
+  Future<void> updatePreferences(AuthDataModel authData) async {
+    final DocumentReference _clinicDoc = FirebaseFirestore.instance
+        .collection('clinics')
+        .doc('clinic${authData.clinicIndex}');
+
+    await _clinicDoc.update({
+      'language': authData.language,
+      'theme': authData.theme,
+      'lowStockLimit': authData.lowStockLimit,
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/settings/data/repos/settings_repo.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +21,12 @@ class SettingsCubit extends Cubit<SettingsState> {
     newAuthData = authData;
   }
 
+  // UI Methods
   void changeLanguage(String language) {
     emit(SettingsInitial());
     newAuthData = newAuthData!.copyWith(language: language);
     if (newAuthData != authData) {
-      emit(SettingsUpdated());
+      emit(SettingsChanged());
       saveButtonState.value = true;
     }
     determineSaveButtonState();
@@ -34,7 +36,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(SettingsInitial());
     newAuthData = newAuthData!.copyWith(theme: theme);
     if (newAuthData != authData) {
-      emit(SettingsUpdated());
+      emit(SettingsChanged());
       saveButtonState.value = true;
     }
     determineSaveButtonState();
@@ -44,7 +46,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(SettingsInitial());
     newAuthData = newAuthData!.copyWith(lowStockLimit: lowStockLimit);
     if (newAuthData != authData) {
-      emit(SettingsUpdated());
+      emit(SettingsChanged());
     }
     determineSaveButtonState();
   }
@@ -55,5 +57,19 @@ class SettingsCubit extends Cubit<SettingsState> {
     } else {
       saveButtonState.value = false;
     }
+  }
+
+  void onSavePreferences(MainCubit mainCubit) async {
+    try {
+      // Save preferences to firestore
+      await _settingsRepo.updatePreferences(newAuthData!);
+    } catch (e) {
+      emit(SettingsError(e.toString()));
+      return;
+    }
+    // Update main cubit auth data
+    mainCubit.updateAuthData(newAuthData!);
+    saveButtonState.value = false;
+    emit(SettingsUpdated());
   }
 }

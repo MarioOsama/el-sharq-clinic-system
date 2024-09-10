@@ -36,6 +36,12 @@ class _HomeLayoutState extends State<HomeLayout> {
   int selectedDrawerItemIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    context.read<MainCubit>().updateAuthData(widget.authData);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final List drawerItems = _getDrawerWidgets;
     return Scaffold(
@@ -68,45 +74,47 @@ class _HomeLayoutState extends State<HomeLayout> {
   List<WidgetBuilder> get _getDrawerWidgets {
     //TODO: Remove all authData params from section widgets
     //TODO: Remove all log statements
+    final MainCubit mainCubit = context.read<MainCubit>();
+
     return [
       (context) => BlocProvider(
             create: (context) => getIt<DashboardCubit>()
-              ..setupSectionData(widget.authData, context.read<MainCubit>()),
+              ..setupSectionData(mainCubit.authData, mainCubit),
             child: DashboardSection(authData: widget.authData),
           ),
       (context) => BlocProvider<CaseHistoryCubit>(
             create: (context) =>
-                getIt<CaseHistoryCubit>()..setupSectionData(widget.authData),
+                getIt<CaseHistoryCubit>()..setupSectionData(mainCubit.authData),
             child: CaseHistorySection(authData: widget.authData),
           ),
       (context) => BlocProvider<OwnersCubit>(
             create: (context) =>
-                getIt<OwnersCubit>()..setupSectionData(widget.authData),
+                getIt<OwnersCubit>()..setupSectionData(mainCubit.authData),
             child: OwnersSection(authData: widget.authData),
           ),
       (context) => BlocProvider<DoctorsCubit>(
             create: (context) =>
-                getIt<DoctorsCubit>()..setupSectionData(widget.authData),
+                getIt<DoctorsCubit>()..setupSectionData(mainCubit.authData),
             child: const DoctorsSection(),
           ),
       (context) => BlocProvider<ServicesCubit>(
             create: (context) => getIt<ServicesCubit>()
-              ..setupSectionData(widget.authData, context),
+              ..setupSectionData(mainCubit.authData, context),
             child: const ServicesSection(),
           ),
       (context) => BlocProvider<ProductsCubit>(
             create: (context) => getIt<ProductsCubit>()
-              ..setupSectionData(widget.authData, context),
+              ..setupSectionData(mainCubit.authData, context),
             child: const ProductsSection(),
           ),
       (context) => BlocProvider<InvoicesCubit>(
             create: (context) => getIt<InvoicesCubit>()
-              ..setupSectionData(widget.authData, context),
+              ..setupSectionData(mainCubit.authData, context),
             child: const InvoicesSection(),
           ),
       (context) => BlocProvider<SettingsCubit>(
             create: (context) =>
-                getIt<SettingsCubit>()..setupSectionData(widget.authData),
+                getIt<SettingsCubit>()..setupSectionData(mainCubit.authData),
             child: const SettingsSection(),
           ),
     ];

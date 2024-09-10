@@ -198,6 +198,8 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   List<ProductModel> getLowStockProducts(List<ProductModel> products) {
-    return products.where((product) => product.quantity <= 5).toList();
+    return products
+        .where((product) => product.quantity <= authData!.lowStockLimit)
+        .toList();
   }
 }
