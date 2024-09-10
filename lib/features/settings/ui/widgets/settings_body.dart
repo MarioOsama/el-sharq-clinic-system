@@ -1,11 +1,16 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
-import 'package:el_sharq_clinic/features/settings/ui/widgets/settings_segmented_button.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/action_list_tile.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/add_user_account_dialog.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/change_clinic_name_dialog.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/change_password_dialog.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/segmented_button_list_tile.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/users_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +21,6 @@ class SettingsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authData = context.read<SettingsCubit>().authData!;
-    log(authData.theme.toString());
     return SectionDetailsContainer(
       padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 40.w),
       child: SingleChildScrollView(
@@ -39,79 +43,74 @@ class SettingsBody extends StatelessWidget {
               onThemeChanged,
             ),
             verticalSpace(40.h),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text(
-                'Low Stock Limit',
-                style: AppTextStyles.font24DarkGreyMedium,
-              ),
-              subtitle: Text(
-                'The default low stock limit is 5',
-                style: AppTextStyles.font16DarkGreyMedium.copyWith(
-                  color: Colors.grey,
-                ),
-              ),
-              trailing: AppTextField(
-                maxHeight: 50.h,
-                initialValue: authData.lowStockLimit.toString(),
-                insideHint: true,
-                hint: 'Limit',
-                numeric: true,
-                onChanged: (value) => onLowStockLimitChanged(value, context),
-              ),
+            _buildLowStockListTile(authData, context),
+            const Divider(
+              color: AppColors.grey,
+              thickness: 2,
+              height: 100,
             ),
-            verticalSpace(40.h),
-            const Divider(),
-            verticalSpace(10.h),
-            _buildSideSheetListTile('Change Password', () {}),
-            verticalSpace(10.h),
-            const Divider(),
-            verticalSpace(10.h),
-            _buildSideSheetListTile('Change Clinic Name', () {}),
-            verticalSpace(10.h),
-            const Divider(),
-            verticalSpace(10.h),
-            _buildSideSheetListTile('Add User Account', () {}),
+            ActionListTile(
+              title: 'Change Password',
+              onTap: () => showChangePasswordSideSheet(context),
+              iconData: Icons.lock,
+            ),
+            verticalSpace(20.h),
+            ActionListTile(
+              title: 'Change Clinic Name',
+              onTap: () => showClinicNameDialog(context, authData.clinicName),
+              iconData: Icons.edit,
+            ),
+            verticalSpace(20.h),
+            ActionListTile(
+              title: 'Add User Account',
+              onTap: () => showAddUserAccountDialog(context),
+              iconData: Icons.person_add,
+            ),
+            verticalSpace(20.h),
+            const UsersExpansionTile(),
           ],
         ),
       ),
     );
   }
 
-  ListTile _buildSideSheetListTile(String title, VoidCallback onTap) {
+  ListTile _buildLowStockListTile(
+      AuthDataModel authData, BuildContext context) {
     return ListTile(
-      onTap: onTap,
       contentPadding: EdgeInsets.zero,
-      title: Text(
-        title,
+      title: const Text(
+        'Low Stock Limit',
         style: AppTextStyles.font24DarkGreyMedium,
       ),
-      trailing: const Icon(Icons.keyboard_arrow_right_sharp, size: 40),
+      subtitle: Text(
+        'The default low stock limit is 5',
+        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          color: Colors.grey,
+        ),
+      ),
+      trailing: AppTextField(
+        maxHeight: 50.h,
+        initialValue: authData.lowStockLimit.toString(),
+        insideHint: true,
+        hint: 'Limit',
+        numeric: true,
+        onChanged: (value) => onLowStockLimitChanged(value, context),
+      ),
     );
   }
 
-  ListTile _buildSegmentedButtonListTile(
+  SegmentedButtonListTile _buildSegmentedButtonListTile(
     String title,
     List<String> values,
     String selected,
     BuildContext context,
     Function(String, BuildContext) onSelectionChanged,
   ) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(
-        title,
-        style: AppTextStyles.font24DarkGreyMedium,
-      ),
-      trailing: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 300.w, maxHeight: 100.h),
-        child: SettingsSegmentedButton<String>(
-          onSelectionChanged: (value) => onSelectionChanged(value, context),
-          selected: selected,
-          titles: values,
-        ),
-      ),
-    );
+    return SegmentedButtonListTile(
+        title: title,
+        values: values,
+        selected: selected,
+        onSelectionChanged: onSelectionChanged);
   }
 
   void onLanguageChanged(String value, BuildContext context) {
@@ -126,5 +125,28 @@ class SettingsBody extends StatelessWidget {
     context
         .read<SettingsCubit>()
         .changeLowStockLimit(double.tryParse(value) ?? 0);
+  }
+
+  void showChangePasswordSideSheet(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => const ChangePasswordDialog(),
+    );
+  }
+
+  void showClinicNameDialog(BuildContext context, String clinicName) {
+    showDialog(
+      context: context,
+      builder: (_) => ChangeClinicNameDialog(
+        clinicName: clinicName,
+      ),
+    );
+  }
+
+  void showAddUserAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => const AddUserAccountDialog(),
+    );
   }
 }
