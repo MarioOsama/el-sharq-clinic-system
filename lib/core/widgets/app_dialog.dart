@@ -61,7 +61,7 @@ class AppDialog extends StatelessWidget {
               child: Text(
                 content,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.font16DarkGreyMedium,
+                style: AppTextStyles.font20DarkGreyMedium,
               ),
             ),
             if (action != null) const Spacer(),

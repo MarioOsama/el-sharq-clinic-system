@@ -3,6 +3,7 @@ import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/settings_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/settings_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,6 +40,7 @@ class SettingsSection extends StatelessWidget {
           children: [
             verticalSpace(50),
             const Expanded(child: SettingsBody()),
+            const SettingsBlocListener(),
           ],
         ),
       ),

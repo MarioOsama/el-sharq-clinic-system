@@ -6,7 +6,7 @@ import 'package:el_sharq_clinic/features/services/data/models/service_model.dart
 part 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
-  MainCubit() : super(MainInitial());
+  MainCubit() : super(MainInitial(authDataModel: AuthDataModel.empty()));
 
   // Variables
   AuthDataModel authData = AuthDataModel.empty();
@@ -16,6 +16,11 @@ class MainCubit extends Cubit<MainState> {
   List<ServiceModel> servicesList = [];
 
   // Functions
+  void setupInitialData(AuthDataModel authData) {
+    this.authData = authData;
+    emit(MainInitial(authDataModel: authData));
+  }
+
   void updateMedicinesList(List<ProductModel> medicines) {
     medicinesList = medicines;
   }
@@ -30,5 +35,6 @@ class MainCubit extends Cubit<MainState> {
 
   void updateAuthData(AuthDataModel authData) {
     this.authData = authData;
+    emit(MainUpdated(authDataModel: authData));
   }
 }

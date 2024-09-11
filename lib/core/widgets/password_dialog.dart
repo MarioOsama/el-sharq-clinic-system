@@ -8,8 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PasswordDialog extends StatefulWidget {
   const PasswordDialog(
-      {super.key, required this.actionTitle, required this.onActionPressed});
+      {super.key,
+      required this.actionTitle,
+      required this.onActionPressed,
+      this.title});
 
+  final String? title;
   final String actionTitle;
   final void Function(String password) onActionPressed;
 
@@ -42,7 +46,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
               height: 40.h,
               alignment: Alignment.center,
               child: Text(
-                'Enter your password',
+                widget.title ?? 'Enter your password',
                 style: AppTextStyles.font16DarkGreyMedium.copyWith(
                   color: AppColors.white,
                 ),

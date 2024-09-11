@@ -1,3 +1,4 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
@@ -5,10 +6,25 @@ import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ChangeClinicNameDialog extends StatelessWidget {
-  const ChangeClinicNameDialog({super.key, required this.clinicName});
+class ChangeClinicNameDialog extends StatefulWidget {
+  const ChangeClinicNameDialog(
+      {super.key, required this.clinicName, required this.onNameChanged});
 
   final String clinicName;
+  final void Function(String clinicName) onNameChanged;
+
+  @override
+  State<ChangeClinicNameDialog> createState() => _ChangeClinicNameDialogState();
+}
+
+class _ChangeClinicNameDialogState extends State<ChangeClinicNameDialog> {
+  late TextEditingController _clinicNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _clinicNameController = TextEditingController(text: widget.clinicName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +59,8 @@ class ChangeClinicNameDialog extends StatelessWidget {
 
   AppTextField _buildClinicNameTextField() {
     return AppTextField(
+      controller: _clinicNameController,
       hint: 'Clinic Name',
-      initialValue: clinicName,
       maxWidth: double.infinity,
       maxHeight: 90.h,
     );
@@ -58,7 +74,7 @@ class ChangeClinicNameDialog extends StatelessWidget {
               height: 55.h,
               text: 'Cancel',
               onPressed: () {
-                Navigator.pop(context);
+                context.pop();
               }),
         ),
         horizontalSpace(20),
@@ -66,10 +82,18 @@ class ChangeClinicNameDialog extends StatelessWidget {
           child: AppTextButton(
             height: 55.h,
             text: 'Confirm',
-            onPressed: () {},
+            onPressed: () {
+              widget.onNameChanged(_clinicNameController.text);
+            },
           ),
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _clinicNameController.dispose();
+    super.dispose();
   }
 }

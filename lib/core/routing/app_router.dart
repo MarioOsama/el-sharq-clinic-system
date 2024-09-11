@@ -24,10 +24,9 @@ class AppRouter {
       case AppRoutes.home:
         return MaterialPageRoute(
           builder: (_) => BlocProvider<MainCubit>(
-            create: (context) => getIt<MainCubit>(),
-            child: HomeLayout(
-              authData: arguments as AuthDataModel,
-            ),
+            create: (context) => getIt<MainCubit>()
+              ..setupInitialData(arguments as AuthDataModel),
+            child: const HomeLayout(),
           ),
         );
       default:

@@ -24,9 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeLayout extends StatefulWidget {
-  const HomeLayout({super.key, required this.authData});
-
-  final AuthDataModel authData;
+  const HomeLayout({super.key});
 
   @override
   State<HomeLayout> createState() => _HomeLayoutState();
@@ -34,11 +32,12 @@ class HomeLayout extends StatefulWidget {
 
 class _HomeLayoutState extends State<HomeLayout> {
   int selectedDrawerItemIndex = 0;
+  late AuthDataModel authData;
 
   @override
   void initState() {
     super.initState();
-    context.read<MainCubit>().updateAuthData(widget.authData);
+    authData = context.read<MainCubit>().authData;
   }
 
   @override
@@ -46,7 +45,7 @@ class _HomeLayoutState extends State<HomeLayout> {
     final List drawerItems = _getDrawerWidgets;
     return Scaffold(
       backgroundColor: AppColors.lightBlue,
-      appBar: CustomAppBar(userName: widget.authData.userModel.userName),
+      appBar: const CustomAppBar(),
       body: Row(
         children: [
           Expanded(
@@ -80,17 +79,17 @@ class _HomeLayoutState extends State<HomeLayout> {
       (context) => BlocProvider(
             create: (context) => getIt<DashboardCubit>()
               ..setupSectionData(mainCubit.authData, mainCubit),
-            child: DashboardSection(authData: widget.authData),
+            child: DashboardSection(authData: authData),
           ),
       (context) => BlocProvider<CaseHistoryCubit>(
             create: (context) =>
                 getIt<CaseHistoryCubit>()..setupSectionData(mainCubit.authData),
-            child: CaseHistorySection(authData: widget.authData),
+            child: CaseHistorySection(authData: authData),
           ),
       (context) => BlocProvider<OwnersCubit>(
             create: (context) =>
                 getIt<OwnersCubit>()..setupSectionData(mainCubit.authData),
-            child: OwnersSection(authData: widget.authData),
+            child: OwnersSection(authData: authData),
           ),
       (context) => BlocProvider<DoctorsCubit>(
             create: (context) =>
