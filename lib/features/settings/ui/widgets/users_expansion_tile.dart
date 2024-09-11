@@ -1,6 +1,14 @@
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
+import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
+import 'package:el_sharq_clinic/core/widgets/password_dialog.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
+import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UsersExpansionTile extends StatelessWidget {
@@ -22,38 +30,33 @@ class UsersExpansionTile extends StatelessWidget {
           'Users',
           style: AppTextStyles.font24DarkGreyMedium,
         ),
-        children: _buildUsersTiles,
+        children: _buildUsersTiles(context),
       ),
     );
   }
 
-  List<Widget> get _buildUsersTiles {
-    return [
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: const Text(
-          'User 1',
-          style: AppTextStyles.font20DarkGreyMedium,
-        ),
-        trailing: Icon(Icons.delete, size: 20.sp, color: AppColors.red),
-      ),
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: const Text(
-          'User 2',
-          style: AppTextStyles.font20DarkGreyMedium,
-        ),
-        trailing: Icon(Icons.delete, size: 20.sp, color: AppColors.red),
-      ),
-      ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: const Text(
-          'User 3',
-          style: AppTextStyles.font20DarkGreyMedium,
-        ),
-        trailing: Icon(Icons.delete, size: 20.sp, color: AppColors.red),
-      ),
-    ];
+  List<Widget> _buildUsersTiles(BuildContext context) {
+    return context
+        .watch<SettingsCubit>()
+        .clinicUsers
+        .map((user) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              minVerticalPadding: 10,
+              title: Text(
+                user.userName,
+                style: AppTextStyles.font20DarkGreyMedium,
+              ),
+              trailing: user.role == UserType.admin
+                  ? const SizedBox.shrink()
+                  : IconButton(
+                      icon:
+                          Icon(Icons.delete, size: 20.sp, color: AppColors.red),
+                      onPressed: () {
+                        _onDeleteUserAccount(context, user);
+                      },
+                    ),
+            ))
+        .toList();
   }
 
   BoxDecoration _buildBoxDecoration() {
@@ -68,5 +71,58 @@ class UsersExpansionTile extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
         ]);
+  }
+
+  void _onDeleteUserAccount(BuildContext context, UserModel user) {
+    showDialog(
+      context: context,
+      builder: (_) => AppAlertDialog(
+        alertMessage: 'Are you sure you want to delete this account?',
+        onConfirm: () async {
+          await showAdminPasswordInquiryDialog(context, user.id);
+          if (context.mounted) {
+            context.pop();
+          }
+        },
+        onCancel: () {
+          context.pop();
+        },
+      ),
+    );
+  }
+
+  Future<void> showAdminPasswordInquiryDialog(
+      BuildContext context, String userId) async {
+    await showDialog(
+      context: context,
+      builder: (_) => PasswordDialog(
+          title: 'Enter admin password to delete this account',
+          actionTitle: 'Delete Account',
+          onActionPressed: (password) {
+            final bool isAdmin =
+                context.read<SettingsCubit>().checkAdminPassword(password);
+            if (isAdmin) {
+              context.read<SettingsCubit>().onAccountDeleted(userId);
+              context.pop();
+            } else {
+              showError(context, 'Invalid Admin Password');
+            }
+          }),
+    );
+  }
+
+  void showError(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (_) => AppDialog(
+              title: 'Error',
+              content: message,
+              dialogType: DialogType.error,
+              action: AppTextButton(
+                text: 'OK',
+                filled: false,
+                onPressed: () => context.pop(),
+              ),
+            ));
   }
 }

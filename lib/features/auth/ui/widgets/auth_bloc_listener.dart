@@ -33,9 +33,12 @@ class AuthBlocListener extends StatelessWidget {
               dialogType: DialogType.success,
             ),
           );
-          Future.delayed(const Duration(seconds: 2), () => context.pop()).then(
-              (_) =>
-                  context.pushNamed(AppRoutes.home, arguments: state.authData));
+          Future.delayed(const Duration(seconds: 2), () => context.pop())
+              .then((_) {
+            if (context.mounted) {
+              context.pushNamed(AppRoutes.home, arguments: state.authData);
+            }
+          });
         }
         if (state is AuthFailure) {
           if (ModalRoute.of(context)?.isCurrent != true) context.pop();

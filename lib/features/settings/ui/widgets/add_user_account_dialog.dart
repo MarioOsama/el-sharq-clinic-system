@@ -5,8 +5,25 @@ import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AddUserAccountDialog extends StatelessWidget {
-  const AddUserAccountDialog({super.key});
+class AddUserAccountDialog extends StatefulWidget {
+  const AddUserAccountDialog({super.key, required this.onAccountAdded});
+
+  final void Function(String name, String password) onAccountAdded;
+
+  @override
+  State<AddUserAccountDialog> createState() => _AddUserAccountDialogState();
+}
+
+class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
+  late TextEditingController _nameController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +60,7 @@ class AddUserAccountDialog extends StatelessWidget {
 
   AppTextField _buildNameTextField() {
     return AppTextField(
+      controller: _nameController,
       hint: 'Name',
       maxWidth: double.infinity,
       maxHeight: 90.h,
@@ -51,6 +69,7 @@ class AddUserAccountDialog extends StatelessWidget {
 
   AppTextField _buildPasswordTextField() {
     return AppTextField(
+      controller: _passwordController,
       hint: 'Password',
       isObscured: true,
       maxWidth: double.infinity,
@@ -71,7 +90,13 @@ class AddUserAccountDialog extends StatelessWidget {
         ),
         horizontalSpace(20),
         Expanded(
-          child: AppTextButton(height: 55.h, text: 'Add', onPressed: () {}),
+          child: AppTextButton(
+              height: 55.h,
+              text: 'Add',
+              onPressed: () {
+                widget.onAccountAdded(
+                    _nameController.text, _passwordController.text);
+              }),
         ),
       ],
     );

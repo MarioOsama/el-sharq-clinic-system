@@ -2,15 +2,15 @@ import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/action_list_tile.dart';
-import 'package:el_sharq_clinic/features/settings/ui/widgets/add_user_account_dialog.dart';
-import 'package:el_sharq_clinic/features/settings/ui/widgets/change_clinic_name_dialog.dart';
+import 'package:el_sharq_clinic/features/settings/ui/widgets/admin_privileges_container.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/change_password_dialog.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/segmented_button_list_tile.dart';
-import 'package:el_sharq_clinic/features/settings/ui/widgets/users_expansion_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,56 +20,83 @@ class SettingsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authData = context.read<SettingsCubit>().authData!;
+    final authData = context.watch<SettingsCubit>().newAuthData!;
     return SectionDetailsContainer(
       padding: EdgeInsets.symmetric(vertical: 50.h, horizontal: 40.w),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _buildSegmentedButtonListTile(
-              'Language',
-              ['English', 'Arabic'],
-              authData.language,
-              context,
-              onLanguageChanged,
-            ),
-            verticalSpace(40.h),
-            _buildSegmentedButtonListTile(
-              'Theme',
-              ['Light', 'Dark'],
-              authData.theme,
-              context,
-              onThemeChanged,
-            ),
-            verticalSpace(40.h),
-            _buildLowStockListTile(authData, context),
-            const Divider(
-              color: AppColors.grey,
-              thickness: 2,
-              height: 100,
-            ),
-            ActionListTile(
-              title: 'Change Password',
-              onTap: () => showChangePasswordSideSheet(context),
-              iconData: Icons.lock,
-            ),
-            verticalSpace(20.h),
-            ActionListTile(
-              title: 'Change Clinic Name',
-              onTap: () => showClinicNameDialog(context, authData.clinicName),
-              iconData: Icons.edit,
-            ),
-            verticalSpace(20.h),
-            ActionListTile(
-              title: 'Add User Account',
-              onTap: () => showAddUserAccountDialog(context),
-              iconData: Icons.person_add,
-            ),
-            verticalSpace(20.h),
-            const UsersExpansionTile(),
-          ],
-        ),
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        buildWhen: (previous, current) =>
+            current is SettingsInitial ||
+            current is SettingsUpdated ||
+            current is SettingsLoading ||
+            current is SettingsError,
+        builder: (context, state) {
+          return _buildChild(authData, context, state);
+        },
+      ),
+    );
+  }
+
+  Widget _buildChild(
+      AuthDataModel authData, BuildContext context, SettingsState state) {
+    if (state is SettingsInitial || state is SettingsUpdated) {
+      return _buildSuccess(authData, context);
+    } else if (state is SettingsError) {
+      return _buildError(state);
+    }
+    return _buildLoading();
+  }
+
+  Center _buildError(SettingsError state) {
+    return Center(
+      child: Text(
+        state.message,
+        style: AppTextStyles.font24DarkGreyMedium,
+      ),
+    );
+  }
+
+  Center _buildLoading() {
+    return const Center(
+      child: AnimatedLoadingIndicator(),
+    );
+  }
+
+  SingleChildScrollView _buildSuccess(
+      AuthDataModel authData, BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          _buildSegmentedButtonListTile(
+            'Language',
+            ['English', 'Arabic'],
+            authData.language,
+            context,
+            onLanguageChanged,
+          ),
+          verticalSpace(40.h),
+          _buildSegmentedButtonListTile(
+            'Theme',
+            ['Light', 'Dark'],
+            authData.theme,
+            context,
+            onThemeChanged,
+          ),
+          verticalSpace(40.h),
+          _buildLowStockListTile(authData, context),
+          const Divider(
+            color: AppColors.grey,
+            thickness: 2,
+            height: 100,
+          ),
+          ActionListTile(
+            title: 'Change Password',
+            onTap: () => showChangePasswordSideSheet(context),
+            iconData: Icons.lock,
+          ),
+          if (authData.userModel.role == UserType.admin)
+            const AdminPrivilegesContainer(),
+        ],
       ),
     );
   }
@@ -130,23 +157,9 @@ class SettingsBody extends StatelessWidget {
   void showChangePasswordSideSheet(BuildContext context) {
     showDialog(
       context: context,
-      builder: (_) => const ChangePasswordDialog(),
-    );
-  }
-
-  void showClinicNameDialog(BuildContext context, String clinicName) {
-    showDialog(
-      context: context,
-      builder: (_) => ChangeClinicNameDialog(
-        clinicName: clinicName,
+      builder: (_) => ChangePasswordDialog(
+        onPasswordChanged: context.read<SettingsCubit>().onChangePassword,
       ),
-    );
-  }
-
-  void showAddUserAccountDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => const AddUserAccountDialog(),
     );
   }
 }

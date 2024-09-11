@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
+import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/dashboard/data/models/pie_chart_item_model.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/sales_pie_chart.dart';
@@ -38,11 +39,21 @@ class TodaySalesContainer extends StatelessWidget {
             ],
           ),
           pieChartData.isEmpty
-              ? const SizedBox.shrink()
+              ? _buildNoSalesText()
               : SalesPieChart(
                   items: pieChartData,
                 ),
         ],
+      ),
+    );
+  }
+
+  AspectRatio _buildNoSalesText() {
+    return const AspectRatio(
+      aspectRatio: 1.2,
+      child: Center(
+        child:
+            Text('No sales today', style: AppTextStyles.font22DarkGreyMedium),
       ),
     );
   }
