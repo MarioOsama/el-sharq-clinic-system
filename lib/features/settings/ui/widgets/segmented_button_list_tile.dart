@@ -22,7 +22,7 @@ class SegmentedButtonListTile<T> extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       title: Text(
         title,
-        style: AppTextStyles.font24DarkGreyMedium,
+        style: AppTextStyles.font24DarkGreyMedium(context),
       ),
       trailing: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 300.w, maxHeight: 100.h),

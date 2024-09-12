@@ -45,7 +45,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
       return Center(
         child: Text(
           state.errorMessage,
-          style: AppTextStyles.font20DarkGreyMedium,
+          style: AppTextStyles.font20DarkGreyMedium(context),
         ),
       );
     }

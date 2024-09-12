@@ -42,16 +42,16 @@ class SettingsBody extends StatelessWidget {
     if (state is SettingsInitial || state is SettingsUpdated) {
       return _buildSuccess(authData, context);
     } else if (state is SettingsError) {
-      return _buildError(state);
+      return _buildError(state, context);
     }
     return _buildLoading();
   }
 
-  Center _buildError(SettingsError state) {
+  Center _buildError(SettingsError state, BuildContext context) {
     return Center(
       child: Text(
         state.message,
-        style: AppTextStyles.font24DarkGreyMedium,
+        style: AppTextStyles.font24DarkGreyMedium(context),
       ),
     );
   }
@@ -78,23 +78,23 @@ class SettingsBody extends StatelessWidget {
             ),
           ),
           verticalSpace(40.h),
-          BounceInLeft(
-            child: _buildSegmentedButtonListTile(
-              'Theme',
-              ['Light', 'Dark'],
-              authData.theme,
-              context,
-              onThemeChanged,
-            ),
-          ),
-          verticalSpace(40.h),
+          // BounceInLeft(
+          //   child: _buildSegmentedButtonListTile(
+          //     'Theme',
+          //     ['Light', 'Dark'],
+          //     authData.theme,
+          //     context,
+          //     onThemeChanged,
+          //   ),
+          // ),
+          // verticalSpace(40.h),
           BounceInLeft(child: _buildLowStockListTile(authData, context)),
           const Divider(
             color: AppColors.grey,
             thickness: 2,
             height: 100,
           ),
-          FadeIn(
+          BounceInRight(
             child: ActionListTile(
               title: 'Change Password',
               onTap: () => showChangePasswordSideSheet(context),
@@ -102,7 +102,7 @@ class SettingsBody extends StatelessWidget {
             ),
           ),
           if (authData.userModel.role == UserType.admin)
-            FadeIn(child: const AdminPrivilegesContainer()),
+            BounceInRight(child: const AdminPrivilegesContainer()),
         ],
       ),
     );
@@ -112,13 +112,13 @@ class SettingsBody extends StatelessWidget {
       AuthDataModel authData, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: const Text(
+      title: Text(
         'Low Stock Limit',
-        style: AppTextStyles.font24DarkGreyMedium,
+        style: AppTextStyles.font24DarkGreyMedium(context),
       ),
       subtitle: Text(
         'The default low stock limit is 5',
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+        style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
           color: Colors.grey,
         ),
       ),

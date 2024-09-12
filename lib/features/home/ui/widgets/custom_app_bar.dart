@@ -25,9 +25,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: AppBar(
             surfaceTintColor: AppColors.white,
             backgroundColor: AppColors.white,
-            leading: _buildLeading(),
+            leading: _buildLeading(context),
             titleSpacing: 5,
-            title: _buildTitle(authData),
+            title: _buildTitle(authData, context),
             leadingWidth: 250.w,
             centerTitle: true,
             actions: [AppBarUserInfo(userName: authData.userModel.userName)],
@@ -49,14 +49,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Row _buildLeading() {
+  Row _buildLeading(BuildContext context) {
     return Row(
       children: [
         Image.asset(Assets.assetsImagesPngIconLogo),
         horizontalSpace(20),
         Text(
           'EL-Sharq Clinic',
-          style: AppTextStyles.font22DarkGreyMedium.copyWith(
+          style: AppTextStyles.font22DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -64,10 +64,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Text _buildTitle(AuthDataModel authData) {
+  Text _buildTitle(AuthDataModel authData, BuildContext context) {
     return Text(
       authData.clinicName,
-      style: AppTextStyles.font22DarkGreyMedium.copyWith(
+      style: AppTextStyles.font22DarkGreyMedium(context).copyWith(
         fontWeight: FontWeight.w500,
       ),
     );

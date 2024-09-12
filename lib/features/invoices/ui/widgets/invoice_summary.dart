@@ -43,13 +43,13 @@ class InvoiceSummary extends StatelessWidget {
               flex: 2,
               child: Column(
                 children: [
-                  _buildSummaryItem('Total', summaryMap['Total']!),
+                  _buildSummaryItem('Total', summaryMap['Total']!, context),
                   _buildSummaryItem(
-                      'Discount (%)', summaryMap['Discount (%)']!),
+                      'Discount (%)', summaryMap['Discount (%)']!, context),
                   _buildSummaryItem('Total after discount',
-                      summaryMap['Total after discount']!),
-                  _buildSummaryItem(
-                      'Number of items', summaryMap['Number of items']!),
+                      summaryMap['Total after discount']!, context),
+                  _buildSummaryItem('Number of items',
+                      summaryMap['Number of items']!, context),
                 ],
               ),
             ),
@@ -59,17 +59,17 @@ class InvoiceSummary extends StatelessWidget {
     );
   }
 
-  Row _buildSummaryItem(String title, num value) {
+  Row _buildSummaryItem(String title, num value, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: AppTextStyles.font14DarkGreyMedium,
+          style: AppTextStyles.font14DarkGreyMedium(context),
         ),
         Text(
           value.toStringAsFixed(2),
-          style: AppTextStyles.font14DarkGreyMedium,
+          style: AppTextStyles.font14DarkGreyMedium(context),
         ),
       ],
     );

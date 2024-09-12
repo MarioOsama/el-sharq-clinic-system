@@ -65,7 +65,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
         value: value,
         title: !isTouched && touchedIndex != -1 ? null : displayedValue,
         radius: radius,
-        titleStyle: AppTextStyles.font20DarkGreyMedium.copyWith(
+        titleStyle: AppTextStyles.font20DarkGreyMedium(context).copyWith(
           color: isTouched ? AppColors.black : AppColors.white,
           fontWeight: isTouched ? FontWeight.bold : FontWeight.normal,
           fontSize: fontSize,

@@ -21,7 +21,7 @@ class CasesBarChartState extends State<CasesBarChart> {
       aspectRatio: 2.8,
       child: BarChart(
         BarChartData(
-          barTouchData: barTouchData,
+          barTouchData: barTouchData(context),
           titlesData: titlesData,
           borderData: borderData,
           barGroups: barGroups,
@@ -32,7 +32,7 @@ class CasesBarChartState extends State<CasesBarChart> {
     );
   }
 
-  BarTouchData get barTouchData => BarTouchData(
+  BarTouchData barTouchData(BuildContext context) => BarTouchData(
         touchCallback: (FlTouchEvent event, barTouchResponse) {
           setState(() {
             if (!event.isInterestedForInteractions ||
@@ -58,7 +58,7 @@ class CasesBarChartState extends State<CasesBarChart> {
           ) {
             return BarTooltipItem(
               rod.toY.round().toString(),
-              AppTextStyles.font14DarkGreyMedium.copyWith(
+              AppTextStyles.font14DarkGreyMedium(context).copyWith(
                 color: AppColors.blue,
                 fontWeight: FontWeight.bold,
               ),
@@ -68,7 +68,7 @@ class CasesBarChartState extends State<CasesBarChart> {
       );
 
   Widget getTitles(double value, TitleMeta meta) {
-    final style = AppTextStyles.font14DarkGreyMedium.copyWith(
+    final style = AppTextStyles.font14DarkGreyMedium(context).copyWith(
       color: AppColors.blue,
       fontWeight: FontWeight.bold,
     );

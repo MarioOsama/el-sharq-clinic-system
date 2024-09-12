@@ -40,7 +40,7 @@ class SalesPieChartKeys extends StatelessWidget {
               horizontalSpace(10),
               Text(
                 keys[index],
-                style: AppTextStyles.font16DarkGreyMedium.copyWith(
+                style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),

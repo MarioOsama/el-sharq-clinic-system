@@ -27,9 +27,9 @@ class OwnersRowActionButton extends StatelessWidget {
                   editable: true,
                   ownerModel: context.read<OwnersCubit>().getOwnerById(id));
             },
-            child: const Text(
+            child: Text(
               'Edit',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -37,9 +37,9 @@ class OwnersRowActionButton extends StatelessWidget {
             onTap: () {
               showAddPetSheet(context, 'Add Pet', id);
             },
-            child: const Text(
+            child: Text(
               'Add Pet',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -61,9 +61,9 @@ class OwnersRowActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

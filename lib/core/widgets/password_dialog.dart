@@ -47,7 +47,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
               alignment: Alignment.center,
               child: Text(
                 widget.title ?? 'Enter your password',
-                style: AppTextStyles.font16DarkGreyMedium.copyWith(
+                style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
                   color: AppColors.white,
                 ),
               ),

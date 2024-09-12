@@ -45,7 +45,8 @@ class _NormalItem extends StatelessWidget {
       child: Column(
         children: [
           _PannerContainer(
-            child: Text(time, style: AppTextStyles.font16DarkGreyMedium),
+            child:
+                Text(time, style: AppTextStyles.font16DarkGreyMedium(context)),
           ),
           const _StickContainer(),
         ],
@@ -75,7 +76,8 @@ class _ReversedItem extends StatelessWidget {
         children: [
           const _ReversedStickContainer(),
           _PannerContainer(
-            child: Text(time, style: AppTextStyles.font16DarkGreyMedium),
+            child:
+                Text(time, style: AppTextStyles.font16DarkGreyMedium(context)),
           ),
         ],
       ),

@@ -1,4 +1,4 @@
-import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTableDataSource extends DataTableSource {
@@ -40,7 +40,7 @@ class CustomTableDataSource extends DataTableSource {
             alignment: Alignment.center,
             child: Text(
               data[index][cellIndex],
-              style: AppTextStyles.font16DarkGreyMedium,
+              style: font16DarkGreyMedium(),
             ),
           ),
         );
@@ -58,7 +58,7 @@ class CustomTableDataSource extends DataTableSource {
       },
       Text(
         data[index][cellIndex],
-        style: AppTextStyles.font16DarkGreyMedium,
+        style: font16DarkGreyMedium(),
       ),
     );
   }
@@ -77,4 +77,11 @@ class CustomTableDataSource extends DataTableSource {
 
   @override
   int get selectedRowCount => 0;
+
+  static TextStyle font16DarkGreyMedium() => const TextStyle(
+        fontSize: 16,
+        color: AppColors.darkGrey,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'Outfit',
+      );
 }

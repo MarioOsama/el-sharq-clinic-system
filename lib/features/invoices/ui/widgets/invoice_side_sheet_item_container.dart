@@ -74,7 +74,7 @@ class _InvoiceSideSheetItemContainerState
           widget.index != 0
               ? 'Item ${widget.index} Details'
               : '$itemType Details',
-          style: AppTextStyles.font16DarkGreyMedium
+          style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         Container(
@@ -90,7 +90,7 @@ class _InvoiceSideSheetItemContainerState
               children: [
                 Text(
                   'Item Type',
-                  style: AppTextStyles.font16DarkGreyMedium
+                  style: AppTextStyles.font16DarkGreyMedium(context)
                       .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
                 ),
                 AppDropDownButton(

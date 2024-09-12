@@ -37,7 +37,7 @@ class AppDropDownButton extends StatelessWidget {
       decoration: _buildContainerDecoration(),
       child: StatefulBuilder(
         builder: (context, setState) => DropdownButton<String>(
-          style: textStyle ?? AppTextStyles.font20DarkGreyMedium,
+          style: textStyle ?? AppTextStyles.font20DarkGreyMedium(context),
           isExpanded: true,
           underline: const SizedBox.shrink(),
           value: selectedValue,

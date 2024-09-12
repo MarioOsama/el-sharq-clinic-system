@@ -39,7 +39,7 @@ class TodaySalesContainer extends StatelessWidget {
             ],
           ),
           pieChartData.isEmpty
-              ? _buildNoSalesText()
+              ? _buildNoSalesText(context)
               : SalesPieChart(
                   items: pieChartData,
                 ),
@@ -48,12 +48,12 @@ class TodaySalesContainer extends StatelessWidget {
     );
   }
 
-  AspectRatio _buildNoSalesText() {
-    return const AspectRatio(
+  AspectRatio _buildNoSalesText(BuildContext context) {
+    return AspectRatio(
       aspectRatio: 1.2,
       child: Center(
-        child:
-            Text('No sales today', style: AppTextStyles.font22DarkGreyMedium),
+        child: Text('No sales today',
+            style: AppTextStyles.font22DarkGreyMedium(context)),
       ),
     );
   }

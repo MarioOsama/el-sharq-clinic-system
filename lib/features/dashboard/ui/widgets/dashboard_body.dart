@@ -22,25 +22,25 @@ class DashboardBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: BlocBuilder<DashboardCubit, DashboardState>(
         builder: (context, state) {
-          return _buildChild(state);
+          return _buildChild(state, context);
         },
       ),
     );
   }
 
-  Widget _buildChild(DashboardState state) {
+  Widget _buildChild(DashboardState state, BuildContext context) {
     if (state is DashboardSuccess) {
       return _buildSuccess(state);
     } else if (state is DashboardError) {
-      return _buildError(state.message);
+      return _buildError(state.message, context);
     }
 
     return _buildLoading();
   }
 
-  Center _buildError(String message) {
+  Center _buildError(String message, BuildContext context) {
     return Center(
-      child: Text(message, style: AppTextStyles.font20DarkGreyMedium),
+      child: Text(message, style: AppTextStyles.font20DarkGreyMedium(context)),
     );
   }
 

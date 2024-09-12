@@ -50,7 +50,7 @@ class AppDialog extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.font20DarkGreyMedium.copyWith(
+                style: AppTextStyles.font20DarkGreyMedium(context).copyWith(
                   color: Colors.white,
                 ),
               ),
@@ -61,7 +61,7 @@ class AppDialog extends StatelessWidget {
               child: Text(
                 content,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.font20DarkGreyMedium,
+                style: AppTextStyles.font20DarkGreyMedium(context),
               ),
             ),
             if (action != null) const Spacer(),

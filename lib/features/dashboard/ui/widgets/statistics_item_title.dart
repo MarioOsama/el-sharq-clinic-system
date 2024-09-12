@@ -10,7 +10,7 @@ class StatisticsItemTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: AppTextStyles.font20DarkGreyMedium,
+      style: AppTextStyles.font20DarkGreyMedium(context),
     );
   }
 }

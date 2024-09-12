@@ -27,9 +27,9 @@ class ServiceItemActionButton extends StatelessWidget {
               'Edit Service',
               service: service,
             ),
-            child: const Text(
+            child: Text(
               'Edit',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -51,9 +51,9 @@ class ServiceItemActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

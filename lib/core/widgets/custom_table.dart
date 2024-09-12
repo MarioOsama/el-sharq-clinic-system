@@ -24,7 +24,7 @@ class CustomTable extends StatelessWidget {
       child: PaginatedDataTable2(
         rowsPerPage: 10,
         columnSpacing: 10,
-        columns: _buildTableColumns,
+        columns: _buildTableColumns(context),
         horizontalMargin: 15,
         source: dataSource,
         dataRowHeight: height * 0.058,
@@ -34,12 +34,12 @@ class CustomTable extends StatelessWidget {
     );
   }
 
-  List<DataColumn> get _buildTableColumns =>
+  List<DataColumn> _buildTableColumns(BuildContext context) =>
       List.generate(fields.length, (index) {
         return DataColumn(
             label: Align(
                 alignment: index == 0 ? Alignment.centerLeft : Alignment.center,
                 child: Text(fields[index],
-                    style: AppTextStyles.font20DarkGreyMedium)));
+                    style: AppTextStyles.font20DarkGreyMedium(context))));
       });
 }

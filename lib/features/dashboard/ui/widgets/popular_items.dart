@@ -19,7 +19,7 @@ class PopularItems extends StatelessWidget {
         children: [
           const StatisticsItemTitle(title: 'Popular Items Last Week'),
           verticalSpace(20),
-          _buildHeaderRow(),
+          _buildHeaderRow(context),
           Divider(
             color: AppColors.darkGrey.withOpacity(0.25),
           ),
@@ -29,7 +29,7 @@ class PopularItems extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
-                return _getItem(item);
+                return _getItem(item, context);
               },
             ),
           ),
@@ -38,32 +38,32 @@ class PopularItems extends StatelessWidget {
     );
   }
 
-  Row _buildHeaderRow() {
-    return const Row(
+  Row _buildHeaderRow(BuildContext context) {
+    return Row(
       children: [
         Text(
           'Item',
-          style: AppTextStyles.font16DarkGreyMedium,
+          style: AppTextStyles.font16DarkGreyMedium(context),
         ),
         Spacer(),
         Text(
           'Info',
-          style: AppTextStyles.font16DarkGreyMedium,
+          style: AppTextStyles.font16DarkGreyMedium(context),
         ),
       ],
     );
   }
 
-  Widget _getItem(InvoiceItemModel item) {
+  Widget _getItem(InvoiceItemModel item, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
         item.name,
-        style: AppTextStyles.font16DarkGreyMedium,
+        style: AppTextStyles.font16DarkGreyMedium(context),
       ),
       subtitle: Text(
         item.type,
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+        style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
           color: AppColors.darkGrey.withOpacity(0.5),
         ),
       ),
@@ -72,11 +72,11 @@ class PopularItems extends StatelessWidget {
         children: [
           Text(
             '${item.quantity.toStringAsFixed(2)} Items',
-            style: AppTextStyles.font16DarkGreyMedium,
+            style: AppTextStyles.font16DarkGreyMedium(context),
           ),
           Text(
             '${(item.price * item.quantity).toStringAsFixed(2)} LE',
-            style: AppTextStyles.font14DarkGreyMedium.copyWith(
+            style: AppTextStyles.font14DarkGreyMedium(context).copyWith(
               color: AppColors.darkGrey.withOpacity(0.5),
             ),
           )
