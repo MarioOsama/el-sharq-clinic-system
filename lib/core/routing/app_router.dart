@@ -17,7 +17,7 @@ class AppRouter {
       case AppRoutes.auth:
         return MaterialPageRoute(
           builder: (_) => BlocProvider<AuthCubit>(
-            create: (context) => getIt<AuthCubit>(),
+            create: (context) => getIt<AuthCubit>()..setupInitialData(),
             child: const AuthScreen(),
           ),
         );

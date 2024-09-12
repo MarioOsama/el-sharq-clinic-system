@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
@@ -67,35 +68,41 @@ class SettingsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _buildSegmentedButtonListTile(
-            'Language',
-            ['English', 'Arabic'],
-            authData.language,
-            context,
-            onLanguageChanged,
+          BounceInLeft(
+            child: _buildSegmentedButtonListTile(
+              'Language',
+              ['English', 'Arabic'],
+              authData.language,
+              context,
+              onLanguageChanged,
+            ),
           ),
           verticalSpace(40.h),
-          _buildSegmentedButtonListTile(
-            'Theme',
-            ['Light', 'Dark'],
-            authData.theme,
-            context,
-            onThemeChanged,
+          BounceInLeft(
+            child: _buildSegmentedButtonListTile(
+              'Theme',
+              ['Light', 'Dark'],
+              authData.theme,
+              context,
+              onThemeChanged,
+            ),
           ),
           verticalSpace(40.h),
-          _buildLowStockListTile(authData, context),
+          BounceInLeft(child: _buildLowStockListTile(authData, context)),
           const Divider(
             color: AppColors.grey,
             thickness: 2,
             height: 100,
           ),
-          ActionListTile(
-            title: 'Change Password',
-            onTap: () => showChangePasswordSideSheet(context),
-            iconData: Icons.lock,
+          FadeIn(
+            child: ActionListTile(
+              title: 'Change Password',
+              onTap: () => showChangePasswordSideSheet(context),
+              iconData: Icons.lock,
+            ),
           ),
           if (authData.userModel.role == UserType.admin)
-            const AdminPrivilegesContainer(),
+            FadeIn(child: const AdminPrivilegesContainer()),
         ],
       ),
     );

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
@@ -82,30 +80,27 @@ class SettingsCubit extends Cubit<SettingsState> {
   void onSavePreferences(MainCubit mainCubit) async {
     try {
       emit(SettingsLoading());
-
       // Save preferences to firestore
       await _settingsRepo.updatePreferences(newAuthData!);
     } catch (e) {
       emit(SettingsUpdatingError('Failed to update preferences'));
-
       return;
     }
-    saveButtonState.value = false;
+    authData = newAuthData;
     emit(SettingsUpdated(
         authData: newAuthData!,
         message: 'Preferences updated successfully',
         popCount: 0));
+    saveButtonState.value = false;
   }
 
   void onChangePassword(String password, String newPassword) async {
     if (newPassword.trim().length < 6) {
-      log('Password must be at least 6 characters long');
       emit(SettingsUpdatingError("Password must be at least 6 characters long",
           popCount: 0));
       return;
     } else {
       if (password == authData!.userModel.password) {
-        log('Correct password');
         try {
           emit(SettingsLoading());
           await _settingsRepo.updateUserPassword(newAuthData!, newPassword);
@@ -119,7 +114,6 @@ class SettingsCubit extends Cubit<SettingsState> {
           emit(SettingsUpdatingError('Failed to update password'));
         }
       } else {
-        log('Incorrect password');
         emit(SettingsUpdatingError("The current password is incorrect",
             popCount: 0));
       }
@@ -129,7 +123,6 @@ class SettingsCubit extends Cubit<SettingsState> {
   void onClinicNameChanged(String clinicName) {
     if (clinicName.trim() == newAuthData!.clinicName) return;
     if (clinicName.trim().isEmpty) {
-      log('Clinic name cannot be empty');
       emit(SettingsUpdatingError('Clinic name cannot be empty', popCount: 0));
       return;
     }

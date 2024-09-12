@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
 
@@ -6,9 +8,15 @@ class AuthRepo {
 
   AuthRepo(this._authFirebaseServices);
 
+  Future<List<String>> getAllClinicNames() async {
+    return await _authFirebaseServices.getAllClinicNames();
+  }
+
   Future<AuthDataModel?> openWithUserNameAndPassword(
       int clinicIndex, String userName, String password) async {
-    return await _authFirebaseServices.openWithUserNameAndPassword(
+    final result = await _authFirebaseServices.openWithUserNameAndPassword(
         clinicIndex, userName, password);
+    log(result.toString());
+    return result;
   }
 }

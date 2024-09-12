@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -63,23 +64,27 @@ class DashboardBody extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               children: [
-                SizedBox(
-                  width: 550.w,
-                  child: AspectRatio(
-                    aspectRatio: 2,
-                    child: CasesLastWeek(
-                      weeklyCases: state.weeklyCasesMap,
+                FadeInLeft(
+                  child: SizedBox(
+                    width: 550.w,
+                    child: AspectRatio(
+                      aspectRatio: 2,
+                      child: CasesLastWeek(
+                        weeklyCases: state.weeklyCasesMap,
+                      ),
                     ),
                   ),
                 ),
                 const Spacer(),
-                SizedBox(
-                  width: 550.w,
-                  child: AspectRatio(
-                    aspectRatio: 2,
-                    child: TodaySalesContainer(
-                      dataMap: state.todaySalesMap,
-                      todayRevenue: state.todayRevenue,
+                FadeInRight(
+                  child: SizedBox(
+                    width: 550.w,
+                    child: AspectRatio(
+                      aspectRatio: 2,
+                      child: TodaySalesContainer(
+                        dataMap: state.todaySalesMap,
+                        todayRevenue: state.todayRevenue,
+                      ),
                     ),
                   ),
                 ),
@@ -91,21 +96,25 @@ class DashboardBody extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Row(
               children: [
-                SizedBox(
+                FadeInLeft(
+                  child: SizedBox(
+                      width: 550.w,
+                      child: AspectRatio(
+                          aspectRatio: 2,
+                          child: LowStockProducts(
+                            items: state.lowStockProducts,
+                          ))),
+                ),
+                const Spacer(),
+                FadeInRight(
+                  child: SizedBox(
                     width: 550.w,
                     child: AspectRatio(
                         aspectRatio: 2,
-                        child: LowStockProducts(
-                          items: state.lowStockProducts,
-                        ))),
-                const Spacer(),
-                SizedBox(
-                  width: 550.w,
-                  child: AspectRatio(
-                      aspectRatio: 2,
-                      child: PopularItems(
-                        items: state.popularItems,
-                      )),
+                        child: PopularItems(
+                          items: state.popularItems,
+                        )),
+                  ),
                 ),
               ],
             ),

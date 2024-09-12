@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +13,26 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepo) : super(AuthInitial());
 
   String selectedClinic = 'Select Clinic';
+  List<String> clinicNames = ['Select Clinic'];
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void setupInitialData() async {
+    if (clinicNames.length <= 1) {
+      try {
+        final loadedClinicNames = await _authRepo.getAllClinicNames();
+        clinicNames.addAll(loadedClinicNames);
+      } catch (e) {
+        emit(AuthFailure('Failed to load clinics data'));
+      }
+    }
+
+    emit(AuthInitial());
+  }
+
   void selectClinic(String clinic) {
     selectedClinic = clinic;
+    log(selectedClinic);
     emit(AuthInitial());
   }
 
@@ -26,10 +40,8 @@ class AuthCubit extends Cubit<AuthState> {
     if (validatedInputs()) {
       emit(AuthLoading());
       await _authRepo
-          .openWithUserNameAndPassword(
-              AppConstant.clinicsList.indexOf(selectedClinic),
-              usernameController.text,
-              passwordController.text)
+          .openWithUserNameAndPassword(clinicNames.indexOf(selectedClinic),
+              usernameController.text, passwordController.text)
           .then(
         (value) {
           if (value != null) {

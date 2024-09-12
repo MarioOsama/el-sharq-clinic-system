@@ -1,4 +1,4 @@
-import 'package:el_sharq_clinic/core/helpers/constants.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/assets.dart';
@@ -17,42 +17,83 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(Assets.assetsImagesPngTextLogo),
-            verticalSpace(50),
-            AppDropDownButton(
-              items: AppConstant.clinicsList,
-              onChanged: (value) {
-                context.read<AuthCubit>().selectClinic(value!);
-              },
-            ),
-            verticalSpace(25),
-            AppTextField(
-              controller: context.read<AuthCubit>().usernameController,
-              hint: 'Username',
-              insideHint: true,
-            ),
-            verticalSpace(25),
-            AppTextField(
-              controller: context.read<AuthCubit>().passwordController,
-              hint: 'Password',
-              insideHint: true,
-              isObscured: true,
-            ),
-            verticalSpace(30),
-            AppTextButton(
-              text: 'Open System',
-              onPressed: () {
-                context.read<AuthCubit>().openSystem();
-              },
-            ),
-            const AuthBlocListener(),
-          ],
-        ),
+      body: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          return Center(
+            child: _buildChild(context, state),
+          );
+        },
       ),
+    );
+  }
+
+  Widget _buildChild(BuildContext context, AuthState state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        FadeInUp(
+            duration: const Duration(seconds: 2),
+            delay: const Duration(milliseconds: 1000),
+            from: 500,
+            child: Image.asset(Assets.assetsImagesPngTextLogo)),
+        _buildEntireBody(context),
+      ],
+    );
+  }
+
+  Widget _buildEntireBody(BuildContext context) {
+    return Column(
+      children: [
+        verticalSpace(50),
+        FadeInLeft(
+            duration: const Duration(seconds: 1),
+            delay: const Duration(milliseconds: 3000),
+            child: _buildDropDownButton(context)),
+        verticalSpace(25),
+        FadeInRight(
+          duration: const Duration(seconds: 1),
+          delay: const Duration(milliseconds: 3000),
+          child: AppTextField(
+            controller: context.read<AuthCubit>().usernameController,
+            hint: 'Username',
+            insideHint: true,
+          ),
+        ),
+        verticalSpace(25),
+        FadeInLeft(
+          duration: const Duration(seconds: 1),
+          delay: const Duration(milliseconds: 3000),
+          child: AppTextField(
+            controller: context.read<AuthCubit>().passwordController,
+            hint: 'Password',
+            insideHint: true,
+            isObscured: true,
+          ),
+        ),
+        verticalSpace(30),
+        FadeInRight(
+          duration: const Duration(seconds: 1),
+          delay: const Duration(milliseconds: 3000),
+          child: AppTextButton(
+            text: 'Open System',
+            onPressed: () {
+              context.read<AuthCubit>().openSystem();
+            },
+          ),
+        ),
+        const AuthBlocListener(),
+      ],
+    );
+  }
+
+  AppDropDownButton _buildDropDownButton(BuildContext context) {
+    final AuthCubit cubit = context.read<AuthCubit>();
+    return AppDropDownButton(
+      items: cubit.clinicNames,
+      initialValue: context.watch<AuthCubit>().selectedClinic,
+      onChanged: (value) {
+        cubit.selectClinic(value!);
+      },
     );
   }
 }

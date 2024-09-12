@@ -70,8 +70,8 @@ class AppTextButton extends StatelessWidget {
   ButtonStyle _buildButtonStyle() {
     return TextButton.styleFrom(
       minimumSize: Size(
-        width ?? 300.w,
-        height ?? 50.h,
+        width ?? 310.w,
+        height ?? 60.h,
       ),
       backgroundColor: enabled
           ? filled!
