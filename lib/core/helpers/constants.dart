@@ -12,12 +12,6 @@ abstract class AppConstant {
   static const List<String> languages = ['English', 'Arabic'];
   static const List<String> themes = ['Light', 'Dark'];
 
-  static const List<String> clinicsList = [
-    'Select Clinic',
-    'Clinic 1',
-    'Clinic 2'
-  ];
-
   // Drawer Items
   static const List<DrawerItemModel> drawerItems = [
     DrawerItemModel(title: 'Dashboard', icon: Icons.dashboard_outlined),

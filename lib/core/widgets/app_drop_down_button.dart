@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class AppDropDownButton extends StatelessWidget {
           style: textStyle ?? AppTextStyles.font20DarkGreyMedium(context),
           isExpanded: true,
           underline: const SizedBox.shrink(),
-          value: selectedValue,
+          value: selectedValue.tr(),
           borderRadius: BorderRadius.circular(10),
           items: _getItemsList,
           onChanged: enabled == false

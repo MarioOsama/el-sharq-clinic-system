@@ -1,0 +1,15 @@
+{
+    "Select Clinic": "اختر العيادة",
+    "User Name": "اسم المستخدم",
+    "Password": "كلمة المرور",
+    "Open System": "افتح النظام",
+    "Success": "نجاح",
+    "Welcome Message": "مرحبا بك في النظام",
+    "Error": "خطأ",
+    "OK": "حسنا",
+    "Clinic Data Load Error":"فشل تحميل بيانات العيادات",
+    "Invalid User Info": "معلومات المستخدم غير صحيحه",
+    "Invalid Clinic": "الرجاء اختيار العيادة",
+    "Invalid Username": "الرجاء إدخال اسم المستخدم",
+    "Invalid Password": "الرجاء إدخال كلمة مرور مكونة من 6 أحرف على الأقل"
+}
