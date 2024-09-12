@@ -7,6 +7,14 @@ class AuthFirebaseServices {
 
   final FirebaseFirestore _firestore;
 
+  Future<List<String>> getAllClinicNames() async {
+    final snapshot = await _firestore.collection('clinics').get();
+    return snapshot.docs
+        .map((e) => e.data()['clinicName'])
+        .toList()
+        .cast<String>();
+  }
+
   Future<AuthDataModel?> openWithUserNameAndPassword(
       int clinicIndex, String userName, String password) async {
     try {

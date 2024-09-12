@@ -1,5 +1,6 @@
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/routing/app_routes.dart';
+import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
@@ -14,11 +15,11 @@ class AuthBlocListener extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
-          showDialog<String>(
+          showDialog(
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: AnimatedLoadingIndicator());
               });
         }
 

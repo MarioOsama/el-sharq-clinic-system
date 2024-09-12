@@ -23,7 +23,7 @@ class AppAlertDialog extends StatelessWidget {
       ),
       icon: Icon(
         Icons.warning,
-        color: AppColors.darkGrey.withOpacity(0.75),
+        color: AppColors.orange,
         size: 60.sp,
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 0),
@@ -55,10 +55,12 @@ class AppAlertDialog extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
       width: double.infinity,
-      color: AppColors.yellow.withOpacity(0.75),
+      color: AppColors.blue,
       child: Text(
         alertMessage,
-        style: AppTextStyles.font16DarkGreyMedium,
+        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          color: AppColors.white,
+        ),
         textAlign: TextAlign.center,
       ),
     );

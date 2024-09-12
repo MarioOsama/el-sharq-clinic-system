@@ -80,9 +80,9 @@ class AppDialog extends StatelessWidget {
         topRight: Radius.circular(25),
       ),
       color: dialogType == DialogType.alert
-          ? AppColors.yellow
+          ? AppColors.orange
           : dialogType == DialogType.success
-              ? AppColors.green
+              ? AppColors.blue
               : AppColors.red,
     );
   }
