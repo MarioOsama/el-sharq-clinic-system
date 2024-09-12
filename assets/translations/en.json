@@ -1,0 +1,15 @@
+{
+    "Select Clinic": "Select Clinic",
+    "User Name": "Username",
+    "Password": "Password",
+    "Open System": "Open System",
+    "Success": "Success",
+    "Welcome Message": "Welcome to the system",
+    "Error": "Error",
+    "OK": "Ok",
+    "Clinic Data Load Error":"Failed to load clinics data",
+    "Invalid User Info":"Invalid username or password for the selected clinic",
+    "Invalid Clinic":"Please select a clinic",
+    "Invalid Username":"Please enter a username",
+    "Invalid Password":"Please enter a password with at least 6 characters"
+}

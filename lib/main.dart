@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/clinic_system.dart';
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/routing/app_router.dart';
@@ -19,6 +20,9 @@ void main() async {
         messagingSenderId: "308772479666",
         appId: "1:308772479666:web:44939be9741aee30a31fab"),
   );
+
+  // Easy Localization Initialization
+  await EasyLocalization.ensureInitialized();
 
   // Dependencies Injection
   setupGetIt();
@@ -44,5 +48,13 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(ClinicSystem(appRouter: AppRouter()));
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      startLocale: const Locale('ar'),
+      child: ClinicSystem(appRouter: AppRouter()),
+    ),
+  );
 }

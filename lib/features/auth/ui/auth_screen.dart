@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/assets.dart';
 import 'package:el_sharq_clinic/core/widgets/app_drop_down_button.dart';
@@ -55,7 +57,7 @@ class AuthScreen extends StatelessWidget {
           delay: const Duration(milliseconds: 3000),
           child: AppTextField(
             controller: context.read<AuthCubit>().usernameController,
-            hint: 'Username',
+            hint: AppStrings.userName.tr(),
             insideHint: true,
           ),
         ),
@@ -65,7 +67,7 @@ class AuthScreen extends StatelessWidget {
           delay: const Duration(milliseconds: 3000),
           child: AppTextField(
             controller: context.read<AuthCubit>().passwordController,
-            hint: 'Password',
+            hint: AppStrings.password.tr(),
             insideHint: true,
             isObscured: true,
           ),
@@ -75,7 +77,7 @@ class AuthScreen extends StatelessWidget {
           duration: const Duration(seconds: 1),
           delay: const Duration(milliseconds: 3000),
           child: AppTextButton(
-            text: 'Open System',
+            text: AppStrings.openSystem.tr(),
             onPressed: () {
               context.read<AuthCubit>().openSystem();
             },
