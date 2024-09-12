@@ -27,9 +27,9 @@ class CaseHistoryTableActionButton extends StatelessWidget {
               showCaseSheet(context, 'Edit Case',
                   caseHistoryModel: caseHistoryModel);
             },
-            child: const Text(
+            child: Text(
               'Edit',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -50,9 +50,9 @@ class CaseHistoryTableActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

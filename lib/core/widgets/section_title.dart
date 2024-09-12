@@ -13,7 +13,7 @@ class SectionTitle extends StatelessWidget {
       title,
       textAlign: TextAlign.start,
       style: style ??
-          AppTextStyles.font24DarkGreyMedium.copyWith(
+          AppTextStyles.font24DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
     );

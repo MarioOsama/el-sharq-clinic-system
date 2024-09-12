@@ -24,7 +24,7 @@ class ProductItem extends StatelessWidget {
         alignment: Alignment.center,
         decoration: _buildDecoration(),
         padding: const EdgeInsets.all(10),
-        child: _buildListTile(),
+        child: _buildListTile(context),
       ),
     );
   }
@@ -46,7 +46,7 @@ class ProductItem extends StatelessWidget {
     );
   }
 
-  ListTile _buildListTile() {
+  ListTile _buildListTile(BuildContext context) {
     return ListTile(
       mouseCursor: SystemMouseCursors.click,
       horizontalTitleGap: 30.w,
@@ -57,7 +57,7 @@ class ProductItem extends StatelessWidget {
           fit: BoxFit.scaleDown,
           child: Text(
             product.title,
-            style: AppTextStyles.font16DarkGreyMedium,
+            style: AppTextStyles.font16DarkGreyMedium(context),
           ),
         ),
       ),
@@ -66,7 +66,7 @@ class ProductItem extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(
           '${product.price} LE',
-          style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),

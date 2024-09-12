@@ -26,7 +26,7 @@ class SideSheetOwnerContainer extends StatelessWidget {
       children: [
         Text(
           'Owner Info',
-          style: AppTextStyles.font16DarkGreyMedium
+          style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         Container(

@@ -26,7 +26,7 @@ class ActionListTile extends StatelessWidget {
         horizontalTitleGap: 40,
         title: Text(
           title,
-          style: AppTextStyles.font24DarkGreyMedium,
+          style: AppTextStyles.font24DarkGreyMedium(context),
         ),
         trailing: Icon(iconData, size: 20.sp, color: AppColors.blue),
       ),

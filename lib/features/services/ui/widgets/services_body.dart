@@ -26,13 +26,13 @@ class ServicesBody extends StatelessWidget {
             current is ServicesError,
         builder: (context, state) {
           if (state is ServicesSuccess) {
-            return _buildSuccess(state.services);
+            return _buildSuccess(state.services, context);
           }
           if (state is ServicesSearchSuccess) {
-            return _buildSuccess(state.services);
+            return _buildSuccess(state.services, context);
           }
           if (state is ServicesError) {
-            return _buildError(state);
+            return _buildError(state, context);
           }
           return _buildLoading();
         },
@@ -42,17 +42,18 @@ class ServicesBody extends StatelessWidget {
 
   Center _buildLoading() => const Center(child: AnimatedLoadingIndicator());
 
-  Center _buildError(ServicesError state) {
+  Center _buildError(ServicesError state, BuildContext context) {
     return Center(
-      child: Text(state.message, style: AppTextStyles.font24DarkGreyMedium),
+      child: Text(state.message,
+          style: AppTextStyles.font24DarkGreyMedium(context)),
     );
   }
 
-  Widget _buildSuccess(List<ServiceModel> services) {
+  Widget _buildSuccess(List<ServiceModel> services, BuildContext context) {
     if (services.isEmpty) {
-      return const Center(
+      return Center(
           child: Text('There are no services yet',
-              style: AppTextStyles.font24DarkGreyMedium));
+              style: AppTextStyles.font24DarkGreyMedium(context)));
     }
     return AppGridView(
       itemCount: services.length,

@@ -22,7 +22,7 @@ class AppBarUserInfo extends StatelessWidget {
         horizontalSpace(15),
         Text(
           userName,
-          style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),

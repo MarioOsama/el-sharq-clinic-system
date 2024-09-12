@@ -14,9 +14,9 @@ class TodayOverview extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Toady Overview',
-          style: AppTextStyles.font22DarkGreyMedium,
+          style: AppTextStyles.font22DarkGreyMedium(context),
         ),
         verticalSpace(40),
         TodayHighlightsRow(

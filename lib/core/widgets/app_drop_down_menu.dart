@@ -35,7 +35,7 @@ class AppDropDownMenu<T> extends StatelessWidget {
       children: [
         Text(
           hint,
-          style: AppTextStyles.font16DarkGreyMedium
+          style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         DropdownMenu(
@@ -47,7 +47,7 @@ class AppDropDownMenu<T> extends StatelessWidget {
           enableFilter: true,
           filterCallback: onFilter ?? _onFiltered,
           enabled: enabled ?? true,
-          textStyle: AppTextStyles.font20DarkGreyMedium,
+          textStyle: AppTextStyles.font20DarkGreyMedium(context),
           inputDecorationTheme: _buildDecorationTheme(),
           menuStyle: MenuStyle(
             fixedSize: WidgetStatePropertyAll(Size(double.infinity, 160.h)),

@@ -19,7 +19,7 @@ class LowStockProducts extends StatelessWidget {
         children: [
           const StatisticsItemTitle(title: 'Low Stock Products'),
           verticalSpace(20),
-          _buildHeaderRow(),
+          _buildHeaderRow(context),
           Divider(
             color: AppColors.darkGrey.withOpacity(0.25),
           ),
@@ -29,7 +29,7 @@ class LowStockProducts extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
-                return _getItem(item);
+                return _getItem(item, context);
               },
             ),
           ),
@@ -38,39 +38,41 @@ class LowStockProducts extends StatelessWidget {
     );
   }
 
-  Row _buildHeaderRow() {
-    return const Row(
+  Row _buildHeaderRow(BuildContext context) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           'Item',
-          style: AppTextStyles.font16DarkGreyMedium,
+          style: AppTextStyles.font16DarkGreyMedium(context),
         ),
         Text(
           'Quantity',
-          style: AppTextStyles.font16DarkGreyMedium,
+          style: AppTextStyles.font16DarkGreyMedium(context),
         ),
       ],
     );
   }
 
-  ListTile _getItem(ProductModel item) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(
-        item.title,
-        style: AppTextStyles.font16DarkGreyMedium,
-      ),
-      subtitle: Text(
-        item.type.toString().replaceAll('ProductType.', ''),
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
-          color: AppColors.darkGrey.withOpacity(0.5),
+  ListTile _getItem(ProductModel item, BuildContext context) {
+    {
+      return ListTile(
+        contentPadding: EdgeInsets.zero,
+        title: Text(
+          item.title,
+          style: AppTextStyles.font16DarkGreyMedium(context),
         ),
-      ),
-      trailing: Text(
-        item.quantity.toString(),
-        style: AppTextStyles.font16DarkGreyMedium,
-      ),
-    );
+        subtitle: Text(
+          item.type.toString().replaceAll('ProductType.', ''),
+          style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
+            color: AppColors.darkGrey.withOpacity(0.5),
+          ),
+        ),
+        trailing: Text(
+          item.quantity.toString(),
+          style: AppTextStyles.font16DarkGreyMedium(context),
+        ),
+      );
+    }
   }
 }

@@ -41,13 +41,13 @@ class OverviewItem extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   child: Text(
                     value.toStringAsFixed(decimals!),
-                    style: AppTextStyles.font32DarkGreyMedium.copyWith(
+                    style: AppTextStyles.font32DarkGreyMedium(context).copyWith(
                         fontWeight: FontWeight.bold, color: AppColors.blue),
                   ),
                 ),
                 Text(
                   title,
-                  style: AppTextStyles.font18DarkGreyMedium,
+                  style: AppTextStyles.font18DarkGreyMedium(context),
                 ),
               ],
             ),

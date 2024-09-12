@@ -28,7 +28,7 @@ class ServiceItem extends StatelessWidget {
         alignment: Alignment.center,
         decoration: _buildDecoration(),
         padding: const EdgeInsets.all(10),
-        child: _buildListTile(),
+        child: _buildListTile(context),
       ),
     );
   }
@@ -50,7 +50,7 @@ class ServiceItem extends StatelessWidget {
     );
   }
 
-  ListTile _buildListTile() {
+  ListTile _buildListTile(BuildContext context) {
     return ListTile(
       mouseCursor: SystemMouseCursors.click,
       horizontalTitleGap: 30.w,
@@ -64,7 +64,7 @@ class ServiceItem extends StatelessWidget {
           fit: BoxFit.scaleDown,
           child: Text(
             service.title,
-            style: AppTextStyles.font16DarkGreyMedium,
+            style: AppTextStyles.font16DarkGreyMedium(context),
           ),
         ),
       ),
@@ -73,7 +73,7 @@ class ServiceItem extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(
           '${service.price} LE',
-          style: AppTextStyles.font16DarkGreyMedium.copyWith(
+          style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),

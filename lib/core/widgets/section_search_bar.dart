@@ -29,8 +29,8 @@ class SectionSearchBar extends StatelessWidget {
         backgroundColor: AppColors.white,
         padding: const EdgeInsets.only(left: 10),
         placeholder: hintText ?? 'Search',
-        placeholderStyle: AppTextStyles.font16DarkGreyMedium,
-        style: AppTextStyles.font20DarkGreyMedium,
+        placeholderStyle: AppTextStyles.font16DarkGreyMedium(context),
+        style: AppTextStyles.font20DarkGreyMedium(context),
       ),
     );
   }

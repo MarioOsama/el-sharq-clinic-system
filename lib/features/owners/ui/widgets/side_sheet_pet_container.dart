@@ -30,7 +30,7 @@ class SideSheetPetContainer extends StatelessWidget {
       children: [
         Text(
           index != 0 ? 'Pet $index Details' : 'Pet Details',
-          style: AppTextStyles.font16DarkGreyMedium
+          style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
         Container(

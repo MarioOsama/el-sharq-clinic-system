@@ -21,9 +21,9 @@ class InvoicesRowActionButton extends StatelessWidget {
             onTap: () {
               context.read<InvoicesCubit>().onPrintInvoice(id);
             },
-            child: const Text(
+            child: Text(
               'Print',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -56,9 +56,9 @@ class InvoicesRowActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

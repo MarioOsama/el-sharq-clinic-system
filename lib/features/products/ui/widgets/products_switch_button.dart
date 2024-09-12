@@ -27,20 +27,21 @@ class ProductsSwitchButton extends StatelessWidget {
                 .onToggleProductType(value.first!, context);
           },
           style: _buildStyle,
-          segments: _getSegments(productType),
+          segments: _getSegments(productType, context),
           selectedIcon: const SizedBox.shrink(),
         );
       },
     );
   }
 
-  List<ButtonSegment<ProductType>> _getSegments(ProductType? productType) {
+  List<ButtonSegment<ProductType>> _getSegments(
+      ProductType? productType, BuildContext context) {
     return List.generate(ProductType.values.length, (index) {
       final type = ProductType.values[index];
       return ButtonSegment(
         value: type,
         label: Text(type.name,
-            style: AppTextStyles.font24DarkGreyMedium.copyWith(
+            style: AppTextStyles.font24DarkGreyMedium(context).copyWith(
                 color: productType == type
                     ? AppColors.white
                     : AppColors.darkGrey)),

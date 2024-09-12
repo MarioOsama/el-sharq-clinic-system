@@ -39,7 +39,7 @@ Future<void> showCaseSheet(BuildContext context, String title,
           itemBuilder: (index) => DropdownMenuEntry(
             label: doctorsList[index].name,
             value: doctorsList[index].id,
-            labelWidget: _buildDoctorLabel(doctorsList[index]),
+            labelWidget: _buildDoctorLabel(doctorsList[index], context),
           ),
           items: caseHistoryCubit.doctorsList,
           onChanged: (value) {
@@ -98,17 +98,17 @@ Future<void> showCaseSheet(BuildContext context, String title,
   );
 }
 
-Row _buildDoctorLabel(DoctorModel doctorsList) {
+Row _buildDoctorLabel(DoctorModel doctorsList, BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
         doctorsList.name,
-        style: AppTextStyles.font16DarkGreyMedium,
+        style: AppTextStyles.font16DarkGreyMedium(context),
       ),
       Text(
         doctorsList.id,
-        style: AppTextStyles.font16DarkGreyMedium,
+        style: AppTextStyles.font16DarkGreyMedium(context),
       ),
     ],
   );

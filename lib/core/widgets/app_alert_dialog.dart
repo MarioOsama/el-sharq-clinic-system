@@ -27,7 +27,7 @@ class AppAlertDialog extends StatelessWidget {
         size: 60.sp,
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 25, horizontal: 0),
-      content: _buildContent(),
+      content: _buildContent(context),
       actions: _getActionsList(context),
     );
   }
@@ -36,29 +36,29 @@ class AppAlertDialog extends StatelessWidget {
     return [
       TextButton(
         onPressed: onCancel,
-        child: const Text(
+        child: Text(
           'Cancel',
-          style: AppTextStyles.font14DarkGreyMedium,
+          style: AppTextStyles.font14DarkGreyMedium(context),
         ),
       ),
       TextButton(
         onPressed: onConfirm,
-        child: const Text(
+        child: Text(
           'Delete',
-          style: AppTextStyles.font14DarkGreyMedium,
+          style: AppTextStyles.font14DarkGreyMedium(context),
         ),
       ),
     ];
   }
 
-  Container _buildContent() {
+  Container _buildContent(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
       width: double.infinity,
       color: AppColors.blue,
       child: Text(
         alertMessage,
-        style: AppTextStyles.font16DarkGreyMedium.copyWith(
+        style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
           color: AppColors.white,
         ),
         textAlign: TextAlign.center,

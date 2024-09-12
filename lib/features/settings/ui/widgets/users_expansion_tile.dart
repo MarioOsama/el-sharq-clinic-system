@@ -26,9 +26,9 @@ class UsersExpansionTile extends StatelessWidget {
           side: BorderSide.none,
         ),
         childrenPadding: EdgeInsets.symmetric(horizontal: 20.w),
-        title: const Text(
+        title: Text(
           'Users',
-          style: AppTextStyles.font24DarkGreyMedium,
+          style: AppTextStyles.font24DarkGreyMedium(context),
         ),
         children: _buildUsersTiles(context),
       ),
@@ -44,7 +44,7 @@ class UsersExpansionTile extends StatelessWidget {
               minVerticalPadding: 10,
               title: Text(
                 user.userName,
-                style: AppTextStyles.font20DarkGreyMedium,
+                style: AppTextStyles.font20DarkGreyMedium(context),
               ),
               trailing: user.role == UserType.admin
                   ? const SizedBox.shrink()

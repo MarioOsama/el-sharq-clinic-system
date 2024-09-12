@@ -52,7 +52,7 @@ class _SettingsSegmentedButtonState<T>
               value: title,
               label: Text(
                 title.toString(),
-                style: AppTextStyles.font24DarkGreyMedium.copyWith(
+                style: AppTextStyles.font24DarkGreyMedium(context).copyWith(
                   color:
                       selected == title ? AppColors.white : AppColors.darkGrey,
                 ),

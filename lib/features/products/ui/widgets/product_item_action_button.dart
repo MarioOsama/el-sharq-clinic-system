@@ -24,9 +24,9 @@ class ProductItemActionButton extends StatelessWidget {
             value: 'Edit',
             onTap: () =>
                 showProductSheet(context, 'Edit Product', product: product),
-            child: const Text(
+            child: Text(
               'Edit',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -48,9 +48,9 @@ class ProductItemActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

@@ -28,10 +28,12 @@ class AppTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return icon != null ? _buildTextButtonWithIcon() : _buildTextButton();
+    return icon != null
+        ? _buildTextButtonWithIcon(context)
+        : _buildTextButton(context);
   }
 
-  TextButton _buildTextButton() {
+  TextButton _buildTextButton(BuildContext context) {
     return TextButton(
       style: _buildButtonStyle(),
       onPressed: enabled ? onPressed : null,
@@ -39,7 +41,7 @@ class AppTextButton extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(text,
             style: textStyle ??
-                AppTextStyles.font20DarkGreyMedium.copyWith(
+                AppTextStyles.font20DarkGreyMedium(context).copyWith(
                     color: filled!
                         ? AppColors.white
                         : AppColors.darkGrey.withOpacity(0.5))),
@@ -47,7 +49,7 @@ class AppTextButton extends StatelessWidget {
     );
   }
 
-  TextButton _buildTextButtonWithIcon() {
+  TextButton _buildTextButtonWithIcon(BuildContext context) {
     return TextButton.icon(
       style: _buildButtonStyle(),
       onPressed: enabled ? onPressed : null,
@@ -59,7 +61,7 @@ class AppTextButton extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(text,
             style: textStyle ??
-                AppTextStyles.font20DarkGreyMedium.copyWith(
+                AppTextStyles.font20DarkGreyMedium(context).copyWith(
                     color: filled!
                         ? AppColors.white
                         : AppColors.darkGrey.withOpacity(0.5))),

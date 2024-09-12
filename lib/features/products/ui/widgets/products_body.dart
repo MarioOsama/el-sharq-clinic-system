@@ -43,8 +43,8 @@ class ProductsBody extends StatelessWidget {
   Widget _buildChild(BuildContext context, ProductsState state) {
     if (state is ProductsError) {
       return Center(
-          child:
-              Text(state.message, style: AppTextStyles.font20DarkGreyMedium));
+          child: Text(state.message,
+              style: AppTextStyles.font20DarkGreyMedium(context)));
     } else if (state is ProductsSuccess) {
       return _buildSuccess(context, state.products, state.selectedProductType);
     } else if (state is ProductsSearchSuccess) {
@@ -57,7 +57,7 @@ class ProductsBody extends StatelessWidget {
   Widget _buildSuccess(
       BuildContext context, List<ProductModel> products, ProductType type) {
     if (products.isEmpty) {
-      return _buildEmptyView(type);
+      return _buildEmptyView(type, context);
     }
     return _buildGridView(products);
   }
@@ -73,11 +73,11 @@ class ProductsBody extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyView(ProductType productType) {
+  Widget _buildEmptyView(ProductType productType, BuildContext context) {
     return Center(
       child: Text(
         'No ${productType.name} found',
-        style: AppTextStyles.font20DarkGreyMedium,
+        style: AppTextStyles.font20DarkGreyMedium(context),
       ),
     );
   }

@@ -26,9 +26,9 @@ class DoctorsRowActionButton extends StatelessWidget {
                 doctor: context.read<DoctorsCubit>().getDoctorById(id),
               );
             },
-            child: const Text(
+            child: Text(
               'Edit',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
@@ -50,9 +50,9 @@ class DoctorsRowActionButton extends StatelessWidget {
                 ),
               );
             },
-            child: const Text(
+            child: Text(
               'Delete',
-              style: AppTextStyles.font14DarkGreyMedium,
+              style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
         ];

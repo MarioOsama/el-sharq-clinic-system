@@ -25,7 +25,7 @@ class DrawerItem extends StatelessWidget {
             drawerItemModel.icon,
             color: isSelected ? AppColors.white : AppColors.darkGrey,
           ),
-          title: _buildTitle(drawerItemModel.title, isSelected),
+          title: _buildTitle(drawerItemModel.title, isSelected, context),
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         ),
       ),
@@ -39,10 +39,10 @@ class DrawerItem extends StatelessWidget {
     );
   }
 
-  Text _buildTitle(String title, bool isSelected) {
+  Text _buildTitle(String title, bool isSelected, BuildContext context) {
     return Text(
       title,
-      style: AppTextStyles.font16DarkGreyMedium.copyWith(
+      style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         color: isSelected ? AppColors.white : AppColors.darkGrey,
       ),

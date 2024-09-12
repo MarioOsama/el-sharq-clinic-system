@@ -17,7 +17,9 @@ class ClinicSystem extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Clinic System',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blue),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.blue,
+          ),
           useMaterial3: true,
         ),
         onGenerateRoute: appRouter.onGenerateRoute,

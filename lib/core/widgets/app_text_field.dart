@@ -47,11 +47,11 @@ class AppTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return insideHint!
-        ? _buildTextFieldWithInsideHint(hint)
-        : _buildTextFieldWithOutsideHint();
+        ? _buildTextFieldWithInsideHint(hint, context)
+        : _buildTextFieldWithOutsideHint(context);
   }
 
-  ConstrainedBox _buildTextFieldWithOutsideHint() {
+  ConstrainedBox _buildTextFieldWithOutsideHint(BuildContext context) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: maxWidth ?? 300.w,
@@ -62,16 +62,17 @@ class AppTextField extends StatelessWidget {
         children: [
           Text(
             hint,
-            style: AppTextStyles.font16DarkGreyMedium
+            style: AppTextStyles.font16DarkGreyMedium(context)
                 .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
           ),
-          _buildTextFieldWithInsideHint(null),
+          _buildTextFieldWithInsideHint(null, context),
         ],
       ),
     );
   }
 
-  TextFormField _buildTextFieldWithInsideHint(String? hint) {
+  TextFormField _buildTextFieldWithInsideHint(
+      String? hint, BuildContext context) {
     return TextFormField(
       controller: controller,
       validator: validator,
@@ -83,7 +84,7 @@ class AppTextField extends StatelessWidget {
           : null,
       onSaved: onSaved,
       initialValue: initialValue,
-      style: AppTextStyles.font20DarkGreyMedium,
+      style: AppTextStyles.font20DarkGreyMedium(context),
       obscureText: isObscured ?? false,
       cursorHeight: 30.h,
       maxLines: isMultiline ?? false ? 30 : 1,
@@ -100,7 +101,7 @@ class AppTextField extends StatelessWidget {
         fillColor: enabled ?? true ? AppColors.white : AppColors.grey,
         filled: true,
         hintStyle: textStyle ??
-            AppTextStyles.font20DarkGreyMedium
+            AppTextStyles.font20DarkGreyMedium(context)
                 .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
