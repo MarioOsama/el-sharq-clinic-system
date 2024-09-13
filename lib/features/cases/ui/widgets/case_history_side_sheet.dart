@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_drop_down_menu.dart';
@@ -34,7 +36,7 @@ Future<void> showCaseSheet(BuildContext context, String title,
         if (!newCase) _buildCaseId(caseHistoryCubit.caseIdController),
         verticalSpace(50),
         AppDropDownMenu<DoctorModel>(
-          hint: editable ? 'Doctor' : 'Doctor ID',
+          hint: editable ? AppStrings.doctor.tr() : AppStrings.doctorId.tr(),
           controller: caseHistoryCubit.doctorNameController,
           itemBuilder: (index) => DropdownMenuEntry(
             label: doctorsList[index].name,
@@ -49,9 +51,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: const [
-            'Owner Name',
-            'Pet Type',
+          fields: [
+            AppStrings.ownerName.tr(),
+            AppStrings.petType.tr(),
           ],
           firstController: caseHistoryCubit.ownerNameController,
           secondController: caseHistoryCubit.petTypeController,
@@ -59,9 +61,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: const [
-            'Phone',
-            'Pet Name',
+          fields: [
+            AppStrings.phone.tr(),
+            AppStrings.petName.tr(),
           ],
           firstController: caseHistoryCubit.phoneController,
           secondController: caseHistoryCubit.petNameController,
@@ -69,9 +71,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: const [
-            'Time',
-            'Date',
+          fields: [
+            AppStrings.time.tr(),
+            AppStrings.date.tr(),
           ],
           firstController: caseHistoryCubit.timeController,
           secondController: caseHistoryCubit.dateController,
@@ -85,7 +87,7 @@ Future<void> showCaseSheet(BuildContext context, String title,
         verticalSpace(50),
         AppTextField(
           controller: caseHistoryCubit.petReportController,
-          hint: 'Pet Report',
+          hint: AppStrings.petReport.tr(),
           enabled: editable,
           maxWidth: double.infinity,
           isMultiline: true,
@@ -150,7 +152,7 @@ IconButton _buildTimeButton(
 AppTextField _buildCaseId(TextEditingController idController) {
   return AppTextField(
     controller: idController,
-    hint: 'Case ID',
+    hint: AppStrings.caseId.tr(),
     enabled: false,
     maxWidth: double.infinity,
     insideHint: false,
@@ -159,7 +161,7 @@ AppTextField _buildCaseId(TextEditingController idController) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Case',
+    text: AppStrings.saveCase.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
@@ -170,7 +172,7 @@ AppTextButton _buildNewAction(BuildContext context) {
 
 AppTextButton _buildUpdateAction(BuildContext context) {
   return AppTextButton(
-    text: 'Update Case',
+    text: AppStrings.updateCase.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

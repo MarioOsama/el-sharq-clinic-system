@@ -1,4 +1,6 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/overview_item.dart';
 import 'package:flutter/material.dart';
 
@@ -35,28 +37,28 @@ class TodayHighlightsRow extends StatelessWidget {
     return [
       FadeInUp(
         child: OverviewItem(
-          title: 'Cases',
+          title: AppStrings.cases.tr(),
           value: cases.toDouble(),
           iconData: Icons.pets,
         ),
       ),
       FadeInDown(
         child: OverviewItem(
-          title: 'Owners',
+          title: AppStrings.owners.tr(),
           value: owners.toDouble(),
           iconData: Icons.person,
         ),
       ),
       FadeInUp(
         child: OverviewItem(
-          title: 'Invoices',
+          title: AppStrings.invoices.tr(),
           value: invoices.toDouble(),
           iconData: Icons.receipt_long,
         ),
       ),
       FadeInDown(
         child: OverviewItem(
-          title: 'Revenue',
+          title: AppStrings.revenue.tr(),
           value: revenue,
           iconData: Icons.monetization_on,
           decimals: 2,

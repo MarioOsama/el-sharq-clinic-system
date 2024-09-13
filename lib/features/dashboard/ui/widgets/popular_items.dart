@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_container.dart';
@@ -17,7 +19,7 @@ class PopularItems extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const StatisticsItemTitle(title: 'Popular Items Last Week'),
+          StatisticsItemTitle(title: AppStrings.popularItemsLastWeek.tr()),
           verticalSpace(20),
           _buildHeaderRow(context),
           Divider(
@@ -42,12 +44,12 @@ class PopularItems extends StatelessWidget {
     return Row(
       children: [
         Text(
-          'Item',
+          AppStrings.item.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
-          'Info',
+          AppStrings.sales.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context),
         ),
       ],
@@ -57,30 +59,34 @@ class PopularItems extends StatelessWidget {
   Widget _getItem(InvoiceItemModel item, BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
+      isThreeLine: true,
       title: Text(
         item.name,
         style: AppTextStyles.font16DarkGreyMedium(context),
       ),
       subtitle: Text(
-        item.type,
+        item.type.tr(),
         style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
           color: AppColors.darkGrey.withOpacity(0.5),
         ),
       ),
-      trailing: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            '${item.quantity.toStringAsFixed(2)} Items',
-            style: AppTextStyles.font16DarkGreyMedium(context),
-          ),
-          Text(
-            '${(item.price * item.quantity).toStringAsFixed(2)} LE',
-            style: AppTextStyles.font14DarkGreyMedium(context).copyWith(
-              color: AppColors.darkGrey.withOpacity(0.5),
+      trailing: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              '${item.quantity.toStringAsFixed(2)} ${AppStrings.items.tr()}',
+              style: AppTextStyles.font16DarkGreyMedium(context),
             ),
-          )
-        ],
+            Text(
+              '${(item.price * item.quantity).toStringAsFixed(2)} ${AppStrings.le.tr()}',
+              style: AppTextStyles.font14DarkGreyMedium(context).copyWith(
+                color: AppColors.darkGrey.withOpacity(0.5),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

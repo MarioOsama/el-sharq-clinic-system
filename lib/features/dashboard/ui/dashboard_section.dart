@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_body.dart';
@@ -10,7 +12,7 @@ class DashboardSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Dashboard',
+      title: AppStrings.dashboard.tr(),
       child: Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

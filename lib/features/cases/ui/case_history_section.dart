@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
@@ -20,19 +22,19 @@ class CaseHistorySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Case History',
+      title: AppStrings.casesHistory.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-          hintText: 'Search by owner name',
+          hintText: AppStrings.casesSearchText.tr(),
           onChanged: (value) {
             context.read<CaseHistoryCubit>().onSearch(value);
           },
         ),
 
         SectionActionButton(
-          newText: 'New Case',
-          onNewPressed: () => showCaseSheet(context, 'New Case'),
+          newText: AppStrings.newCase.tr(),
+          onNewPressed: () => showCaseSheet(context, AppStrings.newCase.tr()),
           onDeletePressed: () => _showDeleteDialog(context),
           valueNotifier:
               context.read<CaseHistoryCubit>().showDeleteButtonNotifier,
@@ -55,8 +57,7 @@ class CaseHistorySection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (ctx) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete these cases?\n'
-            'This action cannot be undone.',
+        alertMessage: AppStrings.deleteCaseMessage,
         onConfirm: () {
           context.read<CaseHistoryCubit>().deleteSelectedCases();
           context.pop();

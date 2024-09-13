@@ -38,14 +38,6 @@ class AuthScreen extends StatelessWidget {
             delay: const Duration(milliseconds: 1000),
             from: 500,
             child: Image.asset(Assets.assetsImagesPngTextLogo)),
-        _buildEntireBody(context),
-      ],
-    );
-  }
-
-  Widget _buildEntireBody(BuildContext context) {
-    return Column(
-      children: [
         verticalSpace(50),
         FadeInLeft(
             duration: const Duration(seconds: 1),

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/features/home/data/models/drawer_item_model.dart';
 import 'package:flutter/material.dart';
 
@@ -13,24 +15,30 @@ abstract class AppConstant {
   static const List<String> themes = ['Light', 'Dark'];
 
   // Drawer Items
-  static const List<DrawerItemModel> drawerItems = [
-    DrawerItemModel(title: 'Dashboard', icon: Icons.dashboard_outlined),
-    DrawerItemModel(title: 'Case History', icon: Icons.history),
-    DrawerItemModel(title: 'Pet Owners', icon: Icons.people_outline),
-    DrawerItemModel(title: 'Doctors', icon: Icons.person_outline),
-    DrawerItemModel(title: 'Services', icon: Icons.medical_services_outlined),
-    DrawerItemModel(title: 'Products', icon: Icons.shopping_bag_outlined),
-    DrawerItemModel(title: 'Invoices', icon: Icons.attach_money_outlined),
-    DrawerItemModel(title: 'Settings', icon: Icons.settings_outlined),
+  static List<DrawerItemModel> drawerItems = [
+    DrawerItemModel(
+        title: AppStrings.dashboard.tr(), icon: Icons.dashboard_outlined),
+    DrawerItemModel(title: AppStrings.casesHistory.tr(), icon: Icons.history),
+    DrawerItemModel(
+        title: AppStrings.petOwners.tr(), icon: Icons.people_outline),
+    DrawerItemModel(title: AppStrings.doctors.tr(), icon: Icons.person_outline),
+    DrawerItemModel(
+        title: AppStrings.services.tr(), icon: Icons.medical_services_outlined),
+    DrawerItemModel(
+        title: AppStrings.products.tr(), icon: Icons.shopping_bag_outlined),
+    DrawerItemModel(
+        title: AppStrings.invoices.tr(), icon: Icons.attach_money_outlined),
+    DrawerItemModel(
+        title: AppStrings.settings.tr(), icon: Icons.settings_outlined),
   ];
 
   // Case History
-  static const List<String> casesTableHeaders = [
-    'Case ID',
-    'Owner Name',
-    'Doctor ID',
-    'Phone',
-    'Date',
+  static List<String> casesTableHeaders = [
+    AppStrings.caseId.tr(),
+    AppStrings.ownerName.tr(),
+    AppStrings.doctorId.tr(),
+    AppStrings.phone.tr(),
+    AppStrings.date.tr(),
     ''
   ];
 

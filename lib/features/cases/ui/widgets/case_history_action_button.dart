@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
@@ -20,26 +22,25 @@ class CaseHistoryTableActionButton extends StatelessWidget {
       itemBuilder: (ctx) {
         return [
           PopupMenuItem(
-            value: 'Edit',
+            value: AppStrings.edit.tr(),
             onTap: () {
               final caseHistoryModel =
                   context.read<CaseHistoryCubit>().getCaseHistoryById(id);
-              showCaseSheet(context, 'Edit Case',
+              showCaseSheet(context, AppStrings.editCase.tr(),
                   caseHistoryModel: caseHistoryModel);
             },
             child: Text(
-              'Edit',
+              AppStrings.edit.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
-            value: 'Delete',
+            value: AppStrings.delete.tr(),
             onTap: () {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage: 'Are you sure you want to delete this case?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteCaseMessage.tr(),
                   onConfirm: () {
                     context.read<CaseHistoryCubit>().deleteCase(id);
                     ctx.pop();
@@ -51,7 +52,7 @@ class CaseHistoryTableActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

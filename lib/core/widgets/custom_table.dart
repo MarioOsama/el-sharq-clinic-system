@@ -38,7 +38,9 @@ class CustomTable extends StatelessWidget {
       List.generate(fields.length, (index) {
         return DataColumn(
             label: Align(
-                alignment: index == 0 ? Alignment.centerLeft : Alignment.center,
+                alignment: index == 0
+                    ? AlignmentDirectional.centerStart
+                    : Alignment.center,
                 child: Text(fields[index],
                     style: AppTextStyles.font20DarkGreyMedium(context))));
       });

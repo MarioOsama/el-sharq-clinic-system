@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
@@ -48,7 +50,7 @@ class DashboardCubit extends Cubit<DashboardState> {
         lowStockProducts: lowStockProducts,
       ));
     } catch (e) {
-      emit(DashboardError(message: "Something went wrong"));
+      emit(DashboardError(message: AppStrings.someThingWentWrong.tr()));
     }
   }
 
@@ -128,9 +130,9 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Map<String, double> _getTodaySalesCategories(List<InvoiceModel> invoices) {
     final Map<String, double> salesMap = {
-      'Services': 0,
-      'Medicines': 0,
-      'Accessories': 0,
+      AppStrings.services.tr(): 0,
+      AppStrings.medicines.tr(): 0,
+      AppStrings.accessories.tr(): 0,
     };
     for (var invoice in invoices) {
       final double invoiceDiscountPercentage = invoice.discount / invoice.total;
