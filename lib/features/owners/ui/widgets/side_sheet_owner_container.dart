@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
@@ -25,7 +27,7 @@ class SideSheetOwnerContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Owner Info',
+          AppStrings.ownerInfo.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
@@ -39,8 +41,8 @@ class SideSheetOwnerContainer extends StatelessWidget {
             key: ownerFormKey,
             child: FieldsRow(
               fields: const [
-                'Name',
-                'Phone',
+                AppStrings.name,
+                AppStrings.phone,
               ],
               onSaved: onSaved,
               firstText: ownerModel?.name,
@@ -49,7 +51,7 @@ class SideSheetOwnerContainer extends StatelessWidget {
               enabled: editable,
               secondValidator: (value) {
                 if (!value!.isPhoneNumber()) {
-                  return 'Please enter a valid phone number';
+                  return AppStrings.phoneNumberError.tr();
                 }
                 return null;
               },

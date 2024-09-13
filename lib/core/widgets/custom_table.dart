@@ -1,4 +1,5 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
@@ -41,7 +42,7 @@ class CustomTable extends StatelessWidget {
                 alignment: index == 0
                     ? AlignmentDirectional.centerStart
                     : Alignment.center,
-                child: Text(fields[index],
+                child: Text(fields[index].tr(),
                     style: AppTextStyles.font20DarkGreyMedium(context))));
       });
 }

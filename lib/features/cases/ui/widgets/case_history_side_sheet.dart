@@ -51,9 +51,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: [
-            AppStrings.ownerName.tr(),
-            AppStrings.petType.tr(),
+          fields: const [
+            AppStrings.ownerName,
+            AppStrings.petType,
           ],
           firstController: caseHistoryCubit.ownerNameController,
           secondController: caseHistoryCubit.petTypeController,
@@ -61,9 +61,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: [
-            AppStrings.phone.tr(),
-            AppStrings.petName.tr(),
+          fields: const [
+            AppStrings.phone,
+            AppStrings.petName,
           ],
           firstController: caseHistoryCubit.phoneController,
           secondController: caseHistoryCubit.petNameController,
@@ -71,9 +71,9 @@ Future<void> showCaseSheet(BuildContext context, String title,
         ),
         verticalSpace(50),
         FieldsRow(
-          fields: [
-            AppStrings.time.tr(),
-            AppStrings.date.tr(),
+          fields: const [
+            AppStrings.time,
+            AppStrings.date,
           ],
           firstController: caseHistoryCubit.timeController,
           secondController: caseHistoryCubit.dateController,

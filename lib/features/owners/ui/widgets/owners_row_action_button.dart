@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/owners/logic/cubit/owners_cubit.dart';
@@ -23,22 +25,22 @@ class OwnersRowActionButton extends StatelessWidget {
           PopupMenuItem(
             value: 'Edit',
             onTap: () {
-              showOwnerSheet(context, 'Owner Details',
+              showOwnerSheet(context, AppStrings.ownerDetails.tr(),
                   editable: true,
                   ownerModel: context.read<OwnersCubit>().getOwnerById(id));
             },
             child: Text(
-              'Edit',
+              AppStrings.edit.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
           PopupMenuItem(
             value: 'Add Pet',
             onTap: () {
-              showAddPetSheet(context, 'Add Pet', id);
+              showAddPetSheet(context, AppStrings.addPet.tr(), id);
             },
             child: Text(
-              'Add Pet',
+              AppStrings.addPet.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
@@ -48,9 +50,7 @@ class OwnersRowActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage:
-                      'Are you sure you want to delete this owner profile?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteOwnerMessage.tr(),
                   onConfirm: () {
                     context.read<OwnersCubit>().onDeleteOwner(id);
                     ctx.pop();
@@ -62,7 +62,7 @@ class OwnersRowActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

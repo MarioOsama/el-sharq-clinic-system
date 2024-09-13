@@ -24,11 +24,11 @@ final class DoctorsError extends DoctorsState {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: message,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 onPressed: () => context.pop(),
                 filled: false,
               ),
@@ -58,9 +58,9 @@ final class DoctorSaved extends DoctorsState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Doctor saved successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.doctorSaved.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -83,9 +83,9 @@ final class DoctorUpdated extends DoctorsState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Doctor updated successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.doctorUpdated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -107,9 +107,9 @@ final class DoctorDeleted extends DoctorsState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Doctors deleted successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.doctorsDeleted.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -135,11 +135,11 @@ final class DoctorError extends DoctorsState {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: message,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 onPressed: () => context.pop(),
                 filled: false,
               ),

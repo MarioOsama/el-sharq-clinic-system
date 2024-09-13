@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
@@ -33,8 +35,8 @@ Future<void> showDoctorSheet(BuildContext context, String title,
           if (!newDoctor) verticalSpace(50),
           FieldsRow(
             fields: const [
-              'Doctor Name',
-              'Speciality',
+              AppStrings.doctorName,
+              AppStrings.speciality,
             ],
             firstText: doctor?.name ?? '',
             secondText: doctor?.speciality ?? '',
@@ -45,8 +47,8 @@ Future<void> showDoctorSheet(BuildContext context, String title,
           verticalSpace(50),
           FieldsRow(
             fields: const [
-              'Phone Number',
-              'Another Phone Number',
+              AppStrings.phone,
+              AppStrings.anotherPhoneNumber,
             ],
             firstText: doctor?.phone,
             secondText: doctor?.anotherPhone,
@@ -55,7 +57,7 @@ Future<void> showDoctorSheet(BuildContext context, String title,
             onSaved: doctorsCubit.onSaveDoctorFormField,
             firstValidator: (value) {
               if (!value!.isPhoneNumber()) {
-                return 'Please enter a valid phone number';
+                return AppStrings.phoneNumberError.tr();
               }
               return null;
             },
@@ -63,8 +65,8 @@ Future<void> showDoctorSheet(BuildContext context, String title,
           verticalSpace(50),
           FieldsRow(
             fields: const [
-              'Email',
-              'Address',
+              AppStrings.email,
+              AppStrings.address,
             ],
             firstText: doctor?.email,
             secondText: doctor?.address,
@@ -92,7 +94,7 @@ _buildActionIfNeeded(BuildContext context, bool newDoctor, bool editMode) {
 AppTextField _buildDoctorId(String doctorId) {
   return AppTextField(
     initialValue: doctorId,
-    hint: 'Doctor ID',
+    hint: AppStrings.doctorId.tr(),
     enabled: false,
     maxWidth: double.infinity,
     insideHint: false,
@@ -101,7 +103,7 @@ AppTextField _buildDoctorId(String doctorId) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Doctor',
+    text: AppStrings.saveDoctor.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
@@ -112,7 +114,7 @@ AppTextButton _buildNewAction(BuildContext context) {
 
 AppTextButton _buildUpdateAction(BuildContext context) {
   return AppTextButton(
-    text: 'Update Doctor',
+    text: AppStrings.updateDoctor.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

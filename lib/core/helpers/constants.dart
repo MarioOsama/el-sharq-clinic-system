@@ -33,22 +33,22 @@ abstract class AppConstant {
   ];
 
   // Case History
-  static List<String> casesTableHeaders = [
-    AppStrings.caseId.tr(),
-    AppStrings.ownerName.tr(),
-    AppStrings.doctorId.tr(),
-    AppStrings.phone.tr(),
-    AppStrings.date.tr(),
+  static const List<String> casesTableHeaders = [
+    AppStrings.caseId,
+    AppStrings.ownerName,
+    AppStrings.doctorId,
+    AppStrings.phone,
+    AppStrings.date,
     ''
   ];
 
   // Pet Owners
   static const List<String> ownersTableHeaders = [
-    'Owner ID',
-    'Owner Name',
-    'Phone',
-    'Number of Pets',
-    'Registration Date',
+    AppStrings.ownerId,
+    AppStrings.ownerName,
+    AppStrings.phone,
+    AppStrings.numberOfPets,
+    AppStrings.registrationDate,
     ''
   ];
 
@@ -70,10 +70,10 @@ H.R:""";
 
 // Doctors
   static const List<String> doctorsTableHeaders = [
-    'Doctor ID',
-    'Doctor Name',
-    'Phone',
-    'Registration Date',
+    AppStrings.doctorId,
+    AppStrings.doctorName,
+    AppStrings.phone,
+    AppStrings.registrationDate,
     ''
   ];
 

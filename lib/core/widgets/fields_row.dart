@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +62,7 @@ class FieldsRow extends StatelessWidget {
             validator: validations!.first
                 ? (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Please enter a ${fields.first}';
+                      return '${AppStrings.pleaseEnter.tr()} ${fields.first.tr()}';
                     }
                     if (firstValidator != null) {
                       return firstValidator?.call(value);
@@ -74,7 +76,7 @@ class FieldsRow extends StatelessWidget {
               }
             },
             controller: firstController,
-            hint: fields.first,
+            hint: fields.first.tr(),
             suffixIcon: firstSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,
@@ -88,7 +90,7 @@ class FieldsRow extends StatelessWidget {
             validator: validations!.last
                 ? (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Please enter a ${fields.last}';
+                      return '${AppStrings.pleaseEnter.tr()} ${fields.last.tr()}';
                     }
                     if (secondValidator != null) {
                       return secondValidator?.call(value);
@@ -102,7 +104,7 @@ class FieldsRow extends StatelessWidget {
               }
             },
             controller: secondController,
-            hint: fields.last,
+            hint: fields.last.tr(),
             suffixIcon: secondSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,

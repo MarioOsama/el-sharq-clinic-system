@@ -101,4 +101,9 @@ class DoctorModel {
 
   String get _setRegistrationDate =>
       registrationDate = DateTime.now().toString();
+
+  @override
+  String toString() {
+    return 'DoctorModel(id: $id, name: $name, email: $email, address: $address, phone: $phone, anotherPhone: $anotherPhone, speciality: $speciality, registrationDate: $registrationDate)';
+  }
 }

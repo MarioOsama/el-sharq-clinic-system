@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
@@ -59,7 +61,7 @@ Future<void> showOwnerSheet(BuildContext context, String title,
 
 _buildAddPetButton(BuildContext context, OwnersCubit ownersCubit) {
   return AppTextButton(
-    text: 'Add Pet',
+    text: AppStrings.addPet.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () => ownersCubit.incrementPets(),
@@ -78,7 +80,7 @@ _buildActionIfNeeded(BuildContext context, bool newCase, bool editMode) {
 AppTextField _buildOwnerId(String id) {
   return AppTextField(
     initialValue: id,
-    hint: 'Owner ID',
+    hint: AppStrings.ownerId.tr(),
     enabled: false,
     maxWidth: double.infinity,
     insideHint: false,
@@ -87,7 +89,7 @@ AppTextField _buildOwnerId(String id) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Owner',
+    text: AppStrings.saveOwner.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
@@ -98,7 +100,7 @@ AppTextButton _buildNewAction(BuildContext context) {
 
 AppTextButton _buildUpdateAction(BuildContext context) {
   return AppTextButton(
-    text: 'Update Owner',
+    text: AppStrings.updateOwner.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

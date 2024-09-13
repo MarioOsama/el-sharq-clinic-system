@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
@@ -65,7 +67,7 @@ class _DoctorsBodyState extends State<DoctorsBody> {
         }),
         onTappableCellTap: (id) => showDoctorSheet(
           context,
-          'Doctor Details',
+          AppStrings.doctorDetails.tr(),
           editable: false,
           doctor: doctorsCubit.getDoctorById(id),
         ),

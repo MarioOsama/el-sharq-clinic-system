@@ -9,8 +9,12 @@ class AppStrings {
   static const String edit = 'Edit';
   static const String delete = 'Delete';
   static const String emptyfield = 'Emptyfield';
-  static const String phoneNumberError = 'phoneNumberError';
+  static const String phoneNumberError = 'PhoneNumberError';
   static const String fillRequiredFields = 'fillRequiredFields';
+  static const String phone = 'Phone';
+  static const String name = 'Name';
+  static const String search = 'Search';
+  static const String pleaseEnter = 'PleaseEnter';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -54,8 +58,6 @@ class AppStrings {
   static const String casesSearchText = 'CasesSearchText';
   static const String newCase = 'NewCase';
   static const String caseId = 'CaseId';
-  static const String ownerName = 'OwnerName';
-  static const String phone = 'Phone';
   static const String petName = 'PetName';
   static const String petType = 'PetType';
   static const String date = 'Date';
@@ -75,12 +77,77 @@ class AppStrings {
   static const String casesDeleted = 'CasesDeleted';
   static const String editCase = 'EditCase';
 
-  // Products Strings
-  static const String medicines = 'Medicines';
-  static const String accessories = 'Accessories';
+  // Owners Strings
+  static const String ownersSearchText = 'OwnersSearchText';
+  static const String newOwner = 'NewOwner';
+  static const String deleteOwnerMessage = 'DeleteOwnerMessage';
+  static const String ownerDetails = 'OwnerDetails';
+  static const String ownerInfo = 'OwnerInfo';
+  static const String ownerId = 'OwnerId';
+  static const String ownerName = 'OwnerName';
+  static const String numberOfPets = 'NumberOfPets';
+  static const String registrationDate = 'RegistrationDate';
+  static const String addPet = 'AddPet';
+  static const String saveOwner = 'SaveOwner';
+  static const String updateOwner = 'UpdateOwner';
+  static const String newOwnerCreated = 'NewOwnerCreated';
+  static const String ownerInfoUpdated = 'OwnerInfoUpdated';
+  static const String ownerProfileDeleted = 'OwnerProfileDeleted';
+  static const String failedToGetOwners = 'FailedToGetOwners';
+  static const String failedToSaveOwnerAndPets = 'FailedToSaveOwnerAndPets';
+  static const String failedToUpdateOwnerPets = 'FailedToUpdateOwnerPets';
+  static const String failedToUpdateOwnerInfo = 'FailedToUpdateOwnerInfo';
+  static const String failedToDeleteSelectedCases =
+      'FailedToDeleteSelectedCases';
+  static const String failedToDeleteOwnerProfile = 'FailedToDeleteOwnerProfile';
+  static const String failedToAddPet = 'FailedToAddPet';
+  static const String pet = 'Pet';
+  static const String details = 'Details';
+  static const String petDetails = 'PetDetails';
+  static const String pleaseEnterName = 'PleaseEnterName';
+  static const String gender = 'Gender';
+  static const String type = 'Type';
+  static const String age = 'Age';
+  static const String breed = 'Breed';
+  static const String color = 'Color';
+  static const String weight = 'Weight';
+  static const String vaccinations = 'Vaccinations';
+  static const String treatments = 'Treatments';
+  static const String report = 'Report';
+  static const String pleaseWritePetReport = 'PleaseWritePetReport';
 
   // Doctors Strings
   static const String doctor = 'Doctor';
   static const String doctorId = 'DoctorID';
-  static const String failedDoctors = 'FailedDoctors';
+  static const String failedDoctors = 'FailedToGetDoctors';
+  static const String doctorsSearchText = 'DoctorsSearchText';
+  static const String newDoctor = 'NewDoctor';
+  static const String deleteDoctorConfirmationMultiple =
+      'DeleteDoctorConfirmationMultiple';
+  static const String doctorName = 'DoctorName';
+  static const String speciality = 'Speciality';
+  static const String anotherPhoneNumber = 'AnotherPhoneNumber';
+  static const String pleaseEnterValidPhoneNumber =
+      'PleaseEnterValidPhoneNumber';
+  static const String email = 'Email';
+  static const String address = 'Address';
+  static const String saveDoctor = 'SaveDoctor';
+  static const String updateDoctor = 'UpdateDoctor';
+  static const String doctorDetails = 'DoctorDetails';
+  static const String editDoctor = 'EditDoctor';
+  static const String deleteDoctorConfirmationSingle =
+      'DeleteDoctorConfirmationSingle';
+  static const String doctorSaved = 'DoctorSaved';
+  static const String doctorUpdated = 'DoctorUpdated';
+  static const String doctorsDeleted = 'DoctorsDeleted';
+  static const String failedToGetDoctors = 'FailedToGetDoctors';
+  static const String failedToSaveDoctor = 'FailedToSaveDoctor';
+  static const String failedToUpdateDoctor = 'FailedToUpdateDoctor';
+  static const String failedToDeleteSelectedDoctors =
+      'FailedToDeleteSelectedDoctors';
+  static const String failedToDeleteDoctor = 'FailedToDeleteDoctor';
+
+  // Products Strings
+  static const String medicines = 'Medicines';
+  static const String accessories = 'Accessories';
 }
