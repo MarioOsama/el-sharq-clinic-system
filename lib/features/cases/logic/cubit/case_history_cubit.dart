@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -56,7 +58,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       selectedRows = List.filled(casesList.length, false);
       emit(CasesSuccess(cases: casesList));
     } catch (e) {
-      emit(CasesError('Failed to get the cases'));
+      emit(CasesError(AppStrings.failedCases.tr()));
     }
   }
 
@@ -74,7 +76,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         selectedRows = List.filled(casesList.length, false);
         emit(CasesSuccess(cases: casesList));
       } catch (e) {
-        emit(CasesError('Failed to get the cases'));
+        emit(CasesError(AppStrings.failedCases.tr()));
       }
     }
   }
@@ -132,11 +134,11 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         casesList.insert(0, newCase);
         _onSuccessOperation();
       } else {
-        emit(NewCaseHistoryFailure('Failed to add the appointment'));
+        emit(NewCaseHistoryFailure(AppStrings.failedSavingCase.tr()));
       }
     } else {
       emit(NewCaseHistoryInvalid(
-        title: 'Empty Fields',
+        title: AppStrings.emptyfield.tr(),
         _getEmptyFieldsMessage(emptyFields),
       ));
     }
@@ -148,7 +150,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
           phoneController.text.trim().length > 15 ||
           !phoneController.text.trim().isPhoneNumber()) {
         emit(NewCaseHistoryInvalid(
-          'Phone number should be 11 digits',
+          AppStrings.phoneNumberError.tr(),
         ));
         return false;
       }
@@ -167,7 +169,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
             as CaseHistoryModel;
       }
     } catch (e) {
-      emit(CasesError('Failed to get the case'));
+      emit(CasesError(AppStrings.failedCases.tr()));
       rethrow;
     }
   }
@@ -189,11 +191,11 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
         casesList[index] = updatedCase;
         _onSuccessOperation();
       } else {
-        emit(NewCaseHistoryFailure('Failed to update the case'));
+        emit(NewCaseHistoryFailure(AppStrings.failedUpdatingCase.tr()));
       }
     } else {
       emit(NewCaseHistoryInvalid(
-        title: 'Empty Fields',
+        title: AppStrings.emptyfield.tr(),
         _getEmptyFieldsMessage(emptyFields),
       ));
     }
@@ -209,7 +211,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       _onSuccessOperation();
       _resetShowDeleteButtonNotifier();
     } else {
-      emit(CasesError('Failed to delete the case'));
+      emit(CasesError(AppStrings.failedDeletingCase.tr()));
     }
   }
 
@@ -246,7 +248,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
       emit(DeleteCaseHistorySuccess());
       _onSuccessOperation();
     } catch (e) {
-      emit(CasesError('Failed to delete these cases'));
+      emit(CasesError(AppStrings.failedDeletingCase.tr()));
     }
   }
 
@@ -255,7 +257,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     try {
       doctorsList = await _caseHistoryRepo.getAllDoctors(authData!.clinicIndex);
     } catch (e) {
-      emit(CasesError('Failed to get the doctors'));
+      emit(CasesError(AppStrings.failedDoctors.tr()));
     }
   }
 
@@ -263,7 +265,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
     if (value == null) {
       doctorId = '';
       doctorNameController.clear();
-      emit(NewCaseHistoryInvalid('This doctor is not exist'));
+      emit(NewCaseHistoryInvalid(AppStrings.doctorDoesNotExist.tr()));
       return;
     }
     doctorId = value;
@@ -275,7 +277,7 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   }
 
   String _getEmptyFieldsMessage(List<String> emptyFields) {
-    String errorMessage = 'Please fill the following fields: ';
+    String errorMessage = AppStrings.fillRequiredFields.tr();
     for (int i = 0; i < emptyFields.length; i++) {
       errorMessage += emptyFields[i];
       if (i != emptyFields.length - 1) {
@@ -288,13 +290,13 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
   List<String> _getEmptyOfRequiredFields() {
     List<String> emptyFields = [];
     if (ownerNameController.text.trim().isEmpty) {
-      emptyFields.add('Owner name');
+      emptyFields.add(AppStrings.ownerName.tr());
     }
     if (dateController.text.trim().isEmpty) {
-      emptyFields.add('Date');
+      emptyFields.add(AppStrings.date.tr());
     }
     if (petReportController.text.trim().isEmpty) {
-      emptyFields.add('Pet report');
+      emptyFields.add(AppStrings.petReport.tr());
     }
     // if (doctorId.trim().isEmpty ||
     //     doctorNameController.text.trim().isEmpty ||

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -37,14 +39,14 @@ class AppAlertDialog extends StatelessWidget {
       TextButton(
         onPressed: onCancel,
         child: Text(
-          'Cancel',
+          AppStrings.cancel.tr(),
           style: AppTextStyles.font14DarkGreyMedium(context),
         ),
       ),
       TextButton(
         onPressed: onConfirm,
         child: Text(
-          'Delete',
+          AppStrings.delete.tr(),
           style: AppTextStyles.font14DarkGreyMedium(context),
         ),
       ),

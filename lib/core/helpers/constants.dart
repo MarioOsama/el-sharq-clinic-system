@@ -33,12 +33,12 @@ abstract class AppConstant {
   ];
 
   // Case History
-  static const List<String> casesTableHeaders = [
-    'Case ID',
-    'Owner Name',
-    'Doctor ID',
-    'Phone',
-    'Date',
+  static List<String> casesTableHeaders = [
+    AppStrings.caseId.tr(),
+    AppStrings.ownerName.tr(),
+    AppStrings.doctorId.tr(),
+    AppStrings.phone.tr(),
+    AppStrings.date.tr(),
     ''
   ];
 

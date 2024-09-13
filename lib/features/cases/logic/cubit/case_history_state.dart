@@ -33,11 +33,11 @@ final class CasesError extends CaseHistoryState {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: errorMessage,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 onPressed: () => context.pop(),
                 filled: false,
               ),
@@ -57,11 +57,11 @@ final class NewCaseHistoryInvalid extends CaseHistoryState {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
-              title: title ?? 'Error',
+              title: title ?? AppStrings.error.tr(),
               content: errorMessage,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 onPressed: () => context.pop(),
                 filled: false,
               ),
@@ -92,9 +92,9 @@ final class NewCaseHistorySuccess extends CaseHistoryState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'New case created successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.newCaseCreated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -119,11 +119,11 @@ final class NewCaseHistoryFailure extends CaseHistoryState {
     showDialog(
         context: context,
         builder: (ctx) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: errorMessage,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 onPressed: () => context.pop(),
                 filled: false,
               ),
@@ -141,9 +141,9 @@ final class UpdateCaseHistorySuccess extends CaseHistoryState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Case updated successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.caseUpdated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -163,9 +163,9 @@ final class DeleteCaseHistorySuccess extends CaseHistoryState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Cases deleted successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.casesDeleted.tr(),
         dialogType: DialogType.success,
       ),
     );

@@ -4,7 +4,13 @@ class AppStrings {
   static const String error = 'Error';
   static const String warning = 'Warning';
   static const String ok = 'OK';
+  static const String cancel = 'Cancel';
   static const String someThingWentWrong = 'SomeThingWentWrong';
+  static const String edit = 'Edit';
+  static const String delete = 'Delete';
+  static const String emptyfield = 'Emptyfield';
+  static const String phoneNumberError = 'phoneNumberError';
+  static const String fillRequiredFields = 'fillRequiredFields';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -44,7 +50,37 @@ class AppStrings {
   static const String sales = 'Sales';
   static const String le = 'LE';
 
+  // Cases History Strings
+  static const String casesSearchText = 'CasesSearchText';
+  static const String newCase = 'NewCase';
+  static const String caseId = 'CaseId';
+  static const String ownerName = 'OwnerName';
+  static const String phone = 'Phone';
+  static const String petName = 'PetName';
+  static const String petType = 'PetType';
+  static const String date = 'Date';
+  static const String time = 'Time';
+  static const String petReport = 'PetReport';
+  static const String caseDetails = 'CaseDetails';
+  static const String deleteCaseMessage = 'DeleteCaseMessage';
+  static const String saveCase = 'SaveCase';
+  static const String updateCase = 'UpdateCase';
+  static const String failedCases = 'FailedCases';
+  static const String failedSavingCase = 'FailedSavingCase';
+  static const String failedUpdatingCase = 'FailedUpdatingCase';
+  static const String failedDeletingCase = 'FailedDeletingCase';
+  static const String doctorDoesNotExist = 'DoctorDoesNotExist';
+  static const String newCaseCreated = 'NewCaseCreated';
+  static const String caseUpdated = 'CaseUpdated';
+  static const String casesDeleted = 'CasesDeleted';
+  static const String editCase = 'EditCase';
+
   // Products Strings
   static const String medicines = 'Medicines';
   static const String accessories = 'Accessories';
+
+  // Doctors Strings
+  static const String doctor = 'Doctor';
+  static const String doctorId = 'DoctorID';
+  static const String failedDoctors = 'FailedDoctors';
 }

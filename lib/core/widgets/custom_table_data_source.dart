@@ -65,7 +65,8 @@ class CustomTableDataSource extends DataTableSource {
 
   DataCell _buildEditMenuButton(String id) {
     return DataCell(
-      Align(alignment: Alignment.centerRight, child: actionBuilder(id)),
+      Align(
+          alignment: AlignmentDirectional.centerEnd, child: actionBuilder(id)),
     );
   }
 
