@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/cases_bar_chart.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
@@ -15,7 +17,7 @@ class CasesLastWeek extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const StatisticsItemTitle(title: 'Cases Last Week'),
+          StatisticsItemTitle(title: AppStrings.lastWeekCases.tr()),
           verticalSpace(40),
           CasesBarChart(
             weeklyCases: weeklyCases,

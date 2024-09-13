@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/dashboard/data/models/pie_chart_item_model.dart';
@@ -26,7 +28,7 @@ class TodaySalesContainer extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const StatisticsItemTitle(title: 'Today\'s Sales'),
+              StatisticsItemTitle(title: AppStrings.todaySales.tr()),
               verticalSpace(40),
               SalesPieChartKeys(
                 colors: [
@@ -52,7 +54,7 @@ class TodaySalesContainer extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1.2,
       child: Center(
-        child: Text('No sales today',
+        child: Text(AppStrings.noSalesToday.tr(),
             style: AppTextStyles.font22DarkGreyMedium(context)),
       ),
     );

@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
   }
 
   _buildDrawerItemsList() {
-    const drawerItems = AppConstant.drawerItems;
+    final drawerItems = AppConstant.drawerItems;
     return List.generate(drawerItems.length, (index) {
       return GestureDetector(
         onTap: () {
