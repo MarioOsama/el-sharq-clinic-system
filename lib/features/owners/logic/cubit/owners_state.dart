@@ -24,11 +24,11 @@ final class OwnersError extends OwnersState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),
@@ -69,9 +69,9 @@ final class NewOwnerAdded extends OwnersState {
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'New owner profile created successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.newOwnerCreated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -94,9 +94,9 @@ final class OwnerUpdated extends OwnersState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Owner info updated successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.ownerInfoUpdated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -118,9 +118,9 @@ final class OwnerDeleted extends OwnersState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Owner profile deleted successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.ownerProfileDeleted.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -145,11 +145,11 @@ final class OwnerError extends OwnersState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
@@ -20,19 +22,19 @@ class OwnersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Owners',
+      title: AppStrings.owners.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-          hintText: 'Search by phone number',
+          hintText: AppStrings.ownersSearchText.tr(),
           onChanged: (value) {
             context.read<OwnersCubit>().onSearch(value);
           },
         ),
 
         SectionActionButton(
-          newText: 'New Owner',
-          onNewPressed: () => showOwnerSheet(context, 'New Owner'),
+          newText: AppStrings.newOwner.tr(),
+          onNewPressed: () => showOwnerSheet(context, AppStrings.newOwner.tr()),
           onDeletePressed: () => _onDeleteOwner(context),
           valueNotifier: context.read<OwnersCubit>().showDeleteButtonNotifier,
         ),
@@ -54,8 +56,7 @@ class OwnersSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete these owner profiles?\n'
-            'This action cannot be undone.',
+        alertMessage: AppStrings.deleteOwnerMessage.tr(),
         onConfirm: () {
           context.read<OwnersCubit>().onDeleteSelectedOwners();
           context.pop();

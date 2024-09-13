@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class FieldsRow extends StatelessWidget {
               }
             },
             controller: firstController,
-            hint: fields.first,
+            hint: fields.first.tr(),
             suffixIcon: firstSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,
@@ -102,7 +103,7 @@ class FieldsRow extends StatelessWidget {
               }
             },
             controller: secondController,
-            hint: fields.last,
+            hint: fields.last.tr(),
             suffixIcon: secondSuffixIcon,
             enabled: enabled,
             readOnly: readOnly,

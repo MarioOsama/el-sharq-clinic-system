@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,9 +30,17 @@ class SectionSearchBar extends StatelessWidget {
         onChanged: onChanged,
         backgroundColor: AppColors.white,
         padding: const EdgeInsets.only(left: 10),
-        placeholder: hintText ?? 'Search',
+        placeholder: hintText ?? AppStrings.search.tr(),
         placeholderStyle: AppTextStyles.font16DarkGreyMedium(context),
         style: AppTextStyles.font20DarkGreyMedium(context),
+        prefixIcon: Padding(
+          padding: const EdgeInsetsDirectional.only(end: 10, top: 7),
+          child: Icon(
+            Icons.search,
+            size: 20.sp,
+            color: AppColors.darkGrey.withOpacity(0.5),
+          ),
+        ),
       ),
     );
   }
