@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
@@ -67,7 +69,8 @@ class _OwnersBodyState extends State<OwnersBody> {
             ownersCubit.onMultiSelection(index, selected);
           });
         },
-        onTappableCellTap: (id) => showOwnerSheet(context, 'Owner Details',
+        onTappableCellTap: (id) => showOwnerSheet(
+            context, AppStrings.ownerDetails.tr(),
             editable: false, ownerModel: ownersCubit.getOwnerById(id)),
         selectedRows: ownersCubit.selectedRows,
       ),

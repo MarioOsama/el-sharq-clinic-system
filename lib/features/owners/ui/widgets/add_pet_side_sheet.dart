@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
@@ -35,7 +37,7 @@ Future<void> showAddPetSheet(
 
 AppTextButton _buildAddAction(BuildContext context, String ownerId) {
   return AppTextButton(
-    text: 'Add Pet',
+    text: AppStrings.addPet.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

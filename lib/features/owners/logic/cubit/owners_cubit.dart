@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -67,7 +69,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       selectedRows = List.filled(ownersList.length, false);
       emit(OwnersSuccess(owners: ownersList));
     } catch (e) {
-      emit(OwnersError('Failed to get the owners'));
+      emit(OwnersError(AppStrings.failedToGetOwners.tr()));
     }
   }
 
@@ -84,7 +86,7 @@ class OwnersCubit extends Cubit<OwnersState> {
         selectedRows = List.filled(ownersList.length, false);
         emit(OwnersSuccess(owners: ownersList));
       } catch (e) {
-        emit(OwnersError('Failed to get the owners'));
+        emit(OwnersError(AppStrings.failedToGetOwners.tr()));
       }
     }
   }
@@ -100,7 +102,7 @@ class OwnersCubit extends Cubit<OwnersState> {
             as OwnerModel;
       }
     } catch (e) {
-      emit(OwnersError('Failed to get the owner'));
+      emit(OwnersError(AppStrings.failedToGetOwners.tr()));
       rethrow;
     }
   }
@@ -146,7 +148,7 @@ class OwnersCubit extends Cubit<OwnersState> {
         ownersList.insert(0, ownerInfo);
         _onSuccessOperation();
       } else {
-        emit(OwnerError('Failed to save the owner and pets'));
+        emit(OwnerError(AppStrings.failedToSaveOwnerAndPets.tr()));
       }
     }
   }
@@ -229,13 +231,13 @@ class OwnersCubit extends Cubit<OwnersState> {
         final bool petsDeletionSuccess = await _deletePetsList();
         if (!petsDeletionSuccess) {
           emit(
-            OwnerError('Failed to update owner pets info'),
+            OwnerError(AppStrings.failedToUpdateOwnerPets.tr()),
           );
         }
       }
       if (!ownerUpdatingSuccess || !petsUpdatingSuccess) {
         emit(
-          OwnerError('Failed to update owner info'),
+          OwnerError(AppStrings.failedToUpdateOwnerInfo.tr()),
         );
       }
       emit(OwnerUpdated());
@@ -291,7 +293,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       emit(OwnerDeleted());
       _onSuccessOperation();
     } catch (e) {
-      emit(OwnersError('Failed to delete these selected cases'));
+      emit(OwnersError(AppStrings.failedToDeleteSelectedCases.tr()));
     }
   }
 
@@ -303,7 +305,7 @@ class OwnersCubit extends Cubit<OwnersState> {
       ownersList.removeWhere((element) => element!.id == id);
       _onSuccessOperation();
     } else {
-      emit(OwnersError('Failed to delete this owner profile'));
+      emit(OwnersError(AppStrings.failedToDeleteOwnerProfile.tr()));
     }
   }
 
@@ -361,7 +363,7 @@ class OwnersCubit extends Cubit<OwnersState> {
           // Update owner
           await _ownersRepo.updateOwner(authData!.clinicIndex, owner);
         } catch (e) {
-          emit(OwnerError('Failed to add pet'));
+          emit(OwnerError(AppStrings.failedToAddPet.tr()));
         }
       }
       emit(OwnerUpdated());

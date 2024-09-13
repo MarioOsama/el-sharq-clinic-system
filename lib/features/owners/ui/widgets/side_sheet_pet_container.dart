@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
@@ -29,7 +31,9 @@ class SideSheetPetContainer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          index != 0 ? 'Pet $index Details' : 'Pet Details',
+          index != 0
+              ? '${AppStrings.pet.tr()} $index'
+              : AppStrings.petDetails.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
@@ -45,11 +49,11 @@ class SideSheetPetContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppTextField(
-                  hint: 'Name',
+                  hint: AppStrings.name.tr(),
                   initialValue: petModel?.name,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Please enter a Name';
+                      return AppStrings.pleaseEnterName.tr();
                     }
                     return null;
                   },
@@ -65,8 +69,8 @@ class SideSheetPetContainer extends StatelessWidget {
                 verticalSpace(15),
                 FieldsRow(
                   fields: const [
-                    'Gender',
-                    'Type',
+                    AppStrings.gender,
+                    AppStrings.type,
                   ],
                   validations: const [false, false],
                   enabled: editable,
@@ -77,8 +81,8 @@ class SideSheetPetContainer extends StatelessWidget {
                 verticalSpace(15),
                 FieldsRow(
                   fields: const [
-                    'Age',
-                    'Breed',
+                    AppStrings.age,
+                    AppStrings.breed,
                   ],
                   validations: const [false, false],
                   enabled: editable,
@@ -89,8 +93,8 @@ class SideSheetPetContainer extends StatelessWidget {
                 verticalSpace(15),
                 FieldsRow(
                   fields: const [
-                    'Color',
-                    'Weight',
+                    AppStrings.color,
+                    AppStrings.weight,
                   ],
                   validations: const [false, false],
                   enabled: editable,
@@ -100,7 +104,7 @@ class SideSheetPetContainer extends StatelessWidget {
                 ),
                 verticalSpace(15),
                 AppTextField(
-                  hint: 'Vaccinations',
+                  hint: AppStrings.vaccinations.tr(),
                   initialValue: petModel?.vaccinations,
                   enabled: editable,
                   maxWidth: double.infinity,
@@ -114,7 +118,7 @@ class SideSheetPetContainer extends StatelessWidget {
                 ),
                 verticalSpace(15),
                 AppTextField(
-                  hint: 'Treatments',
+                  hint: AppStrings.treatments.tr(),
                   initialValue: petModel?.treatments,
                   enabled: editable,
                   maxWidth: double.infinity,
@@ -128,13 +132,13 @@ class SideSheetPetContainer extends StatelessWidget {
                 ),
                 verticalSpace(15),
                 AppTextField(
-                  hint: 'Report',
+                  hint: AppStrings.petReport.tr(),
                   initialValue: petModel != null
                       ? petModel!.petReport
                       : AppConstant.petProfileReportScheme,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Please write a Pet Report';
+                      return AppStrings.pleaseWritePetReport.tr();
                     }
                     return null;
                   },
