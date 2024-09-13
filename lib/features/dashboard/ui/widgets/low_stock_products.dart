@@ -1,4 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_container.dart';
@@ -17,7 +20,7 @@ class LowStockProducts extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const StatisticsItemTitle(title: 'Low Stock Products'),
+          StatisticsItemTitle(title: AppStrings.lowStockProducts.tr()),
           verticalSpace(20),
           _buildHeaderRow(context),
           Divider(
@@ -43,11 +46,11 @@ class LowStockProducts extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Item',
+          AppStrings.item.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context),
         ),
         Text(
-          'Quantity',
+          AppStrings.quantity.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context),
         ),
       ],
@@ -55,24 +58,22 @@ class LowStockProducts extends StatelessWidget {
   }
 
   ListTile _getItem(ProductModel item, BuildContext context) {
-    {
-      return ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: Text(
-          item.title,
-          style: AppTextStyles.font16DarkGreyMedium(context),
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(
+        item.title,
+        style: AppTextStyles.font16DarkGreyMedium(context),
+      ),
+      subtitle: Text(
+        item.type.toString().replaceAll('ProductType.', '').capitalize().tr(),
+        style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
+          color: AppColors.darkGrey.withOpacity(0.5),
         ),
-        subtitle: Text(
-          item.type.toString().replaceAll('ProductType.', ''),
-          style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
-            color: AppColors.darkGrey.withOpacity(0.5),
-          ),
-        ),
-        trailing: Text(
-          item.quantity.toString(),
-          style: AppTextStyles.font16DarkGreyMedium(context),
-        ),
-      );
-    }
+      ),
+      trailing: Text(
+        item.quantity.toString(),
+        style: AppTextStyles.font16DarkGreyMedium(context),
+      ),
+    );
   }
 }
