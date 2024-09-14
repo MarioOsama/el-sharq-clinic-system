@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/home/data/models/drawer_item_model.dart';
@@ -41,7 +42,7 @@ class DrawerItem extends StatelessWidget {
 
   Text _buildTitle(String title, bool isSelected, BuildContext context) {
     return Text(
-      title,
+      title.tr(),
       style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         color: isSelected ? AppColors.white : AppColors.darkGrey,
