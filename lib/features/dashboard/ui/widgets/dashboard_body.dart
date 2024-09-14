@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/cases_last_week.dart';
@@ -46,7 +46,7 @@ class DashboardBody extends StatelessWidget {
 
   Center _buildLoading() {
     return const Center(
-      child: AnimatedLoadingIndicator(),
+      child: FadedAnimatedLoadingIcon(),
     );
   }
 

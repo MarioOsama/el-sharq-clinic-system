@@ -1,15 +1,20 @@
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class AnimatedLoadingIndicator extends StatefulWidget {
-  const AnimatedLoadingIndicator({super.key});
+class FadedAnimatedLoadingIcon extends StatefulWidget {
+  const FadedAnimatedLoadingIcon(
+      {super.key, this.iconData, this.size, this.color});
+
+  final IconData? iconData;
+  final double? size;
+  final Color? color;
 
   @override
-  State<AnimatedLoadingIndicator> createState() =>
-      _AnimatedLoadingIndicatorState();
+  State<FadedAnimatedLoadingIcon> createState() =>
+      _FadedAnimatedLoadingIconState();
 }
 
-class _AnimatedLoadingIndicatorState extends State<AnimatedLoadingIndicator>
+class _FadedAnimatedLoadingIconState extends State<FadedAnimatedLoadingIcon>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
@@ -31,10 +36,10 @@ class _AnimatedLoadingIndicatorState extends State<AnimatedLoadingIndicator>
   Widget build(BuildContext context) {
     return FadeTransition(
         opacity: _controller,
-        child: const Icon(
-          Icons.pets,
-          size: 60,
-          color: AppColors.blue,
+        child: Icon(
+          widget.iconData ?? Icons.pets,
+          size: widget.size ?? 60,
+          color: widget.color ?? AppColors.blue,
         ));
   }
 }

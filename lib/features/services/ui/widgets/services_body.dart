@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/app_grid_view.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
@@ -42,7 +42,7 @@ class ServicesBody extends StatelessWidget {
     );
   }
 
-  Center _buildLoading() => const Center(child: AnimatedLoadingIndicator());
+  Center _buildLoading() => const Center(child: FadedAnimatedLoadingIcon());
 
   Center _buildError(ServicesError state, BuildContext context) {
     return Center(

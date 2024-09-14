@@ -58,7 +58,7 @@ final class ServiceSaving extends ServicesState {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const Center(child: AnimatedLoadingIndicator());
+          return const Center(child: FadedAnimatedLoadingIcon());
         });
   }
 }

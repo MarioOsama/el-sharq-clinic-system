@@ -2,6 +2,18 @@
 class Assets {
   Assets._();
   
+  /// Assets for assetsImagesJsonDisconnectedAnimation
+  /// assets/images/json/disconnected_animation.json
+  static const String assetsImagesJsonDisconnectedAnimation = "assets/images/json/disconnected_animation.json";
+
+  /// Assets for assetsImagesJsonDogAnimation
+  /// assets/images/json/dog_animation.json
+  static const String assetsImagesJsonDogAnimation = "assets/images/json/dog_animation.json";
+
+  /// Assets for assetsImagesJsonLoadingAnimation
+  /// assets/images/json/loading_animation.gif
+  static const String assetsImagesJsonLoadingAnimation = "assets/images/json/loading_animation.gif";
+
   /// Assets for assetsImagesPngDebug
   /// assets/images/png/debug.log
   static const String assetsImagesPngDebug = "assets/images/png/debug.log";

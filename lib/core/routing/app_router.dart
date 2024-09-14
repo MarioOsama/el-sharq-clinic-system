@@ -2,6 +2,7 @@ import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/routing/app_routes.dart';
+import 'package:el_sharq_clinic/core/widgets/connectivity_monitor.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/ui/auth_screen.dart';
 import 'package:el_sharq_clinic/features/home/ui/home_layout.dart';
@@ -18,7 +19,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider<AuthCubit>(
             create: (context) => getIt<AuthCubit>()..setupInitialData(),
-            child: const AuthScreen(),
+            child: const ConnectivityMonitor(child: AuthScreen()),
           ),
         );
       case AppRoutes.home:
@@ -26,7 +27,7 @@ class AppRouter {
           builder: (_) => BlocProvider<MainCubit>(
             create: (context) => getIt<MainCubit>()
               ..setupInitialData(arguments as AuthDataModel),
-            child: const HomeLayout(),
+            child: const ConnectivityMonitor(child: HomeLayout()),
           ),
         );
       default:

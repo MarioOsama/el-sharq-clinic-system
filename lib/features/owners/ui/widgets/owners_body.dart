@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
-import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table_data_source.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
@@ -47,7 +47,7 @@ class _OwnersBodyState extends State<OwnersBody> {
         child: Text(state.message),
       );
     }
-    return const Center(child: AnimatedLoadingIndicator());
+    return const Center(child: FadedAnimatedLoadingIcon());
   }
 
   CustomTable _buildSuccess(OwnersState state) {

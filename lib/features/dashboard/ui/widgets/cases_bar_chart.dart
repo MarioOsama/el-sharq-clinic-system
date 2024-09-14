@@ -136,10 +136,11 @@ class CasesBarChartState extends State<CasesBarChart> {
         x: index,
         barRods: [
           BarChartRodData(
-            width: 30,
+            width: 40,
             backDrawRodData:
                 touchedIndex == index ? backgroundBarChartRodData : null,
             toY: entry.value.toDouble(),
+            borderRadius: BorderRadius.circular(10),
             color: AppColors.blue.withOpacity(0.85),
             gradient: touchedIndex == index ? gradient : null,
           )
