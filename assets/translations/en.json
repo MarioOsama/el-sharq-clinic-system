@@ -151,5 +151,22 @@
     "PleaseEnterValidPrice": "Please enter a valid price",
     "FailedToUpdateService": "Failed to update the service",
     "FailedToDeleteService": "Failed to delete the service",
-    "FailedToGetServices": "Failed to get the services"
+    "FailedToGetServices": "Failed to get the services",
+    "ProductsSearchText": "Search by product name",
+    "NewProduct": "New Product",
+    "ProductName": "Product Name",
+    "PleaseEnterValidName": "Please enter a valid name",
+    "Title": "Title",
+    "ProductQuantityRequired": "Product quantity is required, and must be a positive number greater than 0",
+    "ProductPriceRequired": "Product price is required, and must be a positive number greater than 0",
+    "SaveProduct": "Save Product",
+    "UpdateProduct": "Update Product",
+    "ProductDetails": "Product Details",
+    "EditProduct": "Edit Product",
+    "DeleteProductConfirmation": "Are you sure you want to delete this product?\nThis action cannot be undone.",
+    "ProductAlreadyExist": "Product already exists",
+    "ProductSaved": "Product saved successfully",
+    "ProductUpdated": "Product updated successfully",
+    "ProductDeleted": "Product deleted successfully",
+    "NoProducts": "No products found"
 }

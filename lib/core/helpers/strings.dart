@@ -17,6 +17,8 @@ class AppStrings {
   static const String pleaseEnter = 'PleaseEnter';
   static const String price = 'Price';
   static const String description = 'Description';
+  static const String quantity = 'Quantity';
+  static const String le = 'LE';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -52,9 +54,7 @@ class AppStrings {
   static const String popularItemsLastWeek = 'PopularItemsLastWeek';
   static const String item = 'Item';
   static const String items = 'Items';
-  static const String quantity = 'Quantity';
   static const String sales = 'Sales';
-  static const String le = 'LE';
 
   // Cases History Strings
   static const String casesSearchText = 'CasesSearchText';
@@ -118,10 +118,6 @@ class AppStrings {
   static const String report = 'Report';
   static const String pleaseWritePetReport = 'PleaseWritePetReport';
 
-  // Products Strings
-  static const String medicines = 'Medicines';
-  static const String accessories = 'Accessories';
-
   // Doctors Strings
   static const String doctor = 'Doctor';
   static const String doctorId = 'DoctorID';
@@ -175,4 +171,25 @@ class AppStrings {
   static const String failedToUpdateService = 'FailedToUpdateService';
   static const String failedToDeleteService = 'FailedToDeleteService';
   static const String failedToGetServices = 'FailedToGetServices';
+
+  // Products Strings
+  static const String medicines = 'Medicines';
+  static const String accessories = 'Accessories';
+  static const String productsSearchText = 'ProductsSearchText';
+  static const String newProduct = 'NewProduct';
+  static const String productName = 'ProductName';
+  static const String pleaseEnterValidName = 'PleaseEnterValidName';
+  static const String title = 'Title';
+  static const String productQuantityRequired = 'ProductQuantityRequired';
+  static const String productPriceRequired = 'ProductPriceRequired';
+  static const String saveProduct = 'SaveProduct';
+  static const String updateProduct = 'UpdateProduct';
+  static const String productDetails = 'ProductDetails';
+  static const String editProduct = 'EditProduct';
+  static const String deleteProductConfirmation = 'DeleteProductConfirmation';
+  static const String productAlreadyExist = 'ProductAlreadyExist';
+  static const String productSaved = 'ProductSaved';
+  static const String productUpdated = 'ProductUpdated';
+  static const String productDeleted = 'ProductDeleted';
+  static const String noProducts = 'NoProducts';
 }
