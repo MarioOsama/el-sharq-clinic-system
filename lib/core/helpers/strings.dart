@@ -116,6 +116,10 @@ class AppStrings {
   static const String report = 'Report';
   static const String pleaseWritePetReport = 'PleaseWritePetReport';
 
+  // Products Strings
+  static const String medicines = 'Medicines';
+  static const String accessories = 'Accessories';
+
   // Doctors Strings
   static const String doctor = 'Doctor';
   static const String doctorId = 'DoctorID';

@@ -23,7 +23,7 @@ class OwnersRowActionButton extends StatelessWidget {
       itemBuilder: (ctx) {
         return [
           PopupMenuItem(
-            value: 'Edit',
+            value: AppStrings.edit.tr(),
             onTap: () {
               showOwnerSheet(context, AppStrings.ownerDetails.tr(),
                   editable: true,
@@ -35,7 +35,7 @@ class OwnersRowActionButton extends StatelessWidget {
             ),
           ),
           PopupMenuItem(
-            value: 'Add Pet',
+            value: AppStrings.addPet.tr(),
             onTap: () {
               showAddPetSheet(context, AppStrings.addPet.tr(), id);
             },
@@ -45,7 +45,7 @@ class OwnersRowActionButton extends StatelessWidget {
             ),
           ),
           PopupMenuItem(
-            value: 'Delete',
+            value: AppStrings.delete.tr(),
             onTap: () {
               showDialog(
                 context: ctx,
