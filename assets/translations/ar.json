@@ -151,5 +151,22 @@
     "PleaseEnterValidPrice": "الرجاء إدخال سعر صحيح",
     "FailedToUpdateService": "فشل في تحديث الخدمة",
     "FailedToDeleteService": "فشل في حذف الخدمة",
-    "FailedToGetServices": "فشل في جلب الخدمات"
+    "FailedToGetServices": "فشل في جلب الخدمات",
+    "ProductsSearchText": "ابحث بأسم المنتج",
+    "NewProduct": "منتج جديد",
+    "ProductName": "اسم المنتج",
+    "PleaseEnterValidName": "الرجاء إدخال اسم صالح",
+    "Title": "العنوان",
+    "ProductQuantityRequired": "كمية المنتج مطلوبة ويجب أن تكون رقمًا موجبًا أكبر من 0",
+    "ProductPriceRequired": "سعر المنتج مطلوب ويجب أن يكون رقمًا موجبًا أكبر من 0",
+    "SaveProduct": "حفظ المنتج",
+    "UpdateProduct": "تحديث المنتج",
+    "ProductDetails": "تفاصيل المنتج",
+    "EditProduct": "تعديل المنتج",
+    "DeleteProductConfirmation": "هل أنت متأكد أنك تريد حذف هذا المنتج؟\nلا يمكن التراجع عن هذا الإجراء.",
+    "ProductAlreadyExist": "المنتج موجود بالفعل",
+    "ProductSaved": "تم حفظ المنتج بنجاح",
+    "ProductUpdated": "تم تحديث المنتج بنجاح",
+    "ProductDeleted": "تم حذف المنتج بنجاح", 
+    "NoProducts": "لا يوجد منتجات"
 }

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
@@ -17,7 +19,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => showProductSheet(context, 'Product Details',
+      onTap: () => showProductSheet(context, AppStrings.productDetails.tr(),
           editable: false, product: product),
       mouseCursor: SystemMouseCursors.click,
       child: Container(
@@ -65,7 +67,7 @@ class ProductItem extends StatelessWidget {
         alignment: Alignment.centerLeft,
         fit: BoxFit.scaleDown,
         child: Text(
-          '${product.price} LE',
+          '${product.price} ${AppStrings.le.tr()}',
           style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),

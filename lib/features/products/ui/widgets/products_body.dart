@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -76,7 +78,7 @@ class ProductsBody extends StatelessWidget {
   Widget _buildEmptyView(ProductType productType, BuildContext context) {
     return Center(
       child: Text(
-        'No ${productType.name} found',
+        AppStrings.noProducts.tr(),
         style: AppTextStyles.font20DarkGreyMedium(context),
       ),
     );
