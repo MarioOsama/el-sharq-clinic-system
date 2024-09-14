@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
@@ -70,8 +72,8 @@ class SettingsBody extends StatelessWidget {
         children: [
           BounceInLeft(
             child: _buildSegmentedButtonListTile(
-              'Language',
-              ['English', 'Arabic'],
+              AppStrings.language.tr(),
+              ['English', 'العربية'],
               authData.language,
               context,
               onLanguageChanged,
@@ -96,7 +98,7 @@ class SettingsBody extends StatelessWidget {
           ),
           BounceInRight(
             child: ActionListTile(
-              title: 'Change Password',
+              title: AppStrings.changePassword.tr(),
               onTap: () => showChangePasswordSideSheet(context),
               iconData: Icons.lock,
             ),
@@ -113,11 +115,11 @@ class SettingsBody extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(
-        'Low Stock Limit',
+        AppStrings.lowStockLimit.tr(),
         style: AppTextStyles.font24DarkGreyMedium(context),
       ),
       subtitle: Text(
-        'The default low stock limit is 5',
+        AppStrings.defaultLowStockLimit.tr(),
         style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
           color: Colors.grey,
         ),
@@ -126,7 +128,7 @@ class SettingsBody extends StatelessWidget {
         maxHeight: 50.h,
         initialValue: authData.lowStockLimit.toString(),
         insideHint: true,
-        hint: 'Limit',
+        hint: AppStrings.limit.tr(),
         numeric: true,
         onChanged: (value) => onLowStockLimitChanged(value, context),
       ),

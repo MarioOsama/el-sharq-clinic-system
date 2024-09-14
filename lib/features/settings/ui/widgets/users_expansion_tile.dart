@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
@@ -27,7 +29,7 @@ class UsersExpansionTile extends StatelessWidget {
         ),
         childrenPadding: EdgeInsets.symmetric(horizontal: 20.w),
         title: Text(
-          'Users',
+          AppStrings.users.tr(),
           style: AppTextStyles.font24DarkGreyMedium(context),
         ),
         children: _buildUsersTiles(context),
@@ -77,7 +79,7 @@ class UsersExpansionTile extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete this account?',
+        alertMessage: AppStrings.deleteAccountConfirmation.tr(),
         onConfirm: () async {
           await showAdminPasswordInquiryDialog(context, user.id);
           if (context.mounted) {
@@ -96,8 +98,8 @@ class UsersExpansionTile extends StatelessWidget {
     await showDialog(
       context: context,
       builder: (_) => PasswordDialog(
-          title: 'Enter admin password to delete this account',
-          actionTitle: 'Delete Account',
+          title: AppStrings.enterAdminPassword.tr(),
+          actionTitle: AppStrings.deleteAccount.tr(),
           onActionPressed: (password) {
             final bool isAdmin =
                 context.read<SettingsCubit>().checkAdminPassword(password);
@@ -105,7 +107,7 @@ class UsersExpansionTile extends StatelessWidget {
               context.read<SettingsCubit>().onAccountDeleted(userId);
               context.pop();
             } else {
-              showError(context, 'Invalid Admin Password');
+              showError(context, AppStrings.adminPasswordIncorrect.tr());
             }
           }),
     );
@@ -115,11 +117,11 @@ class UsersExpansionTile extends StatelessWidget {
     showDialog(
         context: context,
         builder: (_) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: message,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 filled: false,
                 onPressed: () => context.pop(),
               ),

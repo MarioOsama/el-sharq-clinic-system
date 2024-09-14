@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/action_list_tile.dart';
 import 'package:el_sharq_clinic/features/settings/ui/widgets/add_user_account_dialog.dart';
@@ -19,13 +21,13 @@ class AdminPrivilegesContainer extends StatelessWidget {
       children: [
         verticalSpace(20.h),
         ActionListTile(
-          title: 'Change Clinic Name',
+          title: AppStrings.changeClinicName.tr(),
           onTap: () => showClinicNameDialog(context, authData.clinicName),
           iconData: Icons.edit,
         ),
         verticalSpace(20.h),
         ActionListTile(
-          title: 'Add User Account',
+          title: AppStrings.addUserAccount.tr(),
           onTap: () => showAddUserAccountDialog(context),
           iconData: Icons.person_add,
         ),

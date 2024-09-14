@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/constants.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_table.dart';
@@ -62,7 +64,8 @@ class _InvoicesBodyState extends State<InvoicesBody> {
         onSelectionChanged: (index, selected) => setState(() {
           invoicesCubit.onMultiSelection(index, selected);
         }),
-        onTappableCellTap: (id) => showInvoiceSheet(context, 'Invoice Details',
+        onTappableCellTap: (id) => showInvoiceSheet(
+            context, AppStrings.invoiceDetails.tr(),
             invoice: invoicesCubit.getInvoiceById(id), editable: false),
         selectedRows: invoicesCubit.selectedRows,
       ),

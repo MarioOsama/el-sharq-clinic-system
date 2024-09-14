@@ -12,6 +12,8 @@ class AppBarUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
+
     return Row(
       children: [
         const CircleAvatar(
@@ -28,7 +30,9 @@ class AppBarUserInfo extends StatelessWidget {
         ),
         horizontalSpace(10),
         IconButton(
-          icon: const Icon(Icons.logout),
+          icon: locale == const Locale('en')
+              ? const Icon(Icons.logout)
+              : const RotatedBox(quarterTurns: 2, child: Icon(Icons.logout)),
           onPressed: () {
             context.pushReplacementNamed(AppRoutes.auth);
           },

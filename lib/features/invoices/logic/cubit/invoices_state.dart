@@ -37,11 +37,11 @@ final class InvoiceConstrutingError extends InvoicesState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),
@@ -83,7 +83,7 @@ final class InvoiceSuccessOperation extends InvoicesState {
       barrierDismissible: false,
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Success',
+        title: AppStrings.success.tr(),
         content: message,
         dialogType: DialogType.success,
       ),

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
@@ -32,25 +34,27 @@ Future<void> showProductSheet(BuildContext context, String title,
               Expanded(
                 flex: 4,
                 child: AppTextField(
-                  hint: 'Product Name',
+                  hint: AppStrings.productName.tr(),
                   initialValue: product?.title,
                   enabled: editable,
                   maxWidth: double.infinity,
                   validator: (p0) {
                     if (p0!.trim().isEmpty) {
-                      productsCubit.onRequiredFieldEmpty('Product Name');
-                      return 'Please enter a valid name';
+                      productsCubit
+                          .onRequiredFieldEmpty(AppStrings.productName.tr());
+                      return AppStrings.pleaseEnterValidName.tr();
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      context.read<ProductsCubit>().onFieldSave('title', value),
+                  onSaved: (value) => context
+                      .read<ProductsCubit>()
+                      .onFieldSave(AppStrings.title, value),
                 ),
               ),
               horizontalSpace(20),
               Expanded(
                 child: AppTextField(
-                  hint: 'Quantity',
+                  hint: AppStrings.quantity.tr(),
                   initialValue: product?.quantity.toString(),
                   enabled: editable,
                   numeric: true,
@@ -58,20 +62,21 @@ Future<void> showProductSheet(BuildContext context, String title,
                     if (p0!.trim().isEmpty ||
                         double.tryParse(p0) == null ||
                         p0 == '0') {
-                      productsCubit.onRequiredFieldEmpty('Quantity');
-                      return 'Product quantity is required, and must be a positive number greater than 0';
+                      productsCubit
+                          .onRequiredFieldEmpty(AppStrings.quantity.tr());
+                      return AppStrings.productQuantityRequired.tr();
                     }
                     return null;
                   },
                   onSaved: (value) => context
                       .read<ProductsCubit>()
-                      .onFieldSave('quantity', value),
+                      .onFieldSave(AppStrings.quantity, value),
                 ),
               ),
               horizontalSpace(20),
               Expanded(
                 child: AppTextField(
-                  hint: 'Price',
+                  hint: AppStrings.price.tr(),
                   initialValue: product?.price.toString(),
                   enabled: editable,
                   numeric: true,
@@ -79,26 +84,28 @@ Future<void> showProductSheet(BuildContext context, String title,
                     if (p0!.trim().isEmpty ||
                         double.tryParse(p0) == null ||
                         p0 == '0') {
-                      productsCubit.onRequiredFieldEmpty('Price');
-                      return 'Product price is required, and must be a positive number greater than 0';
+                      productsCubit.onRequiredFieldEmpty(AppStrings.price.tr());
+                      return AppStrings.productPriceRequired.tr();
                     }
                     return null;
                   },
-                  onSaved: (value) =>
-                      context.read<ProductsCubit>().onFieldSave('price', value),
+                  onSaved: (value) => context
+                      .read<ProductsCubit>()
+                      .onFieldSave(AppStrings.price, value),
                 ),
               ),
             ],
           ),
           verticalSpace(50),
           AppTextField(
-            hint: 'Description',
+            hint: AppStrings.description.tr(),
             initialValue: product?.description,
             enabled: editable,
             isMultiline: true,
             maxWidth: double.infinity,
-            onSaved: (value) =>
-                context.read<ProductsCubit>().onFieldSave('description', value),
+            onSaved: (value) => context
+                .read<ProductsCubit>()
+                .onFieldSave(AppStrings.description, value),
           ),
           const Spacer(),
           _buildActionIfNeeded(context, newProduct, editable),
@@ -119,7 +126,7 @@ _buildActionIfNeeded(BuildContext context, bool newProduct, bool editMode) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Product',
+    text: AppStrings.saveProduct.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
@@ -130,7 +137,7 @@ AppTextButton _buildNewAction(BuildContext context) {
 
 AppTextButton _buildUpdateAction(BuildContext context) {
   return AppTextButton(
-    text: 'Update Product',
+    text: AppStrings.updateProduct.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

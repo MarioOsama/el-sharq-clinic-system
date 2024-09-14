@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
@@ -15,16 +17,17 @@ class ProductsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Products',
+      title: AppStrings.products.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-            hintText: 'Search by product name',
+            hintText: AppStrings.productsSearchText.tr(),
             onChanged: (value) =>
                 context.read<ProductsCubit>().onSearch(value)),
         SectionActionButton(
-          newText: 'New Product',
-          onNewPressed: () => showProductSheet(context, 'New Product'),
+          newText: AppStrings.newProduct.tr(),
+          onNewPressed: () =>
+              showProductSheet(context, AppStrings.newProduct.tr()),
         ),
       ],
       child: Expanded(

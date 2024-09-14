@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
@@ -18,12 +20,12 @@ class SettingsSection extends StatelessWidget {
         context.read<SettingsCubit>().saveButtonState;
 
     return SectionContainer(
-      title: 'Settings',
+      title: AppStrings.settings.tr(),
       actions: [
         ListenableBuilder(
           listenable: saveButtonState,
           builder: (ctx, child) => AppTextButton(
-            text: 'Save',
+            text: AppStrings.save.tr(),
             width: 200.w,
             height: 55.h,
             icon: Icons.save,
