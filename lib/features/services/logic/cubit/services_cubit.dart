@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/assets.dart';
@@ -60,7 +62,7 @@ class ServicesCubit extends Cubit<ServicesState> {
 
       final ServiceModel service = _constructService();
       if (servicesList.any((element) => element.title == service.title)) {
-        emit(ServiceError('Service name already exists'));
+        emit(ServiceError(AppStrings.serviceNameExists.tr()));
         return;
       }
       // Save service
@@ -72,7 +74,7 @@ class ServicesCubit extends Cubit<ServicesState> {
         emit(ServiceAdded());
         servicesList.add(service);
       } else {
-        emit(ServiceError('Failed to add the service'));
+        emit(ServiceError(AppStrings.failedToAddService.tr()));
       }
       _onSuccessOperation();
     }
@@ -81,11 +83,11 @@ class ServicesCubit extends Cubit<ServicesState> {
   bool _validateService() {
     bool valid = false;
     if (serviceNameController.text.isEmpty) {
-      emit(ServiceError('Service name is required'));
+      emit(ServiceError(AppStrings.serviceNameRequired.tr()));
     } else if (servicePriceController.text.isEmpty ||
         double.tryParse(servicePriceController.text) == null ||
         double.parse(servicePriceController.text) <= 0) {
-      emit(ServiceError('Please enter a valid price'));
+      emit(ServiceError(AppStrings.pleaseEnterValidPrice.tr()));
     } else {
       valid = true;
     }
@@ -112,7 +114,7 @@ class ServicesCubit extends Cubit<ServicesState> {
               service.id != currentservice.id)
           .toList();
       if (servicesWithSameName.isNotEmpty) {
-        emit(ServiceError('Service name already exists'));
+        emit(ServiceError(AppStrings.serviceNameExists.tr()));
         return;
       }
       // Update service
@@ -128,7 +130,7 @@ class ServicesCubit extends Cubit<ServicesState> {
             .indexWhere((service) => service.id == currentservice.id);
         servicesList[index] = updatedService;
       } else {
-        emit(ServiceError('Failed to update the service'));
+        emit(ServiceError(AppStrings.failedToUpdateService.tr()));
       }
       _onSuccessOperation();
     }
@@ -143,7 +145,7 @@ class ServicesCubit extends Cubit<ServicesState> {
       emit(ServiceDeleted());
       servicesList.removeWhere((element) => element.id == service.id);
     } else {
-      emit(ServiceError('Failed to delete the service'));
+      emit(ServiceError(AppStrings.failedToDeleteService.tr()));
     }
     emit(ServicesSuccess(services: servicesList));
   }
@@ -177,7 +179,7 @@ class ServicesCubit extends Cubit<ServicesState> {
       servicesList =
           await _servicesRepo.getServices(_authData!.clinicIndex, null);
     } catch (e) {
-      emit(ServicesError('Failed to get the services'));
+      emit(ServicesError(AppStrings.failedToGetServices.tr()));
     }
   }
 

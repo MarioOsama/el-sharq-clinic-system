@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
@@ -15,18 +17,18 @@ class ServicesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Services',
+      title: AppStrings.services.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-          hintText: 'Search by service name',
+          hintText: AppStrings.servicesSearchText.tr(),
           onChanged: (value) =>
               context.read<ServicesCubit>().onSearchServices(value),
         ),
         SectionActionButton(
-          newText: 'New Services',
+          newText: AppStrings.newService.tr(),
           onNewPressed: () {
-            showServiceSheet(context, 'New Service');
+            showServiceSheet(context, AppStrings.newService.tr());
           },
         ),
       ],

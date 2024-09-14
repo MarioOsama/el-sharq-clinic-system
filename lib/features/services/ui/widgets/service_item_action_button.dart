@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
@@ -24,11 +26,11 @@ class ServiceItemActionButton extends StatelessWidget {
             value: 'Edit',
             onTap: () => showServiceSheet(
               context,
-              'Edit Service',
+              AppStrings.editService.tr(),
               service: service,
             ),
             child: Text(
-              'Edit',
+              AppStrings.edit.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
@@ -38,9 +40,7 @@ class ServiceItemActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage:
-                      'Are you sure you want to delete this service?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteServiceConfirmation.tr(),
                   onConfirm: () {
                     context.read<ServicesCubit>().deleteService(service);
                     ctx.pop();
@@ -52,7 +52,7 @@ class ServiceItemActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

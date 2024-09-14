@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
@@ -31,7 +33,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
             flex: 3,
             child: AppTextField(
               controller: servicesCubit.serviceNameController,
-              hint: 'Service Name',
+              hint: AppStrings.serviceName.tr(),
               enabled: editable,
             ),
           ),
@@ -39,7 +41,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
           Expanded(
             child: AppTextField(
               controller: servicesCubit.servicePriceController,
-              hint: 'Price',
+              hint: AppStrings.price.tr(),
               enabled: editable,
             ),
           ),
@@ -57,7 +59,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
       verticalSpace(50),
       AppTextField(
         controller: servicesCubit.serviceDescriptionController,
-        hint: 'Description',
+        hint: AppStrings.description.tr(),
         enabled: editable,
         isMultiline: true,
         maxWidth: double.infinity,
@@ -80,7 +82,7 @@ _buildActionIfNeeded(BuildContext context, ServiceModel? service,
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-    text: 'Save Service',
+    text: AppStrings.saveService.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
@@ -92,7 +94,7 @@ AppTextButton _buildNewAction(BuildContext context) {
 AppTextButton _buildUpdateAction(
     BuildContext context, ServiceModel currentService) {
   return AppTextButton(
-    text: 'Update Service',
+    text: AppStrings.updateService.tr(),
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {

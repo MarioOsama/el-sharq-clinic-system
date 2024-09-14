@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
@@ -19,7 +21,7 @@ class ServiceItem extends StatelessWidget {
     return InkWell(
       onTap: () => showServiceSheet(
         context,
-        'Service Details',
+        AppStrings.serviceDetails.tr(),
         service: service,
         editable: false,
       ),
@@ -72,7 +74,7 @@ class ServiceItem extends StatelessWidget {
         alignment: Alignment.centerLeft,
         fit: BoxFit.scaleDown,
         child: Text(
-          '${service.price} LE',
+          '${service.price} ${AppStrings.le.tr()}',
           style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
