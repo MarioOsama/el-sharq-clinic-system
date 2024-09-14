@@ -1,4 +1,8 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_drop_down_button.dart';
@@ -32,10 +36,10 @@ class InvoiceSideSheetItemContainer extends StatefulWidget {
 
 class _InvoiceSideSheetItemContainerState
     extends State<InvoiceSideSheetItemContainer> {
-  final List<String> itemTypesList = const [
-    'Services',
-    'Medicines',
-    'Accessories'
+  final List<String> itemTypesList = [
+    AppStrings.services.tr(),
+    AppStrings.medicines.tr(),
+    AppStrings.accessories.tr(),
   ];
   int selectedTypeIndex = 0;
   String itemType = 'Services';
@@ -72,8 +76,8 @@ class _InvoiceSideSheetItemContainerState
       children: [
         Text(
           widget.index != 0
-              ? 'Item ${widget.index} Details'
-              : '$itemType Details',
+              ? '${AppStrings.item.tr()} ${widget.index}'
+              : itemType.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
@@ -89,7 +93,7 @@ class _InvoiceSideSheetItemContainerState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Item Type',
+                  AppStrings.itemType.tr(),
                   style: AppTextStyles.font16DarkGreyMedium(context)
                       .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
                 ),
@@ -111,7 +115,7 @@ class _InvoiceSideSheetItemContainerState
                         },
                         controller: itemNameController,
                         enabled: widget.editable,
-                        hint: 'Item Name',
+                        hint: AppStrings.itemName.tr(),
                         items: items,
                         onFilter: widget.editable
                             ? (entries, filter) =>
@@ -125,13 +129,13 @@ class _InvoiceSideSheetItemContainerState
                       child: AppTextField(
                         controller: quantityController,
                         enabled: widget.editable,
-                        hint: 'Quantity',
+                        hint: AppStrings.quantity.tr(),
                         onChanged:
                             widget.editable ? _onNumberOfItemsChanged : null,
                         numeric: true,
                         validator: (value) {
                           if (quantityController.text == '0') {
-                            return 'Quantity cannot be 0';
+                            return AppStrings.quantityCannotBeZero.tr();
                           }
                           return null;
                         },
@@ -149,7 +153,7 @@ class _InvoiceSideSheetItemContainerState
                         controller: totalPriceController,
                         maxWidth: double.infinity,
                         readOnly: true,
-                        hint: 'Total: ',
+                        hint: '${AppStrings.total.tr()}: ',
                       ),
                     ),
                     horizontalSpace(70),
@@ -157,7 +161,7 @@ class _InvoiceSideSheetItemContainerState
                       child: AppTextField(
                         controller: priceController,
                         enabled: widget.editable,
-                        hint: 'Price',
+                        hint: AppStrings.price.tr(),
                         readOnly: true,
                       ),
                     ),
@@ -172,30 +176,34 @@ class _InvoiceSideSheetItemContainerState
   }
 
   void _onTypeChanged(String? value) {
+    log('onTypeChanged: $value');
     cubit.onResetInvoiceItem(widget.index - 1);
-    switch (value) {
-      case 'Services':
+    switch (value!.tr()) {
+      case 'Services' || 'الخدمات':
+        log('Services');
         items = cubit.servicesList.map((e) => e.title).toList();
-        selectedTypeIndex = itemTypesList.indexOf(value!);
+        selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Services';
         _resetControllers();
         break;
-      case 'Medicines':
+      case 'Medicines' || 'الأدوية':
+        log('Medicines');
         items = cubit.medicinesList.map((e) => e.title).toList();
-        selectedTypeIndex = itemTypesList.indexOf(value!);
+        selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Medicines';
         _resetControllers();
         break;
-      case 'Accessories':
+      case 'Accessories' || 'الأكسسوارات':
+        log('Accessories');
         items = cubit.accessoriesList.map((e) => e.title).toList();
-        selectedTypeIndex = itemTypesList.indexOf(value!);
+        selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Accessories';
         _resetControllers();
         break;
 
       default:
         items = cubit.servicesList.map((e) => e.title).toList();
-        selectedTypeIndex = itemTypesList.indexOf('Services');
+        selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Services';
         _resetControllers();
         break;
@@ -213,7 +221,7 @@ class _InvoiceSideSheetItemContainerState
   void _resetControllers() {
     totalPriceController.text = '0';
     quantityController.text = '1';
-    itemNameController.text = 'Choose $itemType';
+    itemNameController.text = '${AppStrings.all.tr()} ${itemType.tr()}';
   }
 
   void _onNumberOfItemsChanged(String value) {
@@ -251,7 +259,7 @@ class _InvoiceSideSheetItemContainerState
         (itemModel.price * itemModel.quantity).toString();
     quantityController.text = itemModel.quantity.toString();
     itemNameController.text = itemModel.name;
-    itemType = itemModel.type;
+    itemType = itemModel.type.tr();
     selectedTypeIndex = itemTypesList.indexOf(itemType);
   }
 
@@ -261,7 +269,7 @@ class _InvoiceSideSheetItemContainerState
     priceController.text = '0';
     totalPriceController.text = '0';
     quantityController.text = '1';
-    itemNameController.text = 'Choose $itemType';
+    itemNameController.text = '${AppStrings.all.tr()} ${itemType.tr()}';
   }
 
   @override

@@ -19,6 +19,7 @@ class AppStrings {
   static const String description = 'Description';
   static const String quantity = 'Quantity';
   static const String le = 'LE';
+  static const String all = 'All';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -192,4 +193,40 @@ class AppStrings {
   static const String productUpdated = 'ProductUpdated';
   static const String productDeleted = 'ProductDeleted';
   static const String noProducts = 'NoProducts';
+
+  // Invoices Strings
+  static const String invoicesSearchText = 'InvoicesSearchText';
+  static const String newInvoice = 'NewInvoice';
+  static const String deleteInvoiceConfirmationMultiple =
+      'DeleteInvoiceConfirmationMultiple';
+  static const String enterAdminPassword = 'EnterAdminPassword';
+  static const String confirmDelete = 'ConfirmDelete';
+  static const String addItem = 'AddItem';
+  static const String saveInvoice = 'SaveInvoice';
+  static const String print = 'Print';
+  static const String deleteInvoiceConfirmationSingle =
+      'DeleteInvoiceConfirmationSingle';
+  static const String invoiceDetails = 'InvoiceDetails';
+  static const String discountLE = 'DiscountLE';
+  static const String total = 'Total';
+  static const String discountPercentage = 'DiscountPercentage';
+  static const String totalAfterDiscount = 'TotalAfterDiscount';
+  static const String numberOfItems = 'NumberOfItems';
+  static const String itemType = 'ItemType';
+  static const String itemName = 'ItemName';
+  static const String quantityCannotBeZero = 'QuantityCannotBeZero';
+  static const String failedToGetInvoices = 'FailedToGetInvoices';
+  static const String invoiceAddedSuccessfully = 'InvoiceAddedSuccessfully';
+  static const String failedToAddInvoice = 'FailedToAddInvoice';
+  static const String invalidItemMessage = 'InvalidItemMessage';
+  static const String discountGreaterThanTotal = 'DiscountGreaterThanTotal';
+  static const String failedToGetInvoice = 'FailedToGetOwner';
+  static const String invoiceDeletedSuccessfully = 'InvoiceDeletedSuccessfully';
+  static const String failedToDeleteInvoice = 'FailedToDeleteInvoice';
+  static const String failedToDeleteSelectedInvoices =
+      'FailedToDeleteSelectedInvoices';
+  static const String noItemsFound = 'NoItemsFound';
+  static const String invoiceId = 'InvoiceId';
+  static const String adminPasswordIncorrect = 'AdminPasswordIncorrect';
+  static const String totalLE = 'TotalLE';
 }

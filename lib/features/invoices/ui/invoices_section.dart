@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/password_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
@@ -18,11 +20,11 @@ class InvoicesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Invoices',
+      title: AppStrings.invoices.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-          hintText: 'Search by date',
+          hintText: AppStrings.invoicesSearchText.tr(),
           onChanged: (value) {
             context.read<InvoicesCubit>().onSearchInvoice(value);
           },
@@ -33,8 +35,11 @@ class InvoicesSection extends StatelessWidget {
               return const SizedBox.shrink();
             }
             return SectionActionButton(
-              newText: 'New Invoice',
-              onNewPressed: () => showInvoiceSheet(context, 'New Invoice'),
+              newText: AppStrings.newInvoice.tr(),
+              onNewPressed: () => showInvoiceSheet(
+                context,
+                AppStrings.newInvoice.tr(),
+              ),
               onDeletePressed: () => _onDeleteDoctors(context),
               valueNotifier:
                   context.read<InvoicesCubit>().showDeleteButtonNotifier,
@@ -58,14 +63,14 @@ class InvoicesSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete these doctor profiles?\n'
-            'This action cannot be undone.',
+        alertMessage: AppStrings.deleteInvoiceConfirmationMultiple.tr(),
         onConfirm: () {
           context.pop();
           showDialog(
             context: context,
             builder: (ctx) => PasswordDialog(
-              actionTitle: 'Confirm Delete',
+              title: AppStrings.enterAdminPassword.tr(),
+              actionTitle: AppStrings.confirmDelete.tr(),
               onActionPressed: (password) {
                 context
                     .read<InvoicesCubit>()

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
@@ -11,9 +13,9 @@ class PasswordDialog extends StatefulWidget {
       {super.key,
       required this.actionTitle,
       required this.onActionPressed,
-      this.title});
+      required this.title});
 
-  final String? title;
+  final String title;
   final String actionTitle;
   final void Function(String password) onActionPressed;
 
@@ -46,7 +48,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
               height: 40.h,
               alignment: Alignment.center,
               child: Text(
-                widget.title ?? 'Enter your password',
+                widget.title,
                 style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
                   color: AppColors.white,
                 ),
@@ -55,7 +57,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
             verticalSpace(60),
             AppTextField(
               controller: passwordController,
-              hint: 'Password',
+              hint: AppStrings.password.tr(),
               isObscured: true,
               insideHint: true,
               maxWidth: 410.w,
@@ -68,7 +70,7 @@ class _PasswordDialogState extends State<PasswordDialog> {
                 Expanded(
                   child: AppTextButton(
                       height: 55.h,
-                      text: 'Cancel',
+                      text: AppStrings.cancel.tr(),
                       onPressed: () {
                         Navigator.pop(context);
                       }),

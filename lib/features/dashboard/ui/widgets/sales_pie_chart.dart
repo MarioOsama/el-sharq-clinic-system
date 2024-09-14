@@ -63,7 +63,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
       return PieChartSectionData(
         color: color,
         value: value,
-        title: !isTouched && touchedIndex != -1 ? null : displayedValue,
+        title: !isTouched && touchedIndex != -1 ? '' : displayedValue,
         radius: radius,
         titleStyle: AppTextStyles.font20DarkGreyMedium(context).copyWith(
           color: isTouched ? AppColors.black : AppColors.white,
