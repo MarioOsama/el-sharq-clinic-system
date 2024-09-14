@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
@@ -46,7 +48,7 @@ class _ChangeClinicNameDialogState extends State<ChangeClinicNameDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           verticalSpace(40),
-          const SectionTitle(title: 'Change Clinic Name'),
+          SectionTitle(title: AppStrings.changeClinicName.tr()),
           verticalSpace(40),
           _buildClinicNameTextField(),
           verticalSpace(40),
@@ -60,7 +62,7 @@ class _ChangeClinicNameDialogState extends State<ChangeClinicNameDialog> {
   AppTextField _buildClinicNameTextField() {
     return AppTextField(
       controller: _clinicNameController,
-      hint: 'Clinic Name',
+      hint: AppStrings.clinicName.tr(),
       maxWidth: double.infinity,
       maxHeight: 90.h,
     );
@@ -72,7 +74,7 @@ class _ChangeClinicNameDialogState extends State<ChangeClinicNameDialog> {
         Expanded(
           child: AppTextButton(
               height: 55.h,
-              text: 'Cancel',
+              text: AppStrings.cancel.tr(),
               onPressed: () {
                 context.pop();
               }),
@@ -81,7 +83,7 @@ class _ChangeClinicNameDialogState extends State<ChangeClinicNameDialog> {
         Expanded(
           child: AppTextButton(
             height: 55.h,
-            text: 'Confirm',
+            text: AppStrings.confirm.tr(),
             onPressed: () {
               widget.onNameChanged(_clinicNameController.text);
             },

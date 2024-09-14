@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -35,7 +37,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       clinicUsers = await _settingsRepo.getClinicUsers(authData);
       emit(SettingsInitial());
     } catch (e) {
-      emit(SettingsError('Failed to get users'));
+      emit(SettingsError(AppStrings.failedToGetUsers.tr()));
     }
   }
 
@@ -83,20 +85,22 @@ class SettingsCubit extends Cubit<SettingsState> {
       // Save preferences to firestore
       await _settingsRepo.updatePreferences(newAuthData!);
     } catch (e) {
-      emit(SettingsUpdatingError('Failed to update preferences'));
+      emit(SettingsUpdatingError(
+        AppStrings.failedToUpdatePreferences.tr(),
+      ));
       return;
     }
     authData = newAuthData;
     emit(SettingsUpdated(
         authData: newAuthData!,
-        message: 'Preferences updated successfully',
+        message: AppStrings.preferencesUpdatedSuccessfully.tr(),
         popCount: 0));
     saveButtonState.value = false;
   }
 
   void onChangePassword(String password, String newPassword) async {
     if (newPassword.trim().length < 6) {
-      emit(SettingsUpdatingError("Password must be at least 6 characters long",
+      emit(SettingsUpdatingError(AppStrings.passwordLengthRequirement.tr(),
           popCount: 0));
       return;
     } else {
@@ -108,13 +112,14 @@ class SettingsCubit extends Cubit<SettingsState> {
               userModel:
                   newAuthData!.userModel.copyWith(password: newPassword));
           emit(SettingsUpdated(
-              authData: newAuthData!,
-              message: 'Password updated successfully'));
+            authData: newAuthData!,
+            message: AppStrings.passwordUpdatedSuccessfully.tr(),
+          ));
         } catch (e) {
-          emit(SettingsUpdatingError('Failed to update password'));
+          emit(SettingsUpdatingError(AppStrings.failedToUpdatePassword.tr()));
         }
       } else {
-        emit(SettingsUpdatingError("The current password is incorrect",
+        emit(SettingsUpdatingError(AppStrings.incorrectCurrentPassword.tr(),
             popCount: 0));
       }
     }
@@ -123,7 +128,8 @@ class SettingsCubit extends Cubit<SettingsState> {
   void onClinicNameChanged(String clinicName) {
     if (clinicName.trim() == newAuthData!.clinicName) return;
     if (clinicName.trim().isEmpty) {
-      emit(SettingsUpdatingError('Clinic name cannot be empty', popCount: 0));
+      emit(SettingsUpdatingError(AppStrings.clinicNameCannotBeEmpty.tr(),
+          popCount: 0));
       return;
     }
     try {
@@ -131,20 +137,21 @@ class SettingsCubit extends Cubit<SettingsState> {
       newAuthData = newAuthData!.copyWith(clinicName: clinicName);
       _settingsRepo.updatePreferences(newAuthData!);
       emit(SettingsUpdated(
-          authData: newAuthData!, message: 'Clinic name updated successfully'));
+          authData: newAuthData!,
+          message: AppStrings.clinicNameUpdatedSuccessfully.tr()));
     } catch (e) {
-      emit(SettingsUpdatingError('Failed to update clinic name'));
+      emit(SettingsUpdatingError(AppStrings.failedToUpdateClinicName.tr()));
     }
   }
 
   void onAccountAdded(String accountName, String password) async {
     if (accountName.trim().isEmpty || password.trim().isEmpty) {
-      emit(SettingsUpdatingError('Account name and password cannot be empty',
+      emit(SettingsUpdatingError(
+          AppStrings.accountNameAndPasswordCannotBeEmpty.tr(),
           popCount: 0));
       return;
     } else if (password.trim().length < 6) {
-      emit(SettingsUpdatingError('Password must be at least 6 characters long',
-          popCount: 0));
+      emit(SettingsUpdatingError(AppStrings.passwordLengthRequirement.tr()));
       return;
     } else {
       try {
@@ -158,9 +165,10 @@ class SettingsCubit extends Cubit<SettingsState> {
         await _settingsRepo.addUserAccount(newUserAccount, newAuthData!);
         clinicUsers.insert(clinicUsers.length - 1, newUserAccount);
         emit(SettingsUpdated(
-            authData: newAuthData!, message: 'Account added successfully'));
+            authData: newAuthData!,
+            message: AppStrings.accountAddedSuccessfully.tr()));
       } catch (e) {
-        emit(SettingsUpdatingError('Failed to add account'));
+        emit(SettingsUpdatingError(AppStrings.failedToAddAccount.tr()));
       }
     }
   }
@@ -171,11 +179,11 @@ class SettingsCubit extends Cubit<SettingsState> {
       await _settingsRepo.deleteUserAccount(newAuthData!, userId);
       clinicUsers.removeWhere((element) => element.id == userId);
       emit(SettingsUpdated(
-          message: 'Account deleted successfully',
+          message: AppStrings.accountDeletedSuccessfully.tr(),
           authData: newAuthData!,
           popCount: 0));
     } catch (e) {
-      emit(SettingsUpdatingError('Failed to delete account'));
+      emit(SettingsUpdatingError(AppStrings.failedToDeleteAccount.tr()));
     }
   }
 

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
@@ -50,7 +52,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           verticalSpace(40),
-          const SectionTitle(title: 'Change Password'),
+          SectionTitle(title: AppStrings.changePassword.tr()),
           verticalSpace(30),
           _buildCurrentPasswordTextField(),
           verticalSpace(30),
@@ -69,11 +71,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     return AppTextField(
       controller: _currentPasswordController,
       maxWidth: double.infinity,
-      hint: 'Current Password',
+      hint: AppStrings.currentPassword.tr(),
       isObscured: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a password';
+          return AppStrings.pleaseEnterPassword.tr();
         }
         return null;
       },
@@ -84,11 +86,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     return AppTextField(
       controller: _newPasswordController,
       maxWidth: double.infinity,
-      hint: 'New Password',
+      hint: AppStrings.newPassword.tr(),
       isObscured: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a password';
+          return AppStrings.pleaseEnterPassword.tr();
         }
         return null;
       },
@@ -99,11 +101,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     return AppTextField(
       controller: _confirmNewPasswordController,
       maxWidth: double.infinity,
-      hint: 'Confirm New Password',
+      hint: AppStrings.confirmNewPassword.tr(),
       isObscured: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a password';
+          return AppStrings.pleaseEnterPassword.tr();
         }
         return null;
       },
@@ -116,7 +118,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         Expanded(
           child: AppTextButton(
               height: 55.h,
-              text: 'Cancel',
+              text: AppStrings.cancel.tr(),
               onPressed: () {
                 context.pop();
               }),
@@ -125,7 +127,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         Expanded(
           child: AppTextButton(
             height: 55.h,
-            text: 'Confirm',
+            text: AppStrings.confirm.tr(),
             onPressed: () {
               if (_validateInputs()) {
                 widget.onPasswordChanged(_currentPasswordController.text,
@@ -143,13 +145,13 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     if (_currentPasswordController.text.isEmpty ||
         _newPasswordController.text.isEmpty ||
         _confirmNewPasswordController.text.isEmpty) {
-      showErrorDialog(context, 'Please fill in all fields');
+      showErrorDialog(context, AppStrings.pleaseFillInAllFields.tr());
 
       return false;
     }
     if (_newPasswordController.text.trim() !=
         _confirmNewPasswordController.text.trim()) {
-      showErrorDialog(context, 'Passwords do not match');
+      showErrorDialog(context, AppStrings.passwordsDoNotMatch.tr());
 
       return false;
     }
@@ -160,11 +162,11 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
     showDialog(
         context: context,
         builder: (context) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: message,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 filled: false,
                 onPressed: () {
                   context.pop();

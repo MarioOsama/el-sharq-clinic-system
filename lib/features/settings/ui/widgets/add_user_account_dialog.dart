@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
@@ -45,7 +47,7 @@ class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           verticalSpace(40),
-          const SectionTitle(title: 'Add User Account'),
+          SectionTitle(title: AppStrings.addUserAccount.tr()),
           verticalSpace(40),
           _buildNameTextField(),
           verticalSpace(20),
@@ -61,7 +63,7 @@ class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
   AppTextField _buildNameTextField() {
     return AppTextField(
       controller: _nameController,
-      hint: 'Name',
+      hint: AppStrings.name.tr(),
       maxWidth: double.infinity,
       maxHeight: 90.h,
     );
@@ -70,7 +72,7 @@ class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
   AppTextField _buildPasswordTextField() {
     return AppTextField(
       controller: _passwordController,
-      hint: 'Password',
+      hint: AppStrings.password.tr(),
       isObscured: true,
       maxWidth: double.infinity,
       maxHeight: 90.h,
@@ -83,7 +85,7 @@ class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
         Expanded(
           child: AppTextButton(
               height: 55.h,
-              text: 'Cancel',
+              text: AppStrings.cancel.tr(),
               onPressed: () {
                 Navigator.pop(context);
               }),
@@ -92,7 +94,7 @@ class _AddUserAccountDialogState extends State<AddUserAccountDialog> {
         Expanded(
           child: AppTextButton(
               height: 55.h,
-              text: 'Add',
+              text: AppStrings.add.tr(),
               onPressed: () {
                 widget.onAccountAdded(
                     _nameController.text, _passwordController.text);

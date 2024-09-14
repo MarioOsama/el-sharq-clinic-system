@@ -20,6 +20,9 @@ class AppStrings {
   static const String quantity = 'Quantity';
   static const String le = 'LE';
   static const String all = 'All';
+  static const String save = 'Save';
+  static const String confirm = 'Confirm';
+  static const String add = 'Add';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -229,4 +232,42 @@ class AppStrings {
   static const String invoiceId = 'InvoiceId';
   static const String adminPasswordIncorrect = 'AdminPasswordIncorrect';
   static const String totalLE = 'TotalLE';
+
+  // Settings Strings
+  static const String users = 'Users';
+  static const String deleteAccountConfirmation = 'DeleteAccountConfirmation';
+  static const String deleteAccount = 'DeleteAccount';
+  static const String language = 'Language';
+  static const String changePassword = 'ChangePassword';
+  static const String lowStockLimit = 'LowStockLimit';
+  static const String defaultLowStockLimit = 'DefaultLowStockLimit';
+  static const String limit = 'Limit';
+  static const String currentPassword = 'CurrentPassword';
+  static const String pleaseEnterPassword = 'PleaseEnterPassword';
+  static const String newPassword = 'NewPassword';
+  static const String confirmNewPassword = 'ConfirmNewPassword';
+  static const String changeClinicName = 'ChangeClinicName';
+  static const String clinicName = 'ClinicName';
+  static const String pleaseFillInAllFields = 'PleaseFillInAllFields';
+  static const String passwordsDoNotMatch = 'PasswordsDoNotMatch';
+  static const String addUserAccount = 'AddUserAccount';
+  static const String failedToGetUsers = 'FailedToGetUsers';
+  static const String failedToUpdatePreferences = 'FailedToUpdatePreferences';
+  static const String preferencesUpdatedSuccessfully =
+      'PreferencesUpdatedSuccessfully';
+  static const String passwordLengthRequirement = 'PasswordLengthRequirement';
+  static const String passwordUpdatedSuccessfully =
+      'PasswordUpdatedSuccessfully';
+  static const String failedToUpdatePassword = 'FailedToUpdatePassword';
+  static const String incorrectCurrentPassword = 'IncorrectCurrentPassword';
+  static const String clinicNameCannotBeEmpty = 'ClinicNameCannotBeEmpty';
+  static const String clinicNameUpdatedSuccessfully =
+      'ClinicNameUpdatedSuccessfully';
+  static const String failedToUpdateClinicName = 'FailedToUpdateClinicName';
+  static const String accountNameAndPasswordCannotBeEmpty =
+      'AccountNameAndPasswordCannotBeEmpty';
+  static const String accountAddedSuccessfully = 'AccountAddedSuccessfully';
+  static const String failedToAddAccount = 'FailedToAddAccount';
+  static const String accountDeletedSuccessfully = 'AccountDeletedSuccessfully';
+  static const String failedToDeleteAccount = 'FailedToDeleteAccount';
 }

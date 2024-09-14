@@ -42,7 +42,7 @@ final class SettingsUpdated extends SettingsState {
         context: context,
         barrierDismissible: false,
         builder: (context) => AppDialog(
-              title: 'Success',
+              title: AppStrings.success.tr(),
               content: message,
               dialogType: DialogType.success,
             ));
@@ -69,11 +69,11 @@ final class SettingsUpdatingError extends SettingsState {
     showDialog(
         context: context,
         builder: (context) => AppDialog(
-              title: 'Error',
+              title: AppStrings.error.tr(),
               content: message,
               dialogType: DialogType.error,
               action: AppTextButton(
-                text: 'OK',
+                text: AppStrings.ok.tr(),
                 filled: false,
                 onPressed: () {
                   context.pop();
