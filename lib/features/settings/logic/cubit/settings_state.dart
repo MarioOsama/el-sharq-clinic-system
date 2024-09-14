@@ -13,7 +13,7 @@ final class SettingsLoading extends SettingsState {
   void takeAction(BuildContext context) {
     showDialog(
         context: context,
-        builder: (context) => const AnimatedLoadingIndicator());
+        builder: (context) => const FadedAnimatedLoadingIcon());
   }
 }
 

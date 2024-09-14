@@ -5,7 +5,7 @@ import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
@@ -60,7 +60,7 @@ class SettingsBody extends StatelessWidget {
 
   Center _buildLoading() {
     return const Center(
-      child: AnimatedLoadingIndicator(),
+      child: FadedAnimatedLoadingIcon(),
     );
   }
 

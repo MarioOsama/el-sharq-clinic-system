@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
-import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
+import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/app_grid_view.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
@@ -52,7 +52,7 @@ class ProductsBody extends StatelessWidget {
     } else if (state is ProductsSearchSuccess) {
       return _buildSuccess(context, state.products, state.selectedProductType);
     } else {
-      return const AnimatedLoadingIndicator();
+      return const FadedAnimatedLoadingIcon();
     }
   }
 

@@ -61,7 +61,7 @@ class TodayHighlightsRow extends StatelessWidget {
           title: AppStrings.revenue.tr(),
           value: revenue,
           iconData: Icons.monetization_on,
-          decimals: 2,
+          decimals: 1,
         ),
       ),
     ];
