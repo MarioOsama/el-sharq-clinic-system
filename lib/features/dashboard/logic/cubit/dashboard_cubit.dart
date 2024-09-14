@@ -138,7 +138,7 @@ class DashboardCubit extends Cubit<DashboardState> {
       final double invoiceDiscountPercentage = invoice.discount / invoice.total;
       for (var item in invoice.items) {
         final double itemPrice = item.price * item.quantity;
-        salesMap[item.type] = (salesMap[item.type] ?? 0) +
+        salesMap[item.type.tr()] = (salesMap[item.type.tr()] ?? 0) +
             itemPrice -
             invoiceDiscountPercentage * itemPrice;
       }

@@ -66,11 +66,11 @@ final class ProductInvalid extends ProductsState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),
@@ -97,7 +97,7 @@ final class ProductSuccessOperation extends ProductsState {
       barrierDismissible: false,
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Success',
+        title: AppStrings.success.tr(),
         content: message,
         dialogType: DialogType.success,
       ),

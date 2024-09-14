@@ -42,6 +42,7 @@ Future<void> showServiceSheet(BuildContext context, String title,
             child: AppTextField(
               controller: servicesCubit.servicePriceController,
               hint: AppStrings.price.tr(),
+              numeric: true,
               enabled: editable,
             ),
           ),

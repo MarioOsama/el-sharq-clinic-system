@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
@@ -40,7 +42,7 @@ class ProductsSwitchButton extends StatelessWidget {
       final type = ProductType.values[index];
       return ButtonSegment(
         value: type,
-        label: Text(type.name,
+        label: Text(type.name.capitalize().tr(),
             style: AppTextStyles.font24DarkGreyMedium(context).copyWith(
                 color: productType == type
                     ? AppColors.white

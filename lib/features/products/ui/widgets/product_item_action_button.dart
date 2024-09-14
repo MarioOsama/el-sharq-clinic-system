@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
@@ -22,10 +24,10 @@ class ProductItemActionButton extends StatelessWidget {
         return [
           PopupMenuItem(
             value: 'Edit',
-            onTap: () =>
-                showProductSheet(context, 'Edit Product', product: product),
+            onTap: () => showProductSheet(context, AppStrings.editProduct.tr(),
+                product: product),
             child: Text(
-              'Edit',
+              AppStrings.edit.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
@@ -35,9 +37,7 @@ class ProductItemActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage:
-                      'Are you sure you want to delete this product?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteProductConfirmation.tr(),
                   onConfirm: () {
                     context.read<ProductsCubit>().onDeleteProduct(product.id);
                     ctx.pop();
@@ -49,7 +49,7 @@ class ProductItemActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

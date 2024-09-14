@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_field.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
@@ -24,7 +26,7 @@ class InvoiceSummary extends StatelessWidget {
           children: [
             Expanded(
               child: AppTextField(
-                hint: 'Discount (LE)',
+                hint: AppStrings.discountLE.tr(),
                 initialValue: invoiceItem != null
                     ? invoiceItem!.discount.toString()
                     : '0',
@@ -43,12 +45,13 @@ class InvoiceSummary extends StatelessWidget {
               flex: 2,
               child: Column(
                 children: [
-                  _buildSummaryItem('Total', summaryMap['Total']!, context),
                   _buildSummaryItem(
-                      'Discount (%)', summaryMap['Discount (%)']!, context),
-                  _buildSummaryItem('Total after discount',
+                      AppStrings.total.tr(), summaryMap['Total']!, context),
+                  _buildSummaryItem(AppStrings.discountPercentage.tr(),
+                      summaryMap['Discount (%)']!, context),
+                  _buildSummaryItem(AppStrings.totalAfterDiscount.tr(),
                       summaryMap['Total after discount']!, context),
-                  _buildSummaryItem('Number of items',
+                  _buildSummaryItem(AppStrings.numberOfItems.tr(),
                       summaryMap['Number of items']!, context),
                 ],
               ),

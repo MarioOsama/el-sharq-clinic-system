@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/custom_side_sheet.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
@@ -48,7 +50,7 @@ Future<void> showInvoiceSheet(BuildContext context, String title,
 
 AppTextButton _buildAddItemButtons(BuildContext context, bool editable) {
   return AppTextButton(
-    text: 'Add Item',
+    text: AppStrings.addItem.tr(),
     width: MediaQuery.sizeOf(context).width,
     onPressed: () => context.read<InvoicesCubit>().incrementItems(),
     height: 70.h,
@@ -64,7 +66,7 @@ _buildActionIfNeeded(BuildContext context, bool newInvoice) {
 
 AppTextButton _buildNewAction(BuildContext context) {
   return AppTextButton(
-      text: 'Save Invoice',
+      text: AppStrings.saveInvoice.tr(),
       width: MediaQuery.sizeOf(context).width,
       height: 70.h,
       onPressed: () => context.read<InvoicesCubit>().onSaveNewInvoice(context));

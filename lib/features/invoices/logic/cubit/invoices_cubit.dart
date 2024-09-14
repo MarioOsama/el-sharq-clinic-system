@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/models/selable_item_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/repos/invoices_repo.dart';
@@ -35,6 +38,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
   List<ServiceModel> servicesList = [];
   List<ProductModel> medicinesList = [];
   List<ProductModel> accessoriesList = [];
+  UserModel adminUser = UserModel.empty();
 
   int pageLength = 10;
 
@@ -51,10 +55,11 @@ class InvoicesCubit extends Cubit<InvoicesState> {
       AuthDataModel authenticationData, BuildContext context) {
     _setAuthData(authenticationData);
     _setupSelableItemsListsData(context);
+    _getAdminUser();
     _getPaginatedInvoices();
   }
 
-  void _setupSelableItemsListsData(BuildContext context) async {
+  void _setupSelableItemsListsData(BuildContext context) {
     final MainCubit mainCubit = context.read<MainCubit>();
     servicesList = mainCubit.servicesList;
     medicinesList = mainCubit.medicinesList;
@@ -77,6 +82,10 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     authData = authenticationData;
   }
 
+  void _getAdminUser() async {
+    adminUser = await _invoicesRepo.getAdminUser(authData!.clinicIndex);
+  }
+
   void _getPaginatedInvoices() async {
     emit(InvoicesLoading());
     try {
@@ -90,7 +99,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
       selectedRows = List.filled(invoicesList.length, false);
       emit(InvoicesSuccess(invoices: invoicesList));
     } catch (e) {
-      emit(InvoicesError(message: 'Failed to get the invoices'));
+      emit(InvoicesError(message: AppStrings.failedToGetInvoices.tr()));
     }
   }
 
@@ -107,7 +116,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         selectedRows = List.filled(invoicesList.length, false);
         emit(InvoicesSuccess(invoices: invoicesList));
       } catch (e) {
-        emit(InvoicesError(message: 'Failed to get the Invoices'));
+        emit(InvoicesError(message: AppStrings.failedToGetInvoices.tr()));
       }
     }
   }
@@ -124,9 +133,9 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     if (isAdded) {
       _decrementInvoiceItemsQuantity(context);
       invoicesList.insert(0, invoiceInfo);
-      _onSuccessOperation('Invoice added successfully');
+      _onSuccessOperation(AppStrings.invoiceAddedSuccessfully.tr());
     } else {
-      emit(InvoicesError(message: 'Failed to add the invoice'));
+      emit(InvoicesError(message: AppStrings.failedToAddInvoice.tr()));
     }
   }
 
@@ -199,14 +208,15 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         itemFormsKeys[i].currentState!.save();
       } else {
         emit(InvoiceConstrutingError(
-          message: 'Item ${i + 1} is not valid, please check it',
+          message:
+              '${AppStrings.item.tr()} ${i + 1} ${AppStrings.invalidItemMessage.tr()}',
         ));
         return false;
       }
     }
     if (invoiceInfo.discount > invoiceInfo.total) {
       emit(InvoiceConstrutingError(
-        message: 'Discount can\'t be greater than total',
+        message: AppStrings.discountGreaterThanTotal.tr(),
       ));
       return false;
     }
@@ -231,7 +241,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
             as InvoiceModel;
       }
     } catch (e) {
-      emit(InvoicesError(message: 'Failed to get the owner'));
+      emit(InvoicesError(message: AppStrings.failedToGetInvoice.tr()));
       rethrow;
     }
   }
@@ -255,9 +265,9 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     if (isDeleted) {
       invoicesList.removeWhere((invoice) => invoice!.id == id);
       showDeleteButtonNotifier.value = false;
-      _onSuccessOperation('Invoice deleted successfully');
+      _onSuccessOperation(AppStrings.invoiceDeletedSuccessfully.tr());
     } else {
-      emit(InvoicesError(message: 'Failed to delete the invoice'));
+      emit(InvoicesError(message: AppStrings.failedToDeleteInvoice.tr()));
     }
   }
 
@@ -277,9 +287,11 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         invoicesList.removeWhere((element) => element!.id == doctorId);
       }
       showDeleteButtonNotifier.value = false;
-      _onSuccessOperation('Invoices deleted successfully', popCount: 1);
+      _onSuccessOperation(AppStrings.invoiceDeletedSuccessfully.tr(),
+          popCount: 1);
     } catch (e) {
-      emit(InvoicesError(message: 'Failed to delete these selected cases'));
+      emit(InvoicesError(
+          message: AppStrings.failedToDeleteSelectedInvoices.tr()));
     }
   }
 
@@ -337,17 +349,6 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     updateTotal();
   }
 
-  void onSaveInvoiceItemFormField(String field, String? value, int index) {
-    itemsList[index] = itemsList[index].copyWith(
-      name: field == 'name' ? value! : itemsList[index].name,
-      type: field == 'type' ? value! : itemsList[index].type,
-      quantity: field == 'quantity'
-          ? double.parse(value!)
-          : itemsList[index].quantity,
-      price: field == 'price' ? double.parse(value!) : itemsList[index].price,
-    );
-  }
-
   void onMultiSelection(int index, bool selected) {
     if (selectedRows.elementAt(index)) {
       selectedRows[index] = false;
@@ -403,9 +404,9 @@ class InvoicesCubit extends Cubit<InvoicesState> {
           ? filteredItems.sublist(0, 20)
           : filteredItems.isEmpty
               ? [
-                  const DropdownMenuEntry(
+                  DropdownMenuEntry(
                     value: 'No items found',
-                    label: 'No items found',
+                    label: AppStrings.noItemsFound.tr(),
                   ),
                 ]
               : filteredItems;
@@ -497,20 +498,22 @@ class InvoicesCubit extends Cubit<InvoicesState> {
 
   void onDeleteInvoice(
     String invoiceId,
-    String clinicPassword,
-  ) {
-    if (authData!.userModel.password == clinicPassword) {
+    String enteredPassword,
+  ) async {
+    if (adminUser.password == enteredPassword) {
       deleteInvoice(invoiceId);
     } else {
-      emit(InvoiceConstrutingError(message: 'Password is incorrect'));
+      emit(InvoiceConstrutingError(
+          message: AppStrings.adminPasswordIncorrect.tr()));
     }
   }
 
-  void onDeleteSelectedInvoices(String clinicPassword) {
-    if (authData!.userModel.password == clinicPassword) {
+  void onDeleteSelectedInvoices(String enteredPassword) async {
+    if (adminUser.password == enteredPassword) {
       deleteSelectedInvoices();
     } else {
-      emit(InvoiceConstrutingError(message: 'Password is incorrect'));
+      emit(InvoiceConstrutingError(
+          message: AppStrings.adminPasswordIncorrect.tr()));
     }
   }
 

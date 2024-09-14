@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 
 class FirebaseServices {
   FirebaseServices(this._firestore);
@@ -280,5 +281,28 @@ class FirebaseServices {
         querySnapshot.docs.map((doc) => fromFirestore(doc)).toList();
 
     return items;
+  }
+
+  Future<UserModel> getAdminUser(int clinicIndex) async {
+    // Fetch the clinic document
+    final clinicDoc = await _getClinicDoc(clinicIndex);
+
+    // Access the 'users' sub-collection within the clinic document
+    final targetedCollection = clinicDoc.reference.collection('users');
+
+    // Query Firestore for user with the role 'admin'
+    final QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await targetedCollection
+            .where('role', isEqualTo: 'admin')
+            .limit(1)
+            .get();
+
+    // Convert querySnapshot into List<UserModel>
+    final UserModel user = querySnapshot.docs
+        .map((doc) => UserModel.fromFirestore(
+            doc as DocumentSnapshot<Map<String, dynamic>>))
+        .first;
+
+    return user;
   }
 }

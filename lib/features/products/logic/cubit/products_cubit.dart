@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -202,7 +204,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   void onRequiredFieldEmpty(String fieldName) {
     emit(
       ProductInvalid(
-          message: 'Please enter a valid $fieldName',
+          message: '${AppStrings.pleaseEnter.tr()} $fieldName',
           selectedProductType: selectedProductType),
     );
   }
@@ -212,11 +214,11 @@ class ProductsCubit extends Cubit<ProductsState> {
       id: productInfo.id == ''
           ? DateTime.now().millisecondsSinceEpoch.toString()
           : productInfo.id,
-      title: field == 'title' ? value : productInfo.title,
-      price: field == 'price' ? double.parse(value!) : productInfo.price,
+      title: field == 'Title' ? value : productInfo.title,
+      price: field == 'Price' ? double.parse(value!) : productInfo.price,
       quantity:
-          field == 'quantity' ? double.parse(value!) : productInfo.quantity,
-      description: field == 'description' ? value : productInfo.description,
+          field == 'Quantity' ? double.parse(value!) : productInfo.quantity,
+      description: field == 'Description' ? value : productInfo.description,
     );
   }
 
@@ -226,12 +228,12 @@ class ProductsCubit extends Cubit<ProductsState> {
       final bool isExistingProduct = _checkProductExistance();
       if (isExistingProduct) {
         emit(ProductInvalid(
-            message: 'Product already exist',
+            message: AppStrings.productAlreadyExist.tr(),
             selectedProductType: selectedProductType));
         return;
       }
       await addProduct();
-      _onSuccessOperation('Product saved successfully');
+      _onSuccessOperation(AppStrings.productSaved.tr());
     }
   }
 
@@ -241,18 +243,18 @@ class ProductsCubit extends Cubit<ProductsState> {
       final bool isExistingProduct = _checkProductExistance();
       if (isExistingProduct) {
         emit(ProductInvalid(
-            message: 'Product already exist',
+            message: AppStrings.productAlreadyExist.tr(),
             selectedProductType: selectedProductType));
         return;
       }
       await updateProduct();
-      _onSuccessOperation('Product updated successfully');
+      _onSuccessOperation(AppStrings.productUpdated.tr());
     }
   }
 
   void onDeleteProduct(String id) async {
     await deleteProduct(id);
-    _onSuccessOperation('Product deleted successfully', popCount: 1);
+    _onSuccessOperation(AppStrings.productDeleted.tr(), popCount: 1);
   }
 
   void onSearch(String value) {

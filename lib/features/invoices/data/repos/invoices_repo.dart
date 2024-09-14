@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
+import 'package:el_sharq_clinic/features/auth/data/local/models/user_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 
@@ -73,5 +74,9 @@ class InvoicesRepo {
     } else {
       return [];
     }
+  }
+
+  Future<UserModel> getAdminUser(int clinicIndex) async {
+    return _firebaseServices.getAdminUser(clinicIndex);
   }
 }

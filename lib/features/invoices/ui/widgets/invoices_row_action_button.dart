@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/password_dialog.dart';
@@ -22,7 +24,7 @@ class InvoicesRowActionButton extends StatelessWidget {
               context.read<InvoicesCubit>().onPrintInvoice(id);
             },
             child: Text(
-              'Print',
+              AppStrings.print.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
@@ -32,16 +34,15 @@ class InvoicesRowActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage:
-                      'Are you sure you want to delete this invoice?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteInvoiceConfirmationSingle.tr(),
                   onConfirm: () {
                     // Show dialog to confirm deleting process and ask user for clinic password to delete
                     ctx.pop();
                     showDialog(
                       context: context,
                       builder: (ctx) => PasswordDialog(
-                        actionTitle: 'Confirm Delete',
+                        title: AppStrings.enterAdminPassword.tr(),
+                        actionTitle: AppStrings.confirmDelete.tr(),
                         onActionPressed: (password) {
                           context
                               .read<InvoicesCubit>()
@@ -57,7 +58,7 @@ class InvoicesRowActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

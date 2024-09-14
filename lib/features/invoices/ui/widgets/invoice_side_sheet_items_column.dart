@@ -26,7 +26,7 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ..._getItems(cubit),
+        ..._getItems(cubit, context),
         verticalSpace(30),
         InvoiceSummary(
           total: cubit.invoiceInfo.total,
@@ -37,7 +37,8 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
     );
   }
 
-  List<Widget> _getItems(InvoicesCubit cubit) {
+  List<Widget> _getItems(InvoicesCubit cubit, BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
     return List.generate(
       cubit.invoiceInfo.items.length,
       (index) => Padding(
@@ -51,17 +52,19 @@ class InvoiceSideSheetItemsColumn extends StatelessWidget {
               cubitContext: cubitContext,
               invoiceItem: editable ? null : cubit.invoiceInfo.items[index],
             ),
-            if (index != 0 && editable) _buildRemoveButton(index, cubit),
+            if (index != 0 && editable)
+              _buildRemoveButton(index, cubit, locale),
           ],
         ),
       ),
     );
   }
 
-  Positioned _buildRemoveButton(int index, InvoicesCubit cubit) {
+  Positioned _buildRemoveButton(int index, InvoicesCubit cubit, Locale locale) {
     return Positioned(
-      top: 30.h,
-      right: 0,
+      top: 25.h,
+      right: locale.languageCode == 'en' ? 0 : null,
+      left: locale.languageCode == 'en' ? null : 0,
       child: IconButton(
         hoverColor: Colors.transparent,
         icon: const Icon(
