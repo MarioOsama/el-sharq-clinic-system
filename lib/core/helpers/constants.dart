@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/features/home/data/models/drawer_item_model.dart';
 import 'package:flutter/material.dart';
@@ -15,21 +14,19 @@ abstract class AppConstant {
   static const List<String> themes = ['Light', 'Dark'];
 
   // Drawer Items
-  static List<DrawerItemModel> drawerItems = [
+  static List<DrawerItemModel> drawerItems = const [
     DrawerItemModel(
-        title: AppStrings.dashboard.tr(), icon: Icons.dashboard_outlined),
-    DrawerItemModel(title: AppStrings.casesHistory.tr(), icon: Icons.history),
+        title: AppStrings.dashboard, icon: Icons.dashboard_outlined),
+    DrawerItemModel(title: AppStrings.casesHistory, icon: Icons.history),
+    DrawerItemModel(title: AppStrings.petOwners, icon: Icons.people_outline),
+    DrawerItemModel(title: AppStrings.doctors, icon: Icons.person_outline),
     DrawerItemModel(
-        title: AppStrings.petOwners.tr(), icon: Icons.people_outline),
-    DrawerItemModel(title: AppStrings.doctors.tr(), icon: Icons.person_outline),
+        title: AppStrings.services, icon: Icons.medical_services_outlined),
     DrawerItemModel(
-        title: AppStrings.services.tr(), icon: Icons.medical_services_outlined),
+        title: AppStrings.products, icon: Icons.shopping_bag_outlined),
     DrawerItemModel(
-        title: AppStrings.products.tr(), icon: Icons.shopping_bag_outlined),
-    DrawerItemModel(
-        title: AppStrings.invoices.tr(), icon: Icons.attach_money_outlined),
-    DrawerItemModel(
-        title: AppStrings.settings.tr(), icon: Icons.settings_outlined),
+        title: AppStrings.invoices, icon: Icons.attach_money_outlined),
+    DrawerItemModel(title: AppStrings.settings, icon: Icons.settings_outlined),
   ];
 
   // Case History

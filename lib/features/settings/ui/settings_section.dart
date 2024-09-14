@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
-import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/features/settings/logic/cubit/settings_cubit.dart';
@@ -29,9 +28,8 @@ class SettingsSection extends StatelessWidget {
             width: 200.w,
             height: 55.h,
             icon: Icons.save,
-            onPressed: () => context
-                .read<SettingsCubit>()
-                .onSavePreferences(context.read<MainCubit>()),
+            onPressed: () =>
+                context.read<SettingsCubit>().onSavePreferences(context),
             enabled: saveButtonState.value,
           ),
         )

@@ -79,7 +79,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
-  void onSavePreferences(MainCubit mainCubit) async {
+  void onSavePreferences(BuildContext context) async {
     try {
       emit(SettingsLoading());
       // Save preferences to firestore
@@ -91,11 +91,26 @@ class SettingsCubit extends Cubit<SettingsState> {
       return;
     }
     authData = newAuthData;
+    if (context.mounted) {
+      _updateLocale(context, newAuthData!.language);
+      await Future.delayed(const Duration(seconds: 1));
+    }
     emit(SettingsUpdated(
         authData: newAuthData!,
         message: AppStrings.preferencesUpdatedSuccessfully.tr(),
         popCount: 0));
     saveButtonState.value = false;
+  }
+
+  void _updateLocale(BuildContext context, String language) {
+    switch (language) {
+      case 'English':
+        context.setLocale(const Locale('en'));
+        break;
+      case 'العربية':
+        context.setLocale(const Locale('ar'));
+        break;
+    }
   }
 
   void onChangePassword(String password, String newPassword) async {
