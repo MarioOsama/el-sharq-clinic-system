@@ -36,11 +36,11 @@ final class ServicesError extends ServicesState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),
@@ -72,9 +72,9 @@ final class ServiceAdded extends ServicesState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Service saved successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.serviceSaved.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -97,9 +97,9 @@ final class ServiceUpdated extends ServicesState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Service updated successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.serviceUpdated.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -121,9 +121,9 @@ final class ServiceDeleted extends ServicesState {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => const AppDialog(
-        title: 'Success',
-        content: 'Service deleted successfully',
+      builder: (ctx) => AppDialog(
+        title: AppStrings.success.tr(),
+        content: AppStrings.serviceDeleted.tr(),
         dialogType: DialogType.success,
       ),
     );
@@ -147,11 +147,11 @@ final class ServiceError extends ServicesState {
     showDialog(
       context: context,
       builder: (ctx) => AppDialog(
-        title: 'Error',
+        title: AppStrings.error.tr(),
         content: message,
         dialogType: DialogType.error,
         action: AppTextButton(
-          text: 'OK',
+          text: AppStrings.ok.tr(),
           onPressed: () => context.pop(),
           filled: false,
         ),

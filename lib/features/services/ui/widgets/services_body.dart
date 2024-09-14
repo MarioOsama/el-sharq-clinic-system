@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
@@ -52,7 +54,7 @@ class ServicesBody extends StatelessWidget {
   Widget _buildSuccess(List<ServiceModel> services, BuildContext context) {
     if (services.isEmpty) {
       return Center(
-          child: Text('There are no services yet',
+          child: Text(AppStrings.noServicesYet.tr(),
               style: AppTextStyles.font24DarkGreyMedium(context)));
     }
     return AppGridView(

@@ -15,6 +15,8 @@ class AppStrings {
   static const String name = 'Name';
   static const String search = 'Search';
   static const String pleaseEnter = 'PleaseEnter';
+  static const String price = 'Price';
+  static const String description = 'Description';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -116,6 +118,10 @@ class AppStrings {
   static const String report = 'Report';
   static const String pleaseWritePetReport = 'PleaseWritePetReport';
 
+  // Products Strings
+  static const String medicines = 'Medicines';
+  static const String accessories = 'Accessories';
+
   // Doctors Strings
   static const String doctor = 'Doctor';
   static const String doctorId = 'DoctorID';
@@ -147,7 +153,26 @@ class AppStrings {
       'FailedToDeleteSelectedDoctors';
   static const String failedToDeleteDoctor = 'FailedToDeleteDoctor';
 
-  // Products Strings
-  static const String medicines = 'Medicines';
-  static const String accessories = 'Accessories';
+  // Services Strings
+  static const String servicesSearchText = 'ServicesSearchText';
+  static const String newServices = 'NewServices';
+  static const String newService = 'NewService';
+  static const String serviceName = 'ServiceName';
+  static const String saveService = 'SaveService';
+  static const String editService = 'EditService';
+  static const String updateService = 'UpdateService';
+  static const String icon = 'Icon';
+  static const String noServicesYet = 'NoServicesYet';
+  static const String serviceDetails = 'ServiceDetails';
+  static const String deleteServiceConfirmation = 'DeleteServiceConfirmation';
+  static const String serviceSaved = 'ServiceSaved';
+  static const String serviceUpdated = 'ServiceUpdated';
+  static const String serviceDeleted = 'ServiceDeleted';
+  static const String serviceNameExists = 'ServiceNameExists';
+  static const String failedToAddService = 'FailedToAddService';
+  static const String serviceNameRequired = 'ServiceNameRequired';
+  static const String pleaseEnterValidPrice = 'PleaseEnterValidPrice';
+  static const String failedToUpdateService = 'FailedToUpdateService';
+  static const String failedToDeleteService = 'FailedToDeleteService';
+  static const String failedToGetServices = 'FailedToGetServices';
 }

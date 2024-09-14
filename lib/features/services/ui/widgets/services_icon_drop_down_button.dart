@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/theming/assets.dart';
@@ -23,7 +25,7 @@ class ServicesIconDropDownButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Icon',
+          AppStrings.icon.tr(),
           style: AppTextStyles.font16DarkGreyMedium(context)
               .copyWith(color: AppColors.darkGrey.withOpacity(0.5)),
         ),
