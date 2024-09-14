@@ -22,7 +22,7 @@ class CaseHistoryTableActionButton extends StatelessWidget {
       itemBuilder: (ctx) {
         return [
           PopupMenuItem(
-            value: AppStrings.edit.tr(),
+            value: 'Edit',
             onTap: () {
               final caseHistoryModel =
                   context.read<CaseHistoryCubit>().getCaseHistoryById(id);
@@ -35,7 +35,7 @@ class CaseHistoryTableActionButton extends StatelessWidget {
             ),
           ),
           PopupMenuItem(
-            value: AppStrings.delete.tr(),
+            value: 'Delete',
             onTap: () {
               showDialog(
                 context: ctx,

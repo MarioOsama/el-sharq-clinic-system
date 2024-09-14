@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/animated_loading_indicator.dart';
 import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
@@ -50,7 +54,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       selectedRows = List.filled(doctorsList.length, false);
       emit(DoctorsSuccess(doctors: doctorsList));
     } catch (e) {
-      emit(DoctorsError('Failed to get the doctors'));
+      emit(DoctorsError(AppStrings.failedDoctors.tr()));
     }
   }
 
@@ -67,7 +71,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
         selectedRows = List.filled(doctorsList.length, false);
         emit(DoctorsSuccess(doctors: doctorsList));
       } catch (e) {
-        emit(DoctorsError('Failed to get the doctors'));
+        emit(DoctorsError(AppStrings.failedDoctors.tr()));
       }
     }
   }
@@ -79,6 +83,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   // Save doctor methods
   void onSaveDoctor() async {
     if (doctorFormKey.currentState!.validate()) {
+      log(doctorInfo.toString());
       emit(DoctorLoading());
       doctorFormKey.currentState!.save();
       await _setDoctorId();
@@ -89,7 +94,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
         doctorsList.insert(0, doctorInfo);
         _onSuccessOperation();
       } else {
-        emit(DoctorError('Failed to save the doctor'));
+        emit(DoctorError(AppStrings.failedToSaveDoctor.tr()));
       }
     }
   }
@@ -117,7 +122,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       final bool doctorUpdatingSuccess = await _updateDoctor();
       if (!doctorUpdatingSuccess) {
         emit(
-          DoctorError('Failed to update doctor info'),
+          DoctorError(AppStrings.failedToUpdateDoctor.tr()),
         );
       }
       final int index =
@@ -152,7 +157,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       emit(DoctorDeleted());
       _onSuccessOperation();
     } catch (e) {
-      emit(DoctorsError('Failed to delete these selected cases'));
+      emit(DoctorsError(AppStrings.failedToDeleteSelectedDoctors.tr()));
     }
   }
 
@@ -165,7 +170,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
       _resetShowDeleteButtonNotifier();
       _onSuccessOperation();
     } else {
-      emit(DoctorsError('Failed to delete the doctor'));
+      emit(DoctorsError(AppStrings.failedToDeleteDoctor.tr()));
     }
   }
 
@@ -220,13 +225,15 @@ class DoctorsCubit extends Cubit<DoctorsState> {
 
   void onSaveDoctorFormField(String field, String? value) {
     doctorInfo = doctorInfo.copyWith(
-      name: field == 'Doctor Name' ? value : doctorInfo.name,
-      speciality: field == 'Speciality' ? value : doctorInfo.speciality,
-      email: field == 'Email' ? value : doctorInfo.email,
-      address: field == 'Address' ? value : doctorInfo.address,
-      phone: field == 'Phone Number' ? value : doctorInfo.phone,
-      anotherPhone:
-          field == 'Another Phone Number' ? value : doctorInfo.anotherPhone,
+      name: field == AppStrings.doctorName ? value : doctorInfo.name,
+      speciality:
+          field == AppStrings.speciality ? value : doctorInfo.speciality,
+      email: field == AppStrings.email ? value : doctorInfo.email,
+      address: field == AppStrings.address ? value : doctorInfo.address,
+      phone: field == AppStrings.phone ? value : doctorInfo.phone,
+      anotherPhone: field == AppStrings.anotherPhoneNumber
+          ? value
+          : doctorInfo.anotherPhone,
       registrationDate: doctorInfo.registrationDate,
     );
   }
@@ -259,7 +266,7 @@ class DoctorsCubit extends Cubit<DoctorsState> {
             as DoctorModel;
       }
     } catch (e) {
-      emit(DoctorsError('Failed to get the doctor'));
+      emit(DoctorsError(AppStrings.failedToGetDoctors.tr()));
       rethrow;
     }
   }

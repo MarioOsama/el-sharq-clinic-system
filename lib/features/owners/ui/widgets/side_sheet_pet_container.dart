@@ -62,7 +62,7 @@ class SideSheetPetContainer extends StatelessWidget {
                   insideHint: false,
                   onSaved: (value) {
                     if (onSaved != null) {
-                      onSaved!('Name', value);
+                      onSaved!(AppStrings.name, value);
                     }
                   },
                 ),
@@ -112,7 +112,7 @@ class SideSheetPetContainer extends StatelessWidget {
                   insideHint: false,
                   onSaved: (value) {
                     if (onSaved != null) {
-                      onSaved!('Vaccinations', value);
+                      onSaved!(AppStrings.vaccinations, value);
                     }
                   },
                 ),
@@ -126,7 +126,7 @@ class SideSheetPetContainer extends StatelessWidget {
                   insideHint: false,
                   onSaved: (value) {
                     if (onSaved != null) {
-                      onSaved!('Treatments', value);
+                      onSaved!(AppStrings.treatments, value);
                     }
                   },
                 ),
@@ -148,7 +148,7 @@ class SideSheetPetContainer extends StatelessWidget {
                   insideHint: false,
                   onSaved: (value) {
                     if (onSaved != null) {
-                      onSaved!('Pet Report', value);
+                      onSaved!(AppStrings.petReport, value);
                     }
                   },
                 ),

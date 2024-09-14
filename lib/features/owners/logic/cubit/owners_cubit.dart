@@ -414,8 +414,8 @@ class OwnersCubit extends Cubit<OwnersState> {
 
   void onSaveOwnerFormField(String field, String? value) {
     ownerInfo = ownerInfo.copyWith(
-        name: field == 'Name' ? value : ownerInfo.name,
-        phone: field == 'Phone' ? value : ownerInfo.phone,
+        name: field == AppStrings.name ? value : ownerInfo.name,
+        phone: field == AppStrings.phone ? value : ownerInfo.phone,
         registrationDate:
             field == 'Registration Date' ? value : ownerInfo.registrationDate);
   }
@@ -424,16 +424,19 @@ class OwnersCubit extends Cubit<OwnersState> {
     final petModel = petsList[index];
 
     petsList[index] = petModel.copyWith(
-      name: field == 'Name' ? value : petModel.name,
-      gender: field == 'Gender' ? value : petModel.gender,
-      age: field == 'Age' ? double.tryParse(value!) : petModel.age,
-      type: field == 'Type' ? value : petModel.type,
-      breed: field == 'Breed' ? value : petModel.breed,
-      color: field == 'Color' ? value : petModel.color,
-      weight: field == 'Weight' ? double.tryParse(value!) : petModel.weight,
-      petReport: field == 'Pet Report' ? value : petModel.petReport,
-      vaccinations: field == 'Vaccinations' ? value : petModel.vaccinations,
-      treatments: field == 'Treatments' ? value : petModel.treatments,
+      name: field == AppStrings.name ? value : petModel.name,
+      gender: field == AppStrings.gender ? value : petModel.gender,
+      age: field == AppStrings.age ? double.tryParse(value!) : petModel.age,
+      type: field == AppStrings.type ? value : petModel.type,
+      breed: field == AppStrings.breed ? value : petModel.breed,
+      color: field == AppStrings.color ? value : petModel.color,
+      weight: field == AppStrings.weight
+          ? double.tryParse(value!)
+          : petModel.weight,
+      petReport: field == AppStrings.petReport ? value : petModel.petReport,
+      vaccinations:
+          field == AppStrings.vaccinations ? value : petModel.vaccinations,
+      treatments: field == AppStrings.treatments ? value : petModel.treatments,
     );
   }
 

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/features/doctors/logic/cubit/doctors_cubit.dart';
@@ -21,13 +23,13 @@ class DoctorsRowActionButton extends StatelessWidget {
             onTap: () {
               showDoctorSheet(
                 context,
-                'Edit Doctor',
+                AppStrings.editDoctor.tr(),
                 editable: true,
                 doctor: context.read<DoctorsCubit>().getDoctorById(id),
               );
             },
             child: Text(
-              'Edit',
+              AppStrings.edit.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),
@@ -37,9 +39,7 @@ class DoctorsRowActionButton extends StatelessWidget {
               showDialog(
                 context: ctx,
                 builder: (_) => AppAlertDialog(
-                  alertMessage:
-                      'Are you sure you want to delete this doctor profile?\n'
-                      'This action cannot be undone.',
+                  alertMessage: AppStrings.deleteDoctorConfirmationSingle.tr(),
                   onConfirm: () {
                     context.read<DoctorsCubit>().onDeleteDoctor(id);
                     ctx.pop();
@@ -51,7 +51,7 @@ class DoctorsRowActionButton extends StatelessWidget {
               );
             },
             child: Text(
-              'Delete',
+              AppStrings.delete.tr(),
               style: AppTextStyles.font14DarkGreyMedium(context),
             ),
           ),

@@ -14,6 +14,7 @@ class AppStrings {
   static const String phone = 'Phone';
   static const String name = 'Name';
   static const String search = 'Search';
+  static const String pleaseEnter = 'PleaseEnter';
 
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
@@ -122,5 +123,35 @@ class AppStrings {
   // Doctors Strings
   static const String doctor = 'Doctor';
   static const String doctorId = 'DoctorID';
-  static const String failedDoctors = 'FailedDoctors';
+  static const String failedDoctors = 'FailedToGetDoctors';
+  static const String doctorsSearchText = 'DoctorsSearchText';
+  static const String newDoctor = 'NewDoctor';
+  static const String deleteDoctorConfirmationMultiple =
+      'DeleteDoctorConfirmationMultiple';
+  static const String doctorName = 'DoctorName';
+  static const String speciality = 'Speciality';
+  static const String anotherPhoneNumber = 'AnotherPhoneNumber';
+  static const String pleaseEnterValidPhoneNumber =
+      'PleaseEnterValidPhoneNumber';
+  static const String email = 'Email';
+  static const String address = 'Address';
+  static const String saveDoctor = 'SaveDoctor';
+  static const String updateDoctor = 'UpdateDoctor';
+  static const String doctorDetails = 'DoctorDetails';
+  static const String editDoctor = 'EditDoctor';
+  static const String deleteDoctorConfirmationSingle =
+      'DeleteDoctorConfirmationSingle';
+  static const String doctorSaved = 'DoctorSaved';
+  static const String doctorUpdated = 'DoctorUpdated';
+  static const String doctorsDeleted = 'DoctorsDeleted';
+  static const String failedToGetDoctors = 'FailedToGetDoctors';
+  static const String failedToSaveDoctor = 'FailedToSaveDoctor';
+  static const String failedToUpdateDoctor = 'FailedToUpdateDoctor';
+  static const String failedToDeleteSelectedDoctors =
+      'FailedToDeleteSelectedDoctors';
+  static const String failedToDeleteDoctor = 'FailedToDeleteDoctor';
+
+  // Products Strings
+  static const String medicines = 'Medicines';
+  static const String accessories = 'Accessories';
 }

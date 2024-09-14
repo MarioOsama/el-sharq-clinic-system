@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_action_button.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
@@ -17,18 +19,19 @@ class DoctorsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionContainer(
-      title: 'Doctors',
+      title: AppStrings.doctors.tr(),
       actions: [
         // Search bar
         SectionSearchBar(
-          hintText: 'Search by doctor name',
+          hintText: AppStrings.doctorsSearchText.tr(),
           onChanged: (value) {
             context.read<DoctorsCubit>().onSearch(value);
           },
         ),
         SectionActionButton(
-          newText: 'New Doctor',
-          onNewPressed: () => showDoctorSheet(context, 'New Doctor'),
+          newText: AppStrings.newDoctor.tr(),
+          onNewPressed: () =>
+              showDoctorSheet(context, AppStrings.newDoctor.tr()),
           onDeletePressed: () => _onDeleteDoctors(context),
           valueNotifier: context.read<DoctorsCubit>().showDeleteButtonNotifier,
         ),
@@ -50,8 +53,7 @@ class DoctorsSection extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => AppAlertDialog(
-        alertMessage: 'Are you sure you want to delete these doctor profiles?\n'
-            'This action cannot be undone.',
+        alertMessage: AppStrings.deleteDoctorConfirmationMultiple.tr(),
         onConfirm: () {
           context.read<DoctorsCubit>().onDeleteSelectedDoctors();
           context.pop();
