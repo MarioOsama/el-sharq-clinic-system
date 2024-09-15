@@ -23,6 +23,16 @@ final class SettingsError extends SettingsState {
   SettingsError(this.message);
 }
 
+final class SettingsUpdating extends SettingsState {
+  @override
+  void takeAction(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const FadedAnimatedLoadingIcon());
+  }
+}
+
 final class SettingsUpdated extends SettingsState {
   final AuthDataModel authData;
   final String message;
