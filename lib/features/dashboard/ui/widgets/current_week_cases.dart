@@ -6,8 +6,8 @@ import 'package:el_sharq_clinic/features/dashboard/ui/widgets/dashboard_stats_co
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
 import 'package:flutter/material.dart';
 
-class CasesLastWeek extends StatelessWidget {
-  const CasesLastWeek({super.key, required this.weeklyCases});
+class CurrentWeekCases extends StatelessWidget {
+  const CurrentWeekCases({super.key, required this.weeklyCases});
 
   final Map<String, int> weeklyCases;
 
@@ -17,7 +17,7 @@ class CasesLastWeek extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          StatisticsItemTitle(title: AppStrings.lastWeekCases.tr()),
+          StatisticsItemTitle(title: AppStrings.currentWeekCases.tr()),
           verticalSpace(40),
           CasesBarChart(
             weeklyCases: weeklyCases,

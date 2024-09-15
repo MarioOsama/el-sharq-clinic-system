@@ -161,16 +161,11 @@ class CaseHistoryCubit extends Cubit<CaseHistoryState> {
 
   CaseHistoryModel getCaseHistoryById(String caseId) {
     try {
-      if (searchResult.isEmpty) {
-        return casesList.firstWhere((element) => element!.id == caseId)
-            as CaseHistoryModel;
-      } else {
-        return searchResult.firstWhere((element) => element!.id == caseId)
-            as CaseHistoryModel;
-      }
+      return searchResult.firstWhere((element) => element!.id == caseId)
+          as CaseHistoryModel;
     } catch (e) {
-      emit(CasesError(AppStrings.failedCases.tr()));
-      rethrow;
+      return casesList.firstWhere((element) => element!.id == caseId)
+          as CaseHistoryModel;
     }
   }
 

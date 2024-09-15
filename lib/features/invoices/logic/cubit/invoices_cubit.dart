@@ -233,16 +233,11 @@ class InvoicesCubit extends Cubit<InvoicesState> {
 
   InvoiceModel getInvoiceById(String invoiceId) {
     try {
-      if (searchResult.isEmpty) {
-        return invoicesList.firstWhere((invoice) => invoice!.id == invoiceId)
-            as InvoiceModel;
-      } else {
-        return searchResult.firstWhere((invoice) => invoice!.id == invoiceId)
-            as InvoiceModel;
-      }
+      return searchResult.firstWhere((element) => element!.id == invoiceId)
+          as InvoiceModel;
     } catch (e) {
-      emit(InvoicesError(message: AppStrings.failedToGetInvoice.tr()));
-      rethrow;
+      return invoicesList.firstWhere((element) => element!.id == invoiceId)
+          as InvoiceModel;
     }
   }
 

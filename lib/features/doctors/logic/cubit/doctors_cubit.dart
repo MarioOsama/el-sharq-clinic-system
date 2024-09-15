@@ -258,16 +258,11 @@ class DoctorsCubit extends Cubit<DoctorsState> {
 
   DoctorModel getDoctorById(String doctorId) {
     try {
-      if (searchResult.isEmpty) {
-        return doctorsList.firstWhere((element) => element!.id == doctorId)
-            as DoctorModel;
-      } else {
-        return searchResult.firstWhere((element) => element!.id == doctorId)
-            as DoctorModel;
-      }
+      return searchResult.firstWhere((element) => element!.id == doctorId)
+          as DoctorModel;
     } catch (e) {
-      emit(DoctorsError(AppStrings.failedToGetDoctors.tr()));
-      rethrow;
+      return doctorsList.firstWhere((element) => element!.id == doctorId)
+          as DoctorModel;
     }
   }
 }
