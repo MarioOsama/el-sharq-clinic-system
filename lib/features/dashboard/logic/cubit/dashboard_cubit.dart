@@ -31,7 +31,7 @@ class DashboardCubit extends Cubit<DashboardState> {
           getTodayInvoices(lastWeekInvoices);
       final List<InvoiceItemModel> lastWeekPopularItems =
           getLastWeekPopularItems(lastWeekInvoices);
-      final List<CaseHistoryModel> cases = await getLastWeekCases();
+      final List<CaseHistoryModel> cases = await getCurrentWeekCases();
       final List<List<SelableItemModel>> selableItemsList =
           await _setupSelableItemsListsData(mainCubit);
       final List<ProductModel> lowStockProducts = getLowStockProducts([
@@ -174,8 +174,8 @@ class DashboardCubit extends Cubit<DashboardState> {
     return popularItems;
   }
 
-  Future<List<CaseHistoryModel>> getLastWeekCases() async {
-    return await _dashboardRepo.getLastWeekCases(authData!.clinicIndex);
+  Future<List<CaseHistoryModel>> getCurrentWeekCases() async {
+    return await _dashboardRepo.getCurrentWeekCases(authData!.clinicIndex);
   }
 
   Map<String, int> _getWeeklyCasesMap(List<CaseHistoryModel> cases) {

@@ -56,17 +56,18 @@ class DashboardRepo {
     );
   }
 
-  Future<List<CaseHistoryModel>> getLastWeekCases(int clinicIndex) async {
+  Future<List<CaseHistoryModel>> getCurrentWeekCases(int clinicIndex) async {
     DateTime now = DateTime.now();
     int currentWeekDay = now.weekday;
     DateTime startOfWeek = now.subtract(Duration(days: currentWeekDay % 7));
+    DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
     return await _firebaseServices.getDocsByStringDate(
       'cases',
       clinicIndex: clinicIndex,
       dateField: 'date',
       stringStartDate: startOfWeek.toString(),
       fromFirestore: CaseHistoryModel.fromFirestore,
-      stringEndDate: now.toString(),
+      stringEndDate: endOfWeek.toString(),
     );
   }
 

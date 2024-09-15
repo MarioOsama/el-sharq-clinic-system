@@ -4,7 +4,7 @@ import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/faded_animated_loading_icon.dart';
 import 'package:el_sharq_clinic/core/widgets/section_details_container.dart';
 import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
-import 'package:el_sharq_clinic/features/dashboard/ui/widgets/cases_last_week.dart';
+import 'package:el_sharq_clinic/features/dashboard/ui/widgets/current_week_cases.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/low_stock_products.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/popular_items.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/today_sales_container.dart';
@@ -69,7 +69,7 @@ class DashboardBody extends StatelessWidget {
                     width: 550.w,
                     child: AspectRatio(
                       aspectRatio: 2,
-                      child: CasesLastWeek(
+                      child: CurrentWeekCases(
                         weeklyCases: state.weeklyCasesMap,
                       ),
                     ),

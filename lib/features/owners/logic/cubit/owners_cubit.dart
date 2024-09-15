@@ -94,16 +94,11 @@ class OwnersCubit extends Cubit<OwnersState> {
   // Owner
   OwnerModel getOwnerById(String ownerId) {
     try {
-      if (searchResult.isEmpty) {
-        return ownersList.firstWhere((element) => element!.id == ownerId)
-            as OwnerModel;
-      } else {
-        return searchResult.firstWhere((element) => element!.id == ownerId)
-            as OwnerModel;
-      }
+      return searchResult.firstWhere((element) => element!.id == ownerId)
+          as OwnerModel;
     } catch (e) {
-      emit(OwnersError(AppStrings.failedToGetOwners.tr()));
-      rethrow;
+      return ownersList.firstWhere((element) => element!.id == ownerId)
+          as OwnerModel;
     }
   }
 

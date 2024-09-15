@@ -51,7 +51,7 @@ class AppStrings {
   static const String cases = 'Cases';
   static const String owners = 'Owners';
   static const String revenue = 'Revenue';
-  static const String lastWeekCases = 'LastWeekCases';
+  static const String currentWeekCases = 'CurrentWeekCases';
   static const String todaySales = 'TodaySales';
   static const String noSalesToday = 'NoSalesToday';
   static const String lowStockProducts = 'LowStockProducts';
