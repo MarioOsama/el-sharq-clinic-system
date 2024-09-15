@@ -81,7 +81,7 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   void onSavePreferences(BuildContext context) async {
     try {
-      emit(SettingsLoading());
+      emit(SettingsUpdating());
       // Save preferences to firestore
       await _settingsRepo.updatePreferences(newAuthData!);
     } catch (e) {
@@ -96,9 +96,9 @@ class SettingsCubit extends Cubit<SettingsState> {
       await Future.delayed(const Duration(seconds: 1));
     }
     emit(SettingsUpdated(
-        authData: newAuthData!,
-        message: AppStrings.preferencesUpdatedSuccessfully.tr(),
-        popCount: 0));
+      authData: newAuthData!,
+      message: AppStrings.preferencesUpdatedSuccessfully.tr(),
+    ));
     saveButtonState.value = false;
   }
 

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -78,8 +79,10 @@ class CasesBarChartState extends State<CasesBarChart> {
 
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 4,
-      child: Text(text.substring(0, 3), style: style),
+      space: 2,
+      child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(text.substring(0, 3).tr(), style: style)),
     );
   }
 

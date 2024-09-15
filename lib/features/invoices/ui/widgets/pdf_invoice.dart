@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model.dart';
 import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart';
 import 'package:pdf/pdf.dart';
@@ -20,7 +21,9 @@ class PdfInvoice {
     // Get the scaling factor based on page width (for font responsiveness)
     final scaleFactor = pageFormat.width / PdfPageFormat.a4.width;
 
-    final font = await PdfGoogleFonts.nunitoExtraLight();
+    final arabicFont = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/Cairo-Regular.ttf'),
+    );
 
     pdf.addPage(
       pw.Page(
@@ -28,18 +31,27 @@ class PdfInvoice {
         build: (context) {
           // Responsive Text Styles
           final pw.TextStyle headerTextStyle = pw.TextStyle(
-            font: font,
+            font: arabicFont,
             fontSize: 12 * scaleFactor,
             fontWeight: pw.FontWeight.bold,
             color: PdfColors.black,
           );
 
           final pw.TextStyle titleTextStyle = pw.TextStyle(
-            font: font,
+            font: arabicFont,
             fontSize: 24 * scaleFactor,
             fontWeight: pw.FontWeight.bold,
             color: PdfColors.black,
           );
+
+          final pw.TextStyle tableHeaderTextStyle = pw.TextStyle(
+              font: arabicFont,
+              color: PdfColors.white,
+              fontWeight: pw.FontWeight.bold,
+              fontSize: 12 * scaleFactor);
+
+          final pw.TextStyle summaryTextStyle =
+              pw.TextStyle(font: arabicFont, fontSize: 10 * scaleFactor);
 
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -51,21 +63,37 @@ class PdfInvoice {
                       width: 80 * scaleFactor), // Company logo on the left
                   pw.Spacer(),
                   pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text("Invoice Number:", style: headerTextStyle),
-                      pw.Text("Invoice Date:", style: headerTextStyle),
-                      pw.Text("Invoice Time:", style: headerTextStyle),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          " ${invoice.id}",
+                          style: headerTextStyle),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          invoice.date.substring(0, 10),
+                          style: headerTextStyle),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          invoice.date.substring(11, 19),
+                          style: headerTextStyle),
                     ],
                   ),
                   pw.SizedBox(width: 20 * scaleFactor),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.end,
                     children: [
-                      pw.Text(" ${invoice.id}", style: headerTextStyle),
-                      pw.Text(invoice.date.substring(0, 10),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          "رقم الفاتورة",
                           style: headerTextStyle),
-                      pw.Text(invoice.date.substring(11, 19),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          "التاريخ",
+                          style: headerTextStyle),
+                      pw.Text(
+                          textDirection: pw.TextDirection.rtl,
+                          "الوقت",
                           style: headerTextStyle),
                     ],
                   ),
@@ -75,7 +103,8 @@ class PdfInvoice {
 
               // Title
               pw.Text(
-                "Invoice",
+                textDirection: pw.TextDirection.rtl,
+                "فاتورة",
                 style: titleTextStyle,
               ),
               pw.SizedBox(height: 20 * scaleFactor),
@@ -84,11 +113,11 @@ class PdfInvoice {
               pw.Container(
                 color: PdfColors.grey600,
                 padding: pw.EdgeInsets.all(8 * scaleFactor),
-                child: buildHeaderRow(scaleFactor, font),
+                child: buildHeaderRow(scaleFactor, tableHeaderTextStyle),
               ),
 
               // Table Rows
-              ...buildTableDataRows(invoice.items, scaleFactor, font),
+              ...buildTableDataRows(invoice.items, scaleFactor, arabicFont),
               pw.Divider(),
 
               // Footer for summary
@@ -97,7 +126,8 @@ class PdfInvoice {
                 children: [
                   pw.Container(
                     width: 200 * scaleFactor,
-                    child: buildSummaryColumn(invoice, scaleFactor, font),
+                    child: buildSummaryColumn(
+                        invoice, scaleFactor, summaryTextStyle),
                   ),
                 ],
               ),
@@ -116,44 +146,35 @@ class PdfInvoice {
         onLayout: (PdfPageFormat format) async => pdf.save());
   }
 
-  static pw.Row buildHeaderRow(double scaleFactor, pw.Font font) {
+  static pw.Row buildHeaderRow(
+      double scaleFactor, pw.TextStyle tableHeaderTextStyle) {
     return pw.Row(
       children: [
         pw.Expanded(
-            child: pw.Text("Name",
-                style: pw.TextStyle(
-                    font: font,
-                    color: PdfColors.white,
-                    fontWeight: pw.FontWeight.bold,
-                    fontSize: 12 * scaleFactor))),
+            child: pw.Text(
+                textDirection: pw.TextDirection.rtl,
+                "المجموع",
+                style: tableHeaderTextStyle)),
         pw.Expanded(
-            child: pw.Text("Type",
-                style: pw.TextStyle(
-                    font: font,
-                    fontWeight: pw.FontWeight.bold,
-                    color: PdfColors.white,
-                    fontSize: 12 * scaleFactor))),
+            child: pw.Text(
+                textDirection: pw.TextDirection.rtl,
+                "سعر الوحدة",
+                style: tableHeaderTextStyle)),
         pw.Expanded(
-            child: pw.Text("Quantity",
-                style: pw.TextStyle(
-                    font: font,
-                    fontWeight: pw.FontWeight.bold,
-                    color: PdfColors.white,
-                    fontSize: 12 * scaleFactor))),
+            child: pw.Text(
+                textDirection: pw.TextDirection.rtl,
+                "الكميه",
+                style: tableHeaderTextStyle)),
         pw.Expanded(
-            child: pw.Text("Unit Price",
-                style: pw.TextStyle(
-                    font: font,
-                    fontWeight: pw.FontWeight.bold,
-                    color: PdfColors.white,
-                    fontSize: 12 * scaleFactor))),
+            child: pw.Text(
+                textDirection: pw.TextDirection.rtl,
+                "النوع",
+                style: tableHeaderTextStyle)),
         pw.Expanded(
-            child: pw.Text("Total",
-                style: pw.TextStyle(
-                    font: font,
-                    fontWeight: pw.FontWeight.bold,
-                    color: PdfColors.white,
-                    fontSize: 12 * scaleFactor))),
+            child: pw.Text(
+                textDirection: pw.TextDirection.rtl,
+                "الاسم",
+                style: tableHeaderTextStyle)),
       ],
     );
   }
@@ -163,36 +184,36 @@ class PdfInvoice {
     return List.generate(items.length, (index) {
       final item = items[index];
       return buildTableRow(
-          item.name,
-          item.type,
-          item.quantity.toString(),
-          item.price.toStringAsFixed(2),
           (item.price * item.quantity).toStringAsFixed(2),
+          item.price.toStringAsFixed(2),
+          item.quantity.toString(),
+          item.type.tr(),
+          item.name,
           scaleFactor,
           font);
     });
   }
 
   static pw.Column buildSummaryColumn(
-      InvoiceModel invoice, double scaleFactor, pw.Font font) {
+      InvoiceModel invoice, double scaleFactor, pw.TextStyle textStyle) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
+        buildSummaryRow("الاجمالي", invoice.total.toStringAsFixed(2),
+            scaleFactor, textStyle),
+        buildSummaryRow("الخصم", invoice.discount.toStringAsFixed(2),
+            scaleFactor, textStyle),
         buildSummaryRow(
-            "Net total", invoice.total.toStringAsFixed(2), scaleFactor, font),
-        buildSummaryRow("Discount amount", invoice.discount.toStringAsFixed(2),
-            scaleFactor, font),
-        buildSummaryRow(
-            "Discount percentage",
+            "نسبة الخصم",
             (invoice.discount / invoice.total * 100).toStringAsFixed(2),
             scaleFactor,
-            font),
+            textStyle),
         pw.Divider(),
         buildSummaryRow(
-            "Total amount due",
+            "الاجمالي بعد الخصم",
             (invoice.total - invoice.discount).toStringAsFixed(2),
             scaleFactor,
-            font,
+            textStyle,
             isBold: true),
       ],
     );
@@ -206,19 +227,29 @@ class PdfInvoice {
       child: pw.Row(
         children: [
           pw.Expanded(
-              child: pw.Text(name,
+              child: pw.Text(
+                  textDirection: pw.TextDirection.rtl,
+                  name,
                   style: pw.TextStyle(font: font, fontSize: 10 * scaleFactor))),
           pw.Expanded(
-              child: pw.Text(type,
+              child: pw.Text(
+                  textDirection: pw.TextDirection.rtl,
+                  type,
                   style: pw.TextStyle(font: font, fontSize: 10 * scaleFactor))),
           pw.Expanded(
-              child: pw.Text(quantity,
+              child: pw.Text(
+                  textDirection: pw.TextDirection.rtl,
+                  quantity,
                   style: pw.TextStyle(font: font, fontSize: 10 * scaleFactor))),
           pw.Expanded(
-              child: pw.Text(unitPrice,
+              child: pw.Text(
+                  textDirection: pw.TextDirection.rtl,
+                  unitPrice,
                   style: pw.TextStyle(font: font, fontSize: 10 * scaleFactor))),
           pw.Expanded(
-              child: pw.Text(total,
+              child: pw.Text(
+                  textDirection: pw.TextDirection.rtl,
+                  total,
                   style: pw.TextStyle(font: font, fontSize: 10 * scaleFactor))),
         ],
       ),
@@ -227,24 +258,22 @@ class PdfInvoice {
 
   // Helper method to create summary rows
   static pw.Widget buildSummaryRow(
-      String label, String value, double scaleFactor, pw.Font font,
+      String label, String value, double scaleFactor, pw.TextStyle textStyle,
       {bool isBold = false}) {
     return pw.Row(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       children: [
         pw.Text(
-          label,
-          style: pw.TextStyle(
-              font: font,
-              fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
-              fontSize: 10 * scaleFactor),
+          textDirection: pw.TextDirection.rtl,
+          value,
+          style: textStyle.copyWith(
+              fontWeight: isBold ? pw.FontWeight.bold : null),
         ),
         pw.Text(
-          value,
-          style: pw.TextStyle(
-              font: font,
-              fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
-              fontSize: 10 * scaleFactor),
+          textDirection: pw.TextDirection.rtl,
+          label,
+          style: textStyle.copyWith(
+              fontWeight: isBold ? pw.FontWeight.bold : null),
         ),
       ],
     );

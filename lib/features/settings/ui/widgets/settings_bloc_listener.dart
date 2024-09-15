@@ -9,7 +9,9 @@ class SettingsBlocListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SettingsCubit, SettingsState>(
       listenWhen: (previous, current) =>
-          current is SettingsUpdated || current is SettingsUpdatingError,
+          current is SettingsUpdated ||
+          current is SettingsUpdatingError ||
+          current is SettingsUpdating,
       listener: (context, state) {
         state.takeAction(context);
       },
