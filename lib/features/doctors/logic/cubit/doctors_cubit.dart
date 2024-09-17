@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
@@ -83,7 +81,6 @@ class DoctorsCubit extends Cubit<DoctorsState> {
   // Save doctor methods
   void onSaveDoctor() async {
     if (doctorFormKey.currentState!.validate()) {
-      log(doctorInfo.toString());
       emit(DoctorLoading());
       doctorFormKey.currentState!.save();
       await _setDoctorId();

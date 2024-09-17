@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/features/dashboard/data/models/pie_chart_item_model.dart';
@@ -57,7 +59,7 @@ class _SalesPieChartState extends State<SalesPieChart> {
       final Color color = widget.items[i].color;
       final double value = widget.items[i].value;
       final String displayedValue = isTouched
-          ? '${widget.items[i].value.toStringAsFixed(0)} LE'
+          ? '${widget.items[i].value.toStringAsFixed(0)} ${AppStrings.le.tr()}'
           : '${widget.items[i].percentage.toStringAsFixed(1)}%';
 
       return PieChartSectionData(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
@@ -39,7 +37,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   void selectClinic(String clinic) {
     selectedClinic = clinic;
-    log(selectedClinic);
     emit(AuthInitial());
   }
 
@@ -52,7 +49,6 @@ class AuthCubit extends Cubit<AuthState> {
           .then(
         (value) {
           if (value != null) {
-            log(value.toString());
             emit(AuthSuccess(
               value,
             ));

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
@@ -176,25 +174,21 @@ class _InvoiceSideSheetItemContainerState
   }
 
   void _onTypeChanged(String? value) {
-    log('onTypeChanged: $value');
     cubit.onResetInvoiceItem(widget.index - 1);
     switch (value!.tr()) {
       case 'Services' || 'الخدمات':
-        log('Services');
         items = cubit.servicesList.map((e) => e.title).toList();
         selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Services';
         _resetControllers();
         break;
       case 'Medicines' || 'الأدوية':
-        log('Medicines');
         items = cubit.medicinesList.map((e) => e.title).toList();
         selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Medicines';
         _resetControllers();
         break;
       case 'Accessories' || 'الأكسسوارات':
-        log('Accessories');
         items = cubit.accessoriesList.map((e) => e.title).toList();
         selectedTypeIndex = itemTypesList.indexOf(value);
         itemType = 'Accessories';

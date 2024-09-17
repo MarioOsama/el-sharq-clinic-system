@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
-import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
@@ -15,9 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CaseHistorySection extends StatelessWidget {
-  const CaseHistorySection({super.key, required this.authData});
-
-  final AuthDataModel authData;
+  const CaseHistorySection({super.key});
 
   @override
   Widget build(BuildContext context) {

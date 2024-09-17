@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "el_sharq_clinic" "\0"
+            VALUE "CompanyName", "Mario Osama" "\0"
+            VALUE "FileDescription", "Clinic System" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "el_sharq_clinic" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "el_sharq_clinic.exe" "\0"
-            VALUE "ProductName", "el_sharq_clinic" "\0"
+            VALUE "InternalName", "El Sharq" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 Mario Osama. All rights reserved." "\0"
+            VALUE "OriginalFilename", "El-Sharq.exe" "\0"
+            VALUE "ProductName", "El Sharq" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

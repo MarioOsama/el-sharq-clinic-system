@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
@@ -21,7 +19,6 @@ class TodaySalesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log(dataMap.toString());
     final pieChartData = _getPieChartItemsList(dataMap);
     return DashboardStatsContainer(
       child: Row(

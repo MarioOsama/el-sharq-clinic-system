@@ -47,6 +47,6 @@ Future<void> customTimePicker(
   );
 
   if (time != null) {
-    controller.text = time.toString().substring(10, 15);
+    controller.text = '${time.hour}:${time.minute}';
   }
 }

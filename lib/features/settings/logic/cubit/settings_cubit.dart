@@ -129,6 +129,7 @@ class SettingsCubit extends Cubit<SettingsState> {
           emit(SettingsUpdated(
             authData: newAuthData!,
             message: AppStrings.passwordUpdatedSuccessfully.tr(),
+            popCount: 0,
           ));
         } catch (e) {
           emit(SettingsUpdatingError(AppStrings.failedToUpdatePassword.tr()));

@@ -71,7 +71,6 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   /// List of widget builders that will be displayed in the drawer
   List<WidgetBuilder> get _getDrawerWidgets {
-    //TODO: Remove all authData params from section widgets
     //TODO: Remove all log statements
     final MainCubit mainCubit = context.read<MainCubit>();
 
@@ -79,17 +78,17 @@ class _HomeLayoutState extends State<HomeLayout> {
       (context) => BlocProvider(
             create: (context) => getIt<DashboardCubit>()
               ..setupSectionData(mainCubit.authData, mainCubit),
-            child: DashboardSection(authData: authData),
+            child: const DashboardSection(),
           ),
       (context) => BlocProvider<CaseHistoryCubit>(
             create: (context) =>
                 getIt<CaseHistoryCubit>()..setupSectionData(mainCubit.authData),
-            child: CaseHistorySection(authData: authData),
+            child: const CaseHistorySection(),
           ),
       (context) => BlocProvider<OwnersCubit>(
             create: (context) =>
                 getIt<OwnersCubit>()..setupSectionData(mainCubit.authData),
-            child: OwnersSection(authData: authData),
+            child: const OwnersSection(),
           ),
       (context) => BlocProvider<DoctorsCubit>(
             create: (context) =>

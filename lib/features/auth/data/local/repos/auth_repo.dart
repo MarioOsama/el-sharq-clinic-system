@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
 import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
 
@@ -16,7 +14,6 @@ class AuthRepo {
       int clinicIndex, String userName, String password) async {
     final result = await _authFirebaseServices.openWithUserNameAndPassword(
         clinicIndex, userName, password);
-    log(result.toString());
     return result;
   }
 }
