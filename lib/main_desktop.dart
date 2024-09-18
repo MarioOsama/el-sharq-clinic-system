@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:el_sharq_clinic/clinic_system.dart';
+import 'package:el_sharq_clinic/clinic_system_desktop.dart';
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +10,7 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-// // Initialize Firebase
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: const FirebaseOptions(
         apiKey: "AIzaSyDaLY0H1ZcUigddp7tQZOekJ2232ncLlQQ",
@@ -53,7 +53,7 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: ClinicSystem(appRouter: AppRouter()),
+      child: DesktopClinicSystem(appRouter: AppRouter()),
     ),
   );
 }

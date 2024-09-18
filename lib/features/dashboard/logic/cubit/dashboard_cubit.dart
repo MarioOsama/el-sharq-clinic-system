@@ -129,11 +129,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Map<String, double> _getTodaySalesCategories(List<InvoiceModel> invoices) {
-    final Map<String, double> salesMap = {
-      AppStrings.services.tr(): 0,
-      AppStrings.medicines.tr(): 0,
-      AppStrings.accessories.tr(): 0,
-    };
+    final Map<String, double> salesMap = {};
     for (var invoice in invoices) {
       final double invoiceDiscountPercentage = invoice.discount / invoice.total;
       for (var item in invoice.items) {
