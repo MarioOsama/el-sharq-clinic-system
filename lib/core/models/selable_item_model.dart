@@ -16,7 +16,6 @@ abstract class SelableItemModel {
     for (var key in map.keys.toList()) {
       if (map[key] == null ||
           map[key].toString().trim().isEmpty ||
-          map[key] == 0 ||
           key == 'id') {
         map.remove(key);
       }

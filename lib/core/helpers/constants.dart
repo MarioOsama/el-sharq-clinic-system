@@ -1,4 +1,5 @@
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
+import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/features/home/data/models/drawer_item_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,13 @@ abstract class AppConstant {
     DrawerItemModel(
         title: AppStrings.invoices, icon: Icons.attach_money_outlined),
     DrawerItemModel(title: AppStrings.settings, icon: Icons.settings_outlined),
+  ];
+
+  // Dashboard
+  static const dashboardSalesSectionsColorList = [
+    AppColors.red,
+    AppColors.blue,
+    AppColors.green,
   ];
 
   // Case History

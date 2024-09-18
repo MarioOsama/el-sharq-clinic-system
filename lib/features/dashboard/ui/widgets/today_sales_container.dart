@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/helpers/spacing.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
@@ -20,33 +21,36 @@ class TodaySalesContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pieChartData = _getPieChartItemsList(dataMap);
+    final List<Color> colorsList = dataMap.keys
+        .map((e) => (AppConstant.dashboardSalesSectionsColorList[
+                dataMap.keys.toList().indexOf(e)] as Color)
+            .withOpacity(0.9))
+        .toList();
     return DashboardStatsContainer(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              StatisticsItemTitle(title: AppStrings.todaySales.tr()),
-              verticalSpace(40),
-              SalesPieChartKeys(
-                colors: [
-                  AppColors.red.withOpacity(0.9),
-                  AppColors.blue.withOpacity(0.9),
-                  AppColors.green.withOpacity(0.9),
-                ],
-                keys: dataMap.keys.toList(),
-              ),
-            ],
-          ),
-          pieChartData.isEmpty
-              ? _buildNoSalesText(context)
-              : SalesPieChart(
-                  items: pieChartData,
+      child: pieChartData.isEmpty
+          ? _buildNoSalesText(context)
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    StatisticsItemTitle(title: AppStrings.todaySales.tr()),
+                    verticalSpace(40),
+                    SalesPieChartKeys(
+                      colors: colorsList,
+                      keys: dataMap.keys.toList(),
+                    ),
+                  ],
                 ),
-        ],
-      ),
+                pieChartData.isEmpty
+                    ? _buildNoSalesText(context)
+                    : SalesPieChart(
+                        items: pieChartData,
+                      ),
+              ],
+            ),
     );
   }
 
