@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class CasesBarChart extends StatefulWidget {
   final Map<String, int> weeklyCases;
+  final double? barWidth;
 
-  const CasesBarChart({super.key, required this.weeklyCases});
+  const CasesBarChart({super.key, required this.weeklyCases, this.barWidth});
 
   @override
   State<CasesBarChart> createState() => CasesBarChartState();
@@ -69,20 +70,21 @@ class CasesBarChartState extends State<CasesBarChart> {
       );
 
   Widget getTitles(double value, TitleMeta meta) {
-    final style = AppTextStyles.font14DarkGreyMedium(context).copyWith(
+    final style = AppTextStyles.font18DarkGreyMedium(context).copyWith(
       color: AppColors.blue,
       fontWeight: FontWeight.bold,
     );
 
     List<String> days = widget.weeklyCases.keys.toList();
-    String text = days[value.toInt()];
+    String day = days[value.toInt()];
 
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 2,
-      child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(text.substring(0, 3).tr(), style: style)),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: SideTitleWidget(
+        axisSide: meta.axisSide,
+        space: 5,
+        child: Text(day.tr(), style: style),
+      ),
     );
   }
 
@@ -95,9 +97,7 @@ class CasesBarChartState extends State<CasesBarChart> {
           ),
         ),
         leftTitles: const AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: false,
-          ),
+          sideTitles: SideTitles(showTitles: false),
         ),
         topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
@@ -139,7 +139,7 @@ class CasesBarChartState extends State<CasesBarChart> {
         x: index,
         barRods: [
           BarChartRodData(
-            width: 40,
+            width: widget.barWidth ?? 40,
             backDrawRodData:
                 touchedIndex == index ? backgroundBarChartRodData : null,
             toY: entry.value.toDouble(),

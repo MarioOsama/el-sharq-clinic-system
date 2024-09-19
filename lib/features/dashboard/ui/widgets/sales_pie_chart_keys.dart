@@ -5,16 +5,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SalesPieChartKeys extends StatelessWidget {
   const SalesPieChartKeys(
-      {super.key, required this.colors, required this.keys});
+      {super.key,
+      required this.colors,
+      required this.keys,
+      this.isHorizontal = false});
 
   final List<Color> colors;
   final List<String> keys;
+  final bool? isHorizontal;
 
   @override
   Widget build(BuildContext context) {
+    return isHorizontal!
+        ? _buildHorizontalKeyItems(context)
+        : _buildVerticalKeyItems(context);
+  }
+
+  Column _buildVerticalKeyItems(BuildContext context) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: _buildKeyItems(context));
+  }
+
+  Row _buildHorizontalKeyItems(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: _buildKeyItems(context),
+    );
   }
 
   List<Widget> _buildKeyItems(BuildContext context) {

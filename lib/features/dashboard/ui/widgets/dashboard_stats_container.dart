@@ -13,6 +13,7 @@ class DashboardStatsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       padding:
           padding ?? const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       height: height,

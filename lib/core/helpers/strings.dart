@@ -24,6 +24,15 @@ class AppStrings {
   static const String confirm = 'Confirm';
   static const String add = 'Add';
 
+  // Week Days Strings
+  static const String saturday = 'Saturday';
+  static const String sunday = 'Sunday';
+  static const String monday = 'Monday';
+  static const String tuesday = 'Tuesday';
+  static const String wednesday = 'Wednesday';
+  static const String thursday = 'Thursday';
+  static const String friday = 'Friday';
+
   // Auth Strings
   static const String selectClinic = 'SelectClinic';
   static const String userName = 'UserName';

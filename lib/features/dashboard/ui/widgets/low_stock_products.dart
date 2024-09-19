@@ -10,9 +10,10 @@ import 'package:el_sharq_clinic/features/products/data/models/product_model.dart
 import 'package:flutter/material.dart';
 
 class LowStockProducts extends StatelessWidget {
-  const LowStockProducts({super.key, required this.items});
+  const LowStockProducts({super.key, required this.items, this.aspectRatio});
 
   final List<ProductModel> items;
+  final double? aspectRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class LowStockProducts extends StatelessWidget {
             color: AppColors.darkGrey.withOpacity(0.25),
           ),
           AspectRatio(
-            aspectRatio: 2.85,
+            aspectRatio: aspectRatio ?? 2.85,
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/core/helpers/extensions.dart';
@@ -9,6 +11,7 @@ import 'package:el_sharq_clinic/core/widgets/app_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/app_text_button.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 part 'auth_state.dart';
 
