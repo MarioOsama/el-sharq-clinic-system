@@ -11,7 +11,6 @@ import 'package:el_sharq_clinic/features/invoices/data/models/invoice_model.dart
 import 'package:el_sharq_clinic/features/products/data/models/product_model.dart';
 import 'package:el_sharq_clinic/features/services/data/models/service_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 part 'dashboard_state.dart';
 
@@ -20,9 +19,10 @@ class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit(this._dashboardRepo) : super(DashboardInitial());
 
   AuthDataModel? authData;
+  MainCubit? mainCubit;
 
   void setupSectionData(AuthDataModel authData, MainCubit mainCubit) async {
-    setAuthData(authData);
+    setData(authData, mainCubit);
     try {
       final int todayCasesCount = await getTodayCasesCount();
       final int todayOwnersCount = await getTodayRegisteredOwnersCount();
@@ -88,8 +88,9 @@ class DashboardCubit extends Cubit<DashboardState> {
     cubit.updateAccessoriesList(accessoriesList);
   }
 
-  void setAuthData(AuthDataModel authData) {
+  void setData(AuthDataModel authData, MainCubit mainCubit) {
     this.authData = authData;
+    this.mainCubit = mainCubit;
   }
 
   Future<int> getTodayCasesCount() async {
@@ -176,20 +177,20 @@ class DashboardCubit extends Cubit<DashboardState> {
 
   Map<String, int> _getWeeklyCasesMap(List<CaseHistoryModel> cases) {
     final Map<String, int> casesMap = {
-      'Sunday': 0,
-      'Monday': 0,
-      'Tuesday': 0,
-      'Wednesday': 0,
-      'Thursday': 0,
-      'Friday': 0,
-      'Saturday': 0
+      AppStrings.sunday: 0,
+      AppStrings.monday: 0,
+      AppStrings.tuesday: 0,
+      AppStrings.wednesday: 0,
+      AppStrings.thursday: 0,
+      AppStrings.friday: 0,
+      AppStrings.saturday: 0,
     };
     for (var element in cases) {
       final DateTime date = DateTime(
           int.parse(element.date.substring(0, 4)),
           int.parse(element.date.substring(5, 7)),
           int.parse(element.date.substring(8, 10)));
-      String day = DateFormat('EEEE').format(date);
+      String day = DateFormat('EEEE', 'en').format(date);
       casesMap[day] = (casesMap[day] ?? 0) + 1;
     }
     return casesMap;
@@ -201,5 +202,11 @@ class DashboardCubit extends Cubit<DashboardState> {
         .toList();
     lowStockProducts.sort((a, b) => b.quantity.compareTo(a.quantity));
     return lowStockProducts;
+  }
+
+  void refreshData() {
+    emit(DashboardInitial());
+    final AuthDataModel currentAuthData = mainCubit!.authData;
+    setupSectionData(currentAuthData, mainCubit!);
   }
 }

@@ -11,9 +11,12 @@ import 'package:el_sharq_clinic/features/dashboard/ui/widgets/sales_pie_chart_ke
 import 'package:el_sharq_clinic/features/dashboard/ui/widgets/statistics_item_title.dart';
 import 'package:flutter/material.dart';
 
-class TodaySalesContainer extends StatelessWidget {
-  const TodaySalesContainer(
-      {super.key, required this.dataMap, required this.todayRevenue});
+class MobileTodaySalesContainer extends StatelessWidget {
+  const MobileTodaySalesContainer({
+    super.key,
+    required this.dataMap,
+    required this.todayRevenue,
+  });
 
   final double todayRevenue;
   final Map<String, double> dataMap;
@@ -27,28 +30,28 @@ class TodaySalesContainer extends StatelessWidget {
             .withOpacity(0.9))
         .toList();
     return DashboardStatsContainer(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: pieChartData.isEmpty
           ? _buildNoSalesText(context)
-          : Row(
+          : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StatisticsItemTitle(title: AppStrings.todaySales.tr()),
-                    verticalSpace(40),
-                    SalesPieChartKeys(
-                      colors: colorsList,
-                      keys: dataMap.keys.toList(),
-                    ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                  child: StatisticsItemTitle(title: AppStrings.todaySales.tr()),
                 ),
+                verticalSpace(10),
                 pieChartData.isEmpty
                     ? _buildNoSalesText(context)
                     : SalesPieChart(
                         items: pieChartData,
                       ),
+                SalesPieChartKeys(
+                  isHorizontal: true,
+                  colors: colorsList,
+                  keys: dataMap.keys.toList(),
+                ),
+                verticalSpace(10),
               ],
             ),
     );

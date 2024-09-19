@@ -9,9 +9,10 @@ import 'package:el_sharq_clinic/features/invoices/data/models/invoice_item_model
 import 'package:flutter/material.dart';
 
 class PopularItems extends StatelessWidget {
-  const PopularItems({super.key, required this.items});
+  const PopularItems({super.key, required this.items, this.aspectRatio});
 
   final List<InvoiceItemModel> items;
+  final double? aspectRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class PopularItems extends StatelessWidget {
             color: AppColors.darkGrey.withOpacity(0.25),
           ),
           AspectRatio(
-            aspectRatio: 2.85,
+            aspectRatio: aspectRatio ?? 2.85,
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {

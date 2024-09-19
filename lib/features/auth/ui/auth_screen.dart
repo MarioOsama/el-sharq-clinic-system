@@ -30,53 +30,55 @@ class AuthScreen extends StatelessWidget {
   }
 
   Widget _buildChild(BuildContext context, AuthState state) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FadeInUp(
-            duration: const Duration(seconds: 2),
-            delay: const Duration(milliseconds: 1000),
-            from: 500,
-            child: Image.asset(Assets.assetsImagesPngTextLogo)),
-        verticalSpace(50),
-        FadeInLeft(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FadeInUp(
+              duration: const Duration(seconds: 2),
+              delay: const Duration(milliseconds: 1000),
+              from: 500,
+              child: Image.asset(Assets.assetsImagesPngTextLogo)),
+          verticalSpace(50),
+          FadeInLeft(
+              duration: const Duration(seconds: 1),
+              delay: const Duration(milliseconds: 3000),
+              child: _buildDropDownButton(context)),
+          verticalSpace(25),
+          FadeInRight(
             duration: const Duration(seconds: 1),
             delay: const Duration(milliseconds: 3000),
-            child: _buildDropDownButton(context)),
-        verticalSpace(25),
-        FadeInRight(
-          duration: const Duration(seconds: 1),
-          delay: const Duration(milliseconds: 3000),
-          child: AppTextField(
-            controller: context.read<AuthCubit>().usernameController,
-            hint: AppStrings.userName.tr(),
-            insideHint: true,
+            child: AppTextField(
+              controller: context.read<AuthCubit>().usernameController,
+              hint: AppStrings.userName.tr(),
+              insideHint: true,
+            ),
           ),
-        ),
-        verticalSpace(25),
-        FadeInLeft(
-          duration: const Duration(seconds: 1),
-          delay: const Duration(milliseconds: 3000),
-          child: AppTextField(
-            controller: context.read<AuthCubit>().passwordController,
-            hint: AppStrings.password.tr(),
-            insideHint: true,
-            isObscured: true,
+          verticalSpace(25),
+          FadeInLeft(
+            duration: const Duration(seconds: 1),
+            delay: const Duration(milliseconds: 3000),
+            child: AppTextField(
+              controller: context.read<AuthCubit>().passwordController,
+              hint: AppStrings.password.tr(),
+              insideHint: true,
+              isObscured: true,
+            ),
           ),
-        ),
-        verticalSpace(30),
-        FadeInRight(
-          duration: const Duration(seconds: 1),
-          delay: const Duration(milliseconds: 3000),
-          child: AppTextButton(
-            text: AppStrings.openSystem.tr(),
-            onPressed: () {
-              context.read<AuthCubit>().openSystem();
-            },
+          verticalSpace(30),
+          FadeInRight(
+            duration: const Duration(seconds: 1),
+            delay: const Duration(milliseconds: 3000),
+            child: AppTextButton(
+              text: AppStrings.openSystem.tr(),
+              onPressed: () {
+                context.read<AuthCubit>().openSystem();
+              },
+            ),
           ),
-        ),
-        const AuthBlocListener(),
-      ],
+          const AuthBlocListener(),
+        ],
+      ),
     );
   }
 

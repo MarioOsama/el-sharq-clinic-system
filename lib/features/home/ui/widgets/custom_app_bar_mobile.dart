@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+class MobileCustomAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const MobileCustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: AppBar(
             surfaceTintColor: AppColors.white,
             backgroundColor: AppColors.white,
-            leading: _buildLeading(context),
+            leading: _buildLeading(context, authData),
             titleSpacing: 5,
-            title: _buildTitle(authData, context),
             leadingWidth: 250.w,
-            centerTitle: true,
             actions: [AppBarUserInfo(userName: authData.userModel.userName)],
           ),
         );
@@ -49,30 +48,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Row _buildLeading(BuildContext context) {
+  Row _buildLeading(BuildContext context, AuthDataModel authData) {
     return Row(
       children: [
-        Image.asset(Assets.assetsImagesPngIconLogo),
-        horizontalSpace(20),
+        Image.asset(
+          Assets.assetsImagesPngIconLogo,
+          scale: 2,
+        ),
+        horizontalSpace(10),
         Text(
-          'EL-Sharq Clinic',
+          authData.clinicName,
           style: _getTextStyle(context),
         ),
       ],
     );
   }
 
-  Text _buildTitle(AuthDataModel authData, BuildContext context) {
-    return Text(
-      authData.clinicName,
-      style: AppTextStyles.font22DarkGreyMedium(context).copyWith(
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
-
   TextStyle _getTextStyle(BuildContext context) {
-    return AppTextStyles.font22DarkGreyMedium(context).copyWith(
+    return AppTextStyles.font16DarkGreyMedium(context).copyWith(
       fontWeight: FontWeight.bold,
     );
   }
