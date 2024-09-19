@@ -27,7 +27,6 @@ final class AuthSuccess extends AuthState {
   void takeAction(BuildContext context) {
     const String homeRoute =
         appFlavor == 'Mobile' ? AppRoutes.homeMobile : AppRoutes.home;
-    log('Home route: $homeRoute');
     context.pop();
     showDialog<String>(
       context: context,

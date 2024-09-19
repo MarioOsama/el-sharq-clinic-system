@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   printing
   screen_retriever
+  sentry_flutter
   window_manager
 )
 
