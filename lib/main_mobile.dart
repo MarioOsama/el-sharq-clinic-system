@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:el_sharq_clinic/clinic_system_mobile.dart';
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/routing/app_router.dart';
@@ -10,10 +11,18 @@ void main() async {
   // Initialize Firebase
   await Firebase.initializeApp();
 
+  // Easy Localization Initialization
+  await EasyLocalization.ensureInitialized();
+
   // Dependencies Injection
   setupGetIt();
 
   runApp(
-    MobileClinicSystem(appRouter: AppRouter()),
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: MobileClinicSystem(appRouter: AppRouter()),
+    ),
   );
 }

@@ -6,6 +6,7 @@ import 'package:el_sharq_clinic/core/widgets/connectivity_monitor.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/ui/auth_screen.dart';
 import 'package:el_sharq_clinic/features/home/ui/home_layout.dart';
+import 'package:el_sharq_clinic/features/home/ui/home_layout_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,6 +29,14 @@ class AppRouter {
             create: (context) => getIt<MainCubit>()
               ..setupInitialData(arguments as AuthDataModel),
             child: const ConnectivityMonitor(child: HomeLayout()),
+          ),
+        );
+      case AppRoutes.homeMobile:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider<MainCubit>(
+            create: (context) => getIt<MainCubit>()
+              ..setupInitialData(arguments as AuthDataModel),
+            child: const ConnectivityMonitor(child: MobileHomeLayout()),
           ),
         );
       default:
