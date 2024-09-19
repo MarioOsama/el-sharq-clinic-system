@@ -18,7 +18,7 @@ dependencies {
 android {
     namespace = "com.example.el_sharq_clinic"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.1.12297006"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,12 +44,11 @@ android {
     productFlavors {
         desktop {
             dimension "free"
-            resValue "string", "app_name", "El Sharq"
-            applicationIdSuffix ".desk"
+            resValue "string", "app_name", "El Sharq Desktop"
         }
         mobile {
             dimension "free"
-            resValue "string", "app_name", "El Sharq"
+            resValue "string", "app_name", "El Sharq Mobile"
         }
     }
 
@@ -58,6 +57,9 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
