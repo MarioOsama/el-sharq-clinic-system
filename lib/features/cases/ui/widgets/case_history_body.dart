@@ -30,9 +30,7 @@ class _CaseHistoryBodyState extends State<CaseHistoryBody> {
           current is CasesLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          color: state is CasesSuccess
-              ? AppColors.darkGrey.withOpacity(0.75)
-              : AppColors.white,
+          color: state is CasesSuccess ? AppColors.lightBlue : AppColors.white,
           child: _buildChild(context, state),
         );
       },

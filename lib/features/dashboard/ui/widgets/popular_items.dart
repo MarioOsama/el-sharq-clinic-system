@@ -81,7 +81,7 @@ class PopularItems extends StatelessWidget {
               style: AppTextStyles.font16DarkGreyMedium(context),
             ),
             Text(
-              '${(item.price * item.quantity).toStringAsFixed(2)} ${AppStrings.le.tr()}',
+              '${(item.price).toStringAsFixed(2)} ${AppStrings.le.tr()}',
               style: AppTextStyles.font14DarkGreyMedium(context).copyWith(
                 color: AppColors.darkGrey.withOpacity(0.5),
               ),

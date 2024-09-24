@@ -29,9 +29,8 @@ class _DoctorsBodyState extends State<DoctorsBody> {
           current is DoctorsLoading,
       builder: (context, state) {
         return SectionDetailsContainer(
-          color: state is DoctorsSuccess
-              ? AppColors.darkGrey.withOpacity(0.75)
-              : AppColors.white,
+          color:
+              state is DoctorsSuccess ? AppColors.lightBlue : AppColors.white,
           child: _buildChild(context, state),
         );
       },

@@ -45,6 +45,7 @@ class _InvoiceSideSheetItemContainerState
     name: '',
     type: 'Services',
     quantity: 0,
+    discountPercentage: 0,
     price: 0,
   );
 

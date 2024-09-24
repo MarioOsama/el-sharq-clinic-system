@@ -237,6 +237,8 @@ class AppStrings {
   static const String failedToDeleteInvoice = 'FailedToDeleteInvoice';
   static const String failedToDeleteSelectedInvoices =
       'FailedToDeleteSelectedInvoices';
+  static const String notEnoughItems = 'NotEnoughItems';
+  static const String pleaseCheckItem = 'PleaseCheckItem';
   static const String noItemsFound = 'NoItemsFound';
   static const String invoiceId = 'InvoiceId';
   static const String adminPasswordIncorrect = 'AdminPasswordIncorrect';
