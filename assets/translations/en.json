@@ -201,6 +201,8 @@
     "FailedToGetInvoices": "Failed to get the invoices",
     "InvoiceAddedSuccessfully": "Invoice added successfully",
     "FailedToAddInvoice": "Failed to add the invoice",
+    "NotEnoughItems": "Not enough items in stock",
+    "PleaseCheckItem": "Please check item",
     "InvalidItemMessage": "is not valid, please check it",
     "DiscountGreaterThanTotal": "Discount can't be greater than total",
     "FailedToGetInvoice": "Failed to get the invoice",

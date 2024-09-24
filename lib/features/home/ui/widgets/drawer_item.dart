@@ -17,7 +17,7 @@ class DrawerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         decoration: _buildContainerDecoration(),
@@ -43,7 +43,7 @@ class DrawerItem extends StatelessWidget {
   Text _buildTitle(String title, bool isSelected, BuildContext context) {
     return Text(
       title.tr(),
-      style: AppTextStyles.font16DarkGreyMedium(context).copyWith(
+      style: AppTextStyles.font18DarkGreyMedium(context).copyWith(
         fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
         color: isSelected ? AppColors.white : AppColors.darkGrey,
       ),

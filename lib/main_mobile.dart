@@ -3,6 +3,7 @@ import 'package:el_sharq_clinic/clinic_system_mobile.dart';
 import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/routing/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -17,6 +18,17 @@ void main() async {
 
   // Dependencies Injection
   setupGetIt();
+
+  if (!kReleaseMode) {
+    runApp(
+      EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('ar')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        child: MobileClinicSystem(appRouter: AppRouter()),
+      ),
+    );
+  }
 
   // Initialize Sentry
   await SentryFlutter.init(

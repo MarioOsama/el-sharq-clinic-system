@@ -37,7 +37,7 @@ class CustomTableDataSource extends DataTableSource {
         }
         return DataCell(
           Align(
-            alignment: Alignment.center,
+            alignment: AlignmentDirectional.centerStart,
             child: Text(
               data[index][cellIndex],
               style: font16DarkGreyMedium(),
@@ -80,7 +80,7 @@ class CustomTableDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 
   static TextStyle font16DarkGreyMedium() => const TextStyle(
-        fontSize: 16,
+        fontSize: 18,
         color: AppColors.darkGrey,
         fontWeight: FontWeight.w500,
         fontFamily: 'Outfit',

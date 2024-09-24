@@ -143,32 +143,42 @@ class DashboardCubit extends Cubit<DashboardState> {
     return salesMap;
   }
 
+  /// This function takes a list of invoices for the last week and returns a list
+  /// of the top 10 most popular items, sorted by quantity sold. The items are
+  /// returned as [InvoiceItemModel] objects, with the price updated to be the
+  /// total price of all the items sold of the same item. If there are less than 10 items, the
+  /// function returns all the items.
   List<InvoiceItemModel> getLastWeekPopularItems(
       List<InvoiceModel> lastWeekInvoices) {
     List<InvoiceItemModel> popularItems = [];
     for (final invoice in lastWeekInvoices) {
-      final double invoiceDiscountPercentage = invoice.discount / invoice.total;
       for (final item in invoice.items) {
         if (popularItems
             .where((element) => element.name == item.name)
             .isEmpty) {
-          popularItems.add(item);
+          popularItems.add(item.copyWith(
+            price: item.getTotalAfterDiscount,
+          ));
         } else {
           double elementQuantity = 0;
           int itemIndex = popularItems.indexWhere((element) {
             return element.name == item.name;
           });
           elementQuantity = popularItems[itemIndex].quantity;
+          final double currentTotalItemPrice = popularItems[itemIndex].price;
           popularItems[itemIndex] = popularItems[itemIndex].copyWith(
             quantity: elementQuantity + item.quantity,
-            price: item.price - invoiceDiscountPercentage * item.price,
+            price: currentTotalItemPrice + item.getTotalAfterDiscount,
           );
         }
       }
     }
 
     popularItems.sort((a, b) => b.quantity.compareTo(a.quantity));
-    return popularItems;
+
+    return popularItems.length > 10
+        ? popularItems.sublist(0, 10)
+        : popularItems;
   }
 
   Future<List<CaseHistoryModel>> getCurrentWeekCases() async {

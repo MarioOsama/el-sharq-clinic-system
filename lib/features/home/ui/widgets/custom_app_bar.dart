@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       },
       builder: (context, authData) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
           decoration: _buildContainerDecoration(),
           child: AppBar(
             surfaceTintColor: AppColors.white,
@@ -78,5 +78,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(60);
+  Size get preferredSize => Size.fromHeight(70.h);
 }

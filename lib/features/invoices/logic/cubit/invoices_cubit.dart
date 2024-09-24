@@ -123,20 +123,54 @@ class InvoicesCubit extends Cubit<InvoicesState> {
 
   // Add New Invoice Functions
   void addNewInvoice(BuildContext context) async {
-    emit(InvoiceInProgress());
     // Save items forms
     _setInvoiceIdentifiers();
-    final bool isAdded = await _invoicesRepo.addNewInvoice(
-      authData!.clinicIndex,
-      invoiceInfo,
-    );
-    if (isAdded) {
-      _decrementInvoiceItemsQuantity(context);
-      invoicesList.insert(0, invoiceInfo);
-      _onSuccessOperation(AppStrings.invoiceAddedSuccessfully.tr());
+    _setInvoiceItemsDiscount();
+    final int isUnavailableItems = _checkItemsAvailability(context);
+    if (isUnavailableItems == -1) {
+      emit(InvoiceInProgress());
+      final bool isAdded = await _invoicesRepo.addNewInvoice(
+        authData!.clinicIndex,
+        invoiceInfo,
+      );
+      if (isAdded) {
+        _decrementInvoiceItemsQuantity(context);
+        invoicesList.insert(0, invoiceInfo);
+        _onSuccessOperation(AppStrings.invoiceAddedSuccessfully.tr());
+      } else {
+        emit(InvoicesError(message: AppStrings.failedToAddInvoice.tr()));
+      }
     } else {
-      emit(InvoicesError(message: AppStrings.failedToAddInvoice.tr()));
+      emit(InvoiceConstrutingError(
+          message:
+              '${AppStrings.pleaseCheckItem.tr()} ${isUnavailableItems + 1}\n${AppStrings.notEnoughItems.tr()}'));
     }
+  }
+
+  /// This function checks if there are enough items in stock for the current
+  /// invoice.
+  ///
+  /// Returns the index of the first item in the invoice that there is not enough
+  /// of in stock, or -1 if there is enough of all items.
+  int _checkItemsAvailability(BuildContext context) {
+    for (InvoiceItemModel item in invoiceInfo.items) {
+      if (item.type == 'Medicines') {
+        if (item.quantity >
+            medicinesList
+                .firstWhere((product) => product.title == item.name)
+                .quantity) {
+          return invoiceInfo.items.indexOf(item);
+        }
+      } else if (item.type == 'Accessories') {
+        if (item.quantity >
+            accessoriesList
+                .firstWhere((product) => product.title == item.name)
+                .quantity) {
+          return invoiceInfo.items.indexOf(item);
+        }
+      }
+    }
+    return -1;
   }
 
   void _decrementInvoiceItemsQuantity(BuildContext context) {
@@ -173,7 +207,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
     return itemsList[itemIndex];
   }
 
-  _updateSelableItemsListsInFirestore(
+  void _updateSelableItemsListsInFirestore(
       Map<String, List<ProductModel>> itemsMap) async {
     itemsMap.forEach((productsType, productsList) async {
       if (productsType == 'Medicines') {
@@ -199,6 +233,14 @@ class InvoicesCubit extends Cubit<InvoicesState> {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       date: DateTime.now().toString(),
     );
+  }
+
+  void _setInvoiceItemsDiscount() {
+    for (int i = 0; i < invoiceInfo.items.length; i++) {
+      invoiceInfo.items[i] = invoiceInfo.items[i].copyWith(
+        discountPercentage: invoiceInfo.discount / invoiceInfo.total * 100,
+      );
+    }
   }
 
   bool _validateInvoiceItems() {
@@ -298,6 +340,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         name: '',
         type: '',
         quantity: 1,
+        discountPercentage: 0,
         price: 0,
       ),
     ];
@@ -325,6 +368,7 @@ class InvoicesCubit extends Cubit<InvoicesState> {
         name: '',
         type: '',
         quantity: 1,
+        discountPercentage: 0,
         price: 0,
       ),
     );

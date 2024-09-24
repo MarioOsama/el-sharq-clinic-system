@@ -201,6 +201,8 @@
     "FailedToGetInvoices": "فشل في جلب الفواتير",
     "InvoiceAddedSuccessfully": "تمت إضافة الفاتورة بنجاح",
     "FailedToAddInvoice": "فشل في إضافة الفاتورة",
+    "PleaseCheckItem": "يرجى التحقق من عنصر",
+    "NotEnoughItems": "الكمية المطلوبة لا توجد في المخزون",
     "InvalidItemMessage": "غير صالح، يرجى التحقق منه",
     "DiscountGreaterThanTotal": "لا يمكن أن يكون الخصم أكبر من الإجمالي",
     "FailedToGetInvoice": "فشل في جلب الفاتورة",
