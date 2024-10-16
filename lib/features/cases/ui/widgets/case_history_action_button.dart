@@ -3,7 +3,7 @@ import 'package:el_sharq_clinic/core/helpers/extensions.dart';
 import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/theming/app_text_styles.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_side_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +25,7 @@ class CaseHistoryTableActionButton extends StatelessWidget {
             value: 'Edit',
             onTap: () {
               final caseHistoryModel =
-                  context.read<CaseHistoryCubit>().getCaseHistoryById(id);
+                  context.read<CasesCubit>().getCaseHistoryById(id);
               showCaseSheet(context, AppStrings.editCase.tr(),
                   caseHistoryModel: caseHistoryModel);
             },
@@ -42,7 +42,7 @@ class CaseHistoryTableActionButton extends StatelessWidget {
                 builder: (_) => AppAlertDialog(
                   alertMessage: AppStrings.deleteCaseMessage.tr(),
                   onConfirm: () {
-                    context.read<CaseHistoryCubit>().deleteCase(id);
+                    context.read<CasesCubit>().deleteCase(id);
                     ctx.pop();
                   },
                   onCancel: () {

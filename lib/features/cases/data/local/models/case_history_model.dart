@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/core/logic/identifiable_model.dart';
 
-class CaseHistoryModel {
-  final String id;
+class CaseHistoryModel extends IdentifiableModel {
   final String? doctorId;
   final String ownerName;
   final String? phone;
@@ -12,7 +12,7 @@ class CaseHistoryModel {
   final String petReport;
 
   CaseHistoryModel({
-    required this.id,
+    required super.id,
     this.doctorId,
     required this.ownerName,
     this.phone,
@@ -99,5 +99,10 @@ class CaseHistoryModel {
       'time': time,
       'petReport': petReport,
     };
+  }
+
+  @override
+  String toString() {
+    return 'CaseHistoryModel(id: $id, doctorId: $doctorId, ownerName: $ownerName, phone: $phone, petName: $petName, petType: $petType, date: $date, time: $time, petReport: $petReport)';
   }
 }

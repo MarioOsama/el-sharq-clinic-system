@@ -76,7 +76,7 @@
     "CaseUpdated": "تم تحديث الحالة بنجاح",
     "CasesDeleted": "تم حذف الحالات بنجاح",
     "EditCase": "تعديل الحالة",
-    "FailedCase": "فشل في الحصول على الحالات",
+    "FailedCases": "فشل في الحصول على الحالات",
     "FailedSavingCase": "فشل في إضافة الحالة",
     "FailedUpdatingCase": "فشل في تحديث الحالة",
     "FailedDeletingCase": "فشل في حذف الحالة",

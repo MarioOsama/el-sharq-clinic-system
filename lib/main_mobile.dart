@@ -28,6 +28,7 @@ void main() async {
         child: MobileClinicSystem(appRouter: AppRouter()),
       ),
     );
+    return;
   }
 
   // Initialize Sentry

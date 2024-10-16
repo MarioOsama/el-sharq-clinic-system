@@ -11,7 +11,7 @@ import 'package:el_sharq_clinic/core/widgets/date_time_picker.dart';
 import 'package:el_sharq_clinic/core/widgets/fields_row.dart';
 import 'package:el_sharq_clinic/core/widgets/section_title.dart';
 import 'package:el_sharq_clinic/features/cases/data/local/models/case_history_model.dart';
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:el_sharq_clinic/features/doctors/data/models/doctor_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,12 +20,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 Future<void> showCaseSheet(BuildContext context, String title,
     {CaseHistoryModel? caseHistoryModel, bool editable = true}) async {
   final bool newCase = caseHistoryModel == null;
-  final CaseHistoryCubit caseHistoryCubit = context.read<CaseHistoryCubit>();
+  final CasesCubit casesCubit = context.read<CasesCubit>();
   newCase
-      ? caseHistoryCubit.setupNewModeControllers()
-      : caseHistoryCubit.setupShowModeControllers(caseHistoryModel);
-  final List<DoctorModel> doctorsList =
-      context.read<CaseHistoryCubit>().doctorsList;
+      ? casesCubit.setupNewModeControllers()
+      : casesCubit.setupShowModeControllers(caseHistoryModel);
+  final List<DoctorModel> doctorsList = context.read<CasesCubit>().doctorsList;
 
   await showCustomSideSheet(
     context: context,
@@ -33,19 +32,19 @@ Future<void> showCaseSheet(BuildContext context, String title,
       children: [
         SectionTitle(title: title),
         verticalSpace(50),
-        if (!newCase) _buildCaseId(caseHistoryCubit.caseIdController),
-        verticalSpace(50),
+        if (!newCase) _buildCaseId(casesCubit.caseIdController),
+        if (!newCase) verticalSpace(50),
         AppDropDownMenu<DoctorModel>(
           hint: editable ? AppStrings.doctor.tr() : AppStrings.doctorId.tr(),
-          controller: caseHistoryCubit.doctorNameController,
+          controller: casesCubit.doctorNameController,
           itemBuilder: (index) => DropdownMenuEntry(
             label: doctorsList[index].name,
             value: doctorsList[index].id,
             labelWidget: _buildDoctorLabel(doctorsList[index], context),
           ),
-          items: caseHistoryCubit.doctorsList,
+          items: casesCubit.doctorsList,
           onChanged: (value) {
-            caseHistoryCubit.onSelectDoctor(value);
+            casesCubit.onSelectDoctor(value);
           },
           enabled: editable,
         ),
@@ -55,8 +54,8 @@ Future<void> showCaseSheet(BuildContext context, String title,
             AppStrings.ownerName,
             AppStrings.petType,
           ],
-          firstController: caseHistoryCubit.ownerNameController,
-          secondController: caseHistoryCubit.petTypeController,
+          firstController: casesCubit.ownerNameController,
+          secondController: casesCubit.petTypeController,
           enabled: editable,
         ),
         verticalSpace(50),
@@ -65,8 +64,8 @@ Future<void> showCaseSheet(BuildContext context, String title,
             AppStrings.phone,
             AppStrings.petName,
           ],
-          firstController: caseHistoryCubit.phoneController,
-          secondController: caseHistoryCubit.petNameController,
+          firstController: casesCubit.phoneController,
+          secondController: casesCubit.petNameController,
           enabled: editable,
         ),
         verticalSpace(50),
@@ -75,18 +74,17 @@ Future<void> showCaseSheet(BuildContext context, String title,
             AppStrings.time,
             AppStrings.date,
           ],
-          firstController: caseHistoryCubit.timeController,
-          secondController: caseHistoryCubit.dateController,
-          firstSuffixIcon:
-              _buildTimeButton(context, caseHistoryCubit.timeController),
+          firstController: casesCubit.timeController,
+          secondController: casesCubit.dateController,
+          firstSuffixIcon: _buildTimeButton(context, casesCubit.timeController),
           secondSuffixIcon:
-              _buildDateButton(context, caseHistoryCubit.dateController),
+              _buildDateButton(context, casesCubit.dateController),
           enabled: editable,
           readOnly: true,
         ),
         verticalSpace(50),
         AppTextField(
-          controller: caseHistoryCubit.petReportController,
+          controller: casesCubit.petReportController,
           hint: AppStrings.petReport.tr(),
           enabled: editable,
           maxWidth: double.infinity,
@@ -165,7 +163,7 @@ AppTextButton _buildNewAction(BuildContext context) {
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
-      context.read<CaseHistoryCubit>().validateAndSaveCase();
+      context.read<CasesCubit>().validateAndSaveCase();
     },
   );
 }
@@ -176,7 +174,7 @@ AppTextButton _buildUpdateAction(BuildContext context) {
     width: MediaQuery.sizeOf(context).width,
     height: 70.h,
     onPressed: () {
-      context.read<CaseHistoryCubit>().validateAndUpdateCase();
+      context.read<CasesCubit>().validateAndUpdateCase();
     },
   );
 }

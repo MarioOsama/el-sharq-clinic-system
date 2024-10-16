@@ -59,6 +59,7 @@ void main() async {
         child: DesktopClinicSystem(appRouter: AppRouter()),
       ),
     );
+    return;
   }
 
   // Initialize Sentry

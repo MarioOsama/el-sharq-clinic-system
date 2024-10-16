@@ -1,29 +1,20 @@
-part of 'case_history_cubit.dart';
+part of 'cases_cubit.dart';
 
-abstract class CaseHistoryState {
-  void takeAction(BuildContext context);
-}
-
-final class CasesInitial implements CaseHistoryState {
-  @override
+abstract class CasesState {
   void takeAction(BuildContext context) {}
 }
 
-final class CasesLoading extends CaseHistoryState {
-  @override
-  void takeAction(BuildContext context) {}
-}
+final class CasesInitial extends CasesState {}
 
-final class CasesSuccess extends CaseHistoryState {
+final class CasesLoading extends CasesState {}
+
+final class CasesSuccess extends CasesState {
   final List<CaseHistoryModel?> cases;
 
   CasesSuccess({required this.cases});
-
-  @override
-  void takeAction(BuildContext context) {}
 }
 
-final class CasesError extends CaseHistoryState {
+final class CasesError extends CasesState {
   final String errorMessage;
 
   CasesError(this.errorMessage);
@@ -45,8 +36,14 @@ final class CasesError extends CaseHistoryState {
   }
 }
 
+final class CasesSearching extends CasesState {
+  final List<CaseHistoryModel?> cases;
+
+  CasesSearching({required this.cases});
+}
+
 // CaseHistory
-final class NewCaseHistoryInvalid extends CaseHistoryState {
+final class NewCaseHistoryInvalid extends CasesState {
   final String? title;
   final String errorMessage;
 
@@ -69,7 +66,7 @@ final class NewCaseHistoryInvalid extends CaseHistoryState {
   }
 }
 
-final class NewCaseHistoryLoading extends CaseHistoryState {
+final class NewCaseLoading extends CasesState {
   @override
   void takeAction(BuildContext context) {
     showDialog<String>(
@@ -81,7 +78,7 @@ final class NewCaseHistoryLoading extends CaseHistoryState {
   }
 }
 
-final class NewCaseHistorySuccess extends CaseHistoryState {
+final class NewCaseSuccess extends CasesState {
   @override
   void takeAction(BuildContext context) {
     // Hide loading dialog
@@ -107,10 +104,10 @@ final class NewCaseHistorySuccess extends CaseHistoryState {
   }
 }
 
-final class NewCaseHistoryFailure extends CaseHistoryState {
+final class NewCaseFailure extends CasesState {
   final String errorMessage;
 
-  NewCaseHistoryFailure(this.errorMessage);
+  NewCaseFailure(this.errorMessage);
 
   @override
   void takeAction(BuildContext context) {
@@ -131,7 +128,7 @@ final class NewCaseHistoryFailure extends CaseHistoryState {
   }
 }
 
-final class UpdateCaseHistorySuccess extends CaseHistoryState {
+final class UpdateCaseSuccess extends CasesState {
   @override
   void takeAction(BuildContext context) {
     context.pop();
@@ -157,7 +154,7 @@ final class UpdateCaseHistorySuccess extends CaseHistoryState {
   }
 }
 
-final class DeleteCaseHistorySuccess extends CaseHistoryState {
+final class DeleteCaseSuccess extends CasesState {
   @override
   void takeAction(BuildContext context) {
     showDialog(
