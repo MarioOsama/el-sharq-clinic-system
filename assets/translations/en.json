@@ -76,7 +76,7 @@
     "CaseUpdated": "Case updated successfully",
     "CasesDeleted": "Cases deleted successfully",
     "EditCase": "Edit Case",
-    "FailedCase": "Failed to get cases",
+    "FailedCases": "Failed to get cases",
     "FailedSavingCase": "Failed to add the case",
     "FailedUpdatingCase": "Failed to update the case",
     "FailedDeletingCase": "Failed to delete the case",

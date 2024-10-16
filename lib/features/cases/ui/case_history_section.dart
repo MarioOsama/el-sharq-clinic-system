@@ -5,7 +5,7 @@ import 'package:el_sharq_clinic/core/helpers/strings.dart';
 import 'package:el_sharq_clinic/core/widgets/app_alert_dialog.dart';
 import 'package:el_sharq_clinic/core/widgets/section_container.dart';
 import 'package:el_sharq_clinic/core/widgets/section_search_bar.dart';
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_bloc_listener.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_body.dart';
 import 'package:el_sharq_clinic/features/cases/ui/widgets/case_history_side_sheet.dart';
@@ -25,7 +25,7 @@ class CaseHistorySection extends StatelessWidget {
         SectionSearchBar(
           hintText: AppStrings.casesSearchText.tr(),
           onChanged: (value) {
-            context.read<CaseHistoryCubit>().onSearch(value);
+            context.read<CasesCubit>().onSearch(value);
           },
         ),
 
@@ -33,8 +33,7 @@ class CaseHistorySection extends StatelessWidget {
           newText: AppStrings.newCase.tr(),
           onNewPressed: () => showCaseSheet(context, AppStrings.newCase.tr()),
           onDeletePressed: () => _showDeleteDialog(context),
-          valueNotifier:
-              context.read<CaseHistoryCubit>().showDeleteButtonNotifier,
+          valueNotifier: context.read<CasesCubit>().showDeleteButtonNotifier,
         ),
       ],
       child: Expanded(
@@ -54,9 +53,9 @@ class CaseHistorySection extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (ctx) => AppAlertDialog(
-        alertMessage: AppStrings.deleteCaseMessage,
+        alertMessage: AppStrings.deleteCaseMessage.tr(),
         onConfirm: () {
-          context.read<CaseHistoryCubit>().deleteSelectedCases();
+          context.read<CasesCubit>().deleteSelectedCases();
           context.pop();
         },
         onCancel: () {

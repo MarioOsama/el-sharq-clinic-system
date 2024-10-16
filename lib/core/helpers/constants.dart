@@ -14,6 +14,8 @@ abstract class AppConstant {
   static const List<String> languages = ['English', 'Arabic'];
   static const List<String> themes = ['Light', 'Dark'];
 
+  static const String casesFirebaseCollectionName = 'cases';
+
   // Drawer Items
   static List<DrawerItemModel> drawerItems = const [
     DrawerItemModel(

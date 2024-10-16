@@ -2,7 +2,7 @@ import 'package:el_sharq_clinic/core/di/dependency_injection.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/theming/app_colors.dart';
 import 'package:el_sharq_clinic/core/models/auth_data_model.dart';
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:el_sharq_clinic/features/cases/ui/case_history_section.dart';
 import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
 import 'package:el_sharq_clinic/features/dashboard/ui/dashboard_section.dart';
@@ -80,9 +80,9 @@ class _HomeLayoutState extends State<HomeLayout> {
               ..setupSectionData(mainCubit.authData, mainCubit),
             child: const DashboardSection(),
           ),
-      (context) => BlocProvider<CaseHistoryCubit>(
+      (context) => BlocProvider<CasesCubit>(
             create: (context) =>
-                getIt<CaseHistoryCubit>()..setupSectionData(mainCubit.authData),
+                getIt<CasesCubit>()..setupSectionData(mainCubit.authData),
             child: const CaseHistorySection(),
           ),
       (context) => BlocProvider<OwnersCubit>(

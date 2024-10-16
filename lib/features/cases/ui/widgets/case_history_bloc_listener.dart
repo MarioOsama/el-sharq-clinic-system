@@ -1,4 +1,4 @@
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,16 +7,16 @@ class CaseHistoryBlocListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CaseHistoryCubit, CaseHistoryState>(
+    return BlocListener<CasesCubit, CasesState>(
       listenWhen: (previous, current) =>
           current is CasesError ||
           current is CasesSuccess ||
-          current is NewCaseHistoryLoading ||
-          current is NewCaseHistoryFailure ||
-          current is NewCaseHistorySuccess ||
+          current is NewCaseLoading ||
+          current is NewCaseFailure ||
+          current is NewCaseSuccess ||
           current is NewCaseHistoryInvalid ||
-          current is UpdateCaseHistorySuccess ||
-          current is DeleteCaseHistorySuccess,
+          current is UpdateCaseSuccess ||
+          current is DeleteCaseSuccess,
       listener: (context, state) {
         state.takeAction(context);
       },

@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:el_sharq_clinic/core/helpers/constants.dart';
 import 'package:el_sharq_clinic/core/logic/cubit/main_cubit.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_factory.dart';
-import 'package:el_sharq_clinic/features/cases/data/local/repos/case_history_repo.dart';
 import 'package:el_sharq_clinic/core/networking/firebase_services.dart';
-import 'package:el_sharq_clinic/features/cases/logic/cubit/case_history_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:el_sharq_clinic/features/auth/data/local/repos/auth_repo.dart';
 import 'package:el_sharq_clinic/features/auth/data/remote/auth_firebase_services.dart';
+import 'package:el_sharq_clinic/features/cases/data/local/repos/cases_repo.dart';
+import 'package:el_sharq_clinic/features/cases/logic/cubit/cases_cubit.dart';
 import 'package:el_sharq_clinic/features/dashboard/data/repos/dashboard_repo.dart';
 import 'package:el_sharq_clinic/features/dashboard/logic/cubit/dashboard_cubit.dart';
 import 'package:el_sharq_clinic/features/doctors/data/repos/doctors_repo.dart';
@@ -39,7 +40,7 @@ void setupGetIt() {
   // Cubits
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
   getIt.registerFactory<DashboardCubit>(() => DashboardCubit(getIt()));
-  getIt.registerFactory<CaseHistoryCubit>(() => CaseHistoryCubit(getIt()));
+  getIt.registerFactory<CasesCubit>(() => CasesCubit(getIt()));
   getIt.registerFactory<OwnersCubit>(() => OwnersCubit(getIt(), getIt()));
   getIt.registerFactory<DoctorsCubit>(() => DoctorsCubit(getIt()));
   getIt.registerFactory<ServicesCubit>(() => ServicesCubit(getIt()));
@@ -51,7 +52,8 @@ void setupGetIt() {
   // Repos
   getIt.registerLazySingleton<AuthRepo>(() => AuthRepo(getIt()));
   getIt.registerLazySingleton<DashboardRepo>(() => DashboardRepo(getIt()));
-  getIt.registerLazySingleton<CaseHistoryRepo>(() => CaseHistoryRepo(getIt()));
+  getIt.registerLazySingleton<CasesRepo>(
+      () => CasesRepo(getIt(), AppConstant.casesFirebaseCollectionName));
   getIt.registerLazySingleton<OwnersRepo>(() => OwnersRepo(getIt()));
   getIt.registerLazySingleton<PetsRepo>(() => PetsRepo(getIt()));
   getIt.registerLazySingleton<DoctorsRepo>(() => DoctorsRepo(getIt()));
